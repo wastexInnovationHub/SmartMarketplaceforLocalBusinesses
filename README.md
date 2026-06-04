@@ -69,7 +69,7 @@ This platform directly supports the growth of the digital economy in **Zanzibar 
 ## Team Members
 | No | Name | Role |
 | :--- | :--- | :--- |
-| 1 | __________ | Frontend Developer |
+| 1 | KHADIJA ALI SAID | Frontend Developer |
 | 2 | __________ | Backend Developer |
 | 3 | __________ | Payment Integration Engineer |
 | 4 | __________ | UI/UX Designer |

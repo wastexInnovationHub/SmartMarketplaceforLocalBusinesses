@@ -71,6 +71,6 @@ This platform directly supports the growth of the digital economy in **Zanzibar 
 | :--- | :--- | :--- |
 | 1 | KHADIJA ALI SAID | Frontend Developer |
 | 2 | __________ | Backend Developer |
-| 3 | __________ | Payment Integration Engineer |
+| 3 | ZAHOR KHALFAN OMAR | Payment Integration Engineer |
 | 4 | __________ | UI/UX Designer |
 | 5 | __________ | Product Manager |

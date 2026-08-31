@@ -3,6 +3,7 @@ import AboutSection from '../../components/landing/AboutSection'
 import HowItWorksSection from '../../components/landing/HowItWorksSection'
 import BusinessesSection from '../../components/landing/BusinessesSection'
 import ServicesSection from '../../components/landing/ServicesSection'
+import HelpSection from '../../components/landing/HelpSection'
 
 function HomePage() {
   return (
@@ -12,6 +13,7 @@ function HomePage() {
       <HowItWorksSection />
       <BusinessesSection />
       <ServicesSection />
+      <HelpSection />
     </>
   )
 }

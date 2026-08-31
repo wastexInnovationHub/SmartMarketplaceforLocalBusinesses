@@ -1,76 +1,16 @@
-# Smart Marketplace for Local Businesses
+# React + Vite
 
-## Problem
-Small businesses often lack digital visibility and the necessary online selling tools to compete in the modern economy.
+This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
-## Solution
-A localized e-commerce platform designed for:
-*   **Shops**: General retail and local stores.
-*   **Food vendors**: Restaurants and street food sellers.
-*   **Service providers**: Local professionals and artisans.
-*   **Delivery businesses**: Local logistics and courier services.
+Currently, two official plugins are available:
 
-## Main Features
-*   **Vendor Dashboards**: Comprehensive tools for businesses to manage their storefronts.
-*   **Order Tracking**: Real-time updates for customers and vendors.
-*   **Mobile Payments**: Integration with popular mobile money and card payments.
-*   **Analytics**: Data-driven insights for vendors to grow their business.
-*   **Swahili Support**: Fully localized interface for Zanzibar and Tanzania users.
+- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
+- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
 
-## Functional Requirements
-### User Management
-*   Customer accounts
-*   Vendor accounts
-*   Delivery accounts
+## React Compiler
 
-### E-Commerce
-*   Product listings
-*   Shopping cart
-*   Order management
+The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
 
-### Payments
-*   Mobile payments
-*   Online transactions
+## Expanding the ESLint configuration
 
-### Delivery System
-*   Delivery tracking
-*   Order status updates
-
-### Analytics
-*   Sales reports
-*   Customer analytics
-
-### Notifications
-*   Order notifications
-*   Vendor alerts
-
-## Non-Functional Requirements
-*   **Performance**: Fast product browsing and smooth user experience.
-*   **Security**: Secure payment gateways and robust user authentication.
-*   **Scalability**: Built to support a growing number of vendors and products.
-*   **Reliability**: Accurate and consistent order processing.
-*   **Usability**: Mobile-friendly design optimized for local devices.
-*   **Compatibility**: Full cross-browser support.
-
-## Technologies
-*   **Frontend**: React
-*   **Backend**: Node.js
-*   **Database**: PostgreSQL
-*   **Payments**: Stripe / Mobile Money APIs
-
-## Why Competitive?
-This platform directly supports the growth of the digital economy in **Zanzibar and Tanzania** by tailoring tools to the specific needs of local entrepreneurs.
-
-## Future Expansion
-*   AI-powered product recommendations.
-*   Delivery tracking integration with AI optimization.
-*   Multi-country marketplace expansion.
-
-## Team Members
-| No | Name | Role |
-| :--- | :--- | :--- |
-| 1 | KHADIJA ALI SAID | Frontend Developer |
-| 2 | __________ | Backend Developer |
-| 3 | ZAHOR KHALFAN OMAR | Payment Integration Engineer |
-| 4 | __________ | UI/UX Designer |
-| 5 | __________ | Product Manager |
+If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.

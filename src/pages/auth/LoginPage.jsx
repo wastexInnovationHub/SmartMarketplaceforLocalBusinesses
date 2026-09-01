@@ -16,19 +16,68 @@ function LoginPage() {
   const [showPassword, setShowPassword] = useState(false)
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
+  const [error, setError] = useState('')
+  const [isLoading, setIsLoading] = useState(false)
 
   const handleSubmit = (event) => {
     event.preventDefault()
 
-    // Backend authentication will be connected here.
-    // The backend will determine the user's role after login.
-    console.log({
-      email,
-      password,
-    })
+    setError('')
+    setIsLoading(true)
 
-    // Temporary navigation until backend authentication is connected.
-    navigate('/')
+    const normalizedEmail = email.trim().toLowerCase()
+
+    // Temporary frontend accounts for dashboard development.
+    // These will be replaced with backend authentication later.
+    const accounts = {
+      'customer@gmail.com': {
+        password: 'user@123',
+        role: 'customer',
+        dashboard: '/customer/dashboard',
+      },
+
+      'delivery@gmail.com': {
+        password: 'user@123',
+        role: 'delivery',
+        dashboard: '/delivery/dashboard',
+      },
+
+      'bussiness@gmail.com': {
+        password: 'user@123',
+        role: 'business',
+        dashboard: '/business/dashboard',
+      },
+
+      'admin@smflb.com': {
+        password: 'user@123',
+        role: 'admin',
+        dashboard: '/admin/dashboard',
+      },
+    }
+
+    const account = accounts[normalizedEmail]
+
+    if (!account || account.password !== password) {
+      setError('Invalid email or password.')
+      setIsLoading(false)
+      return
+    }
+
+    // Store only the temporary login information needed
+    // for dashboard routing during frontend development.
+    localStorage.setItem(
+      'jamiiMarketUser',
+      JSON.stringify({
+        email: normalizedEmail,
+        role: account.role,
+      }),
+    )
+
+    // Send the user directly to the dashboard
+    // belonging to their role.
+    navigate(account.dashboard)
+
+    setIsLoading(false)
   }
 
   return (
@@ -115,6 +164,16 @@ function LoginPage() {
                   Sign in to continue to JamiiMarket.
                 </p>
               </div>
+
+              {/* Error */}
+              {error && (
+                <div
+                  role="alert"
+                  className="mt-6 rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm font-medium text-red-700"
+                >
+                  {error}
+                </div>
+              )}
 
               {/* Form */}
               <form
@@ -217,10 +276,12 @@ function LoginPage() {
                 {/* Submit */}
                 <button
                   type="submit"
-                  className="flex w-full items-center justify-center gap-2 rounded-xl bg-[#A03F28] px-5 py-3.5 text-sm font-semibold text-white shadow-sm transition hover:bg-[#812914] active:scale-[0.99]"
+                  disabled={isLoading}
+                  className="flex w-full items-center justify-center gap-2 rounded-xl bg-[#A03F28] px-5 py-3.5 text-sm font-semibold text-white shadow-sm transition hover:bg-[#812914] active:scale-[0.99] disabled:cursor-not-allowed disabled:opacity-60"
                 >
-                  Sign In
-                  <ArrowRight size={18} />
+                  {isLoading ? 'Signing in...' : 'Sign In'}
+
+                  {!isLoading && <ArrowRight size={18} />}
                 </button>
               </form>
 
@@ -228,6 +289,7 @@ function LoginPage() {
               <div className="mt-8 border-t border-[#E8E3E1] pt-6 text-center">
                 <p className="text-sm text-[#6B625F]">
                   Don't have an account?
+
                   <Link
                     to="/register"
                     className="ml-1 font-bold text-[#A03F28] hover:underline"

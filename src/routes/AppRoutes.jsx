@@ -9,6 +9,11 @@ import PublicLayout from '../layouts/PublicLayout'
 // PUBLIC PAGES
 // ======================================================
 import HomePage from '../pages/landing/HomePage'
+
+// ======================================================
+// AUTH PAGES
+// Login & Register intentionally have NO public header/footer
+// ======================================================
 import LoginPage from '../pages/auth/LoginPage'
 import RegisterPage from '../pages/auth/RegisterPage'
 
@@ -26,15 +31,14 @@ import CustomerFavoritesPage from '../pages/customer/CustomerFavoritesPage'
 import CustomerOrdersPage from '../pages/customer/CustomerOrdersPage'
 import CustomerProfilePage from '../pages/customer/CustomerProfilePage'
 
-
 function AppRoutes() {
   return (
     <BrowserRouter>
-
       <Routes>
 
         {/* ==================================================
             PUBLIC WEBSITE
+            LandingHeader + LandingFooter
         ================================================== */}
 
         <Route element={<PublicLayout />}>
@@ -45,23 +49,29 @@ function AppRoutes() {
             element={<HomePage />}
           />
 
-          {/* Login */}
-          <Route
-            path="/login"
-            element={<LoginPage />}
-          />
-
-          {/* Register */}
-          <Route
-            path="/register"
-            element={<RegisterPage />}
-          />
-
         </Route>
 
 
         {/* ==================================================
+            AUTHENTICATION
+            NO LandingHeader
+            NO LandingFooter
+        ================================================== */}
+
+        <Route
+          path="/login"
+          element={<LoginPage />}
+        />
+
+        <Route
+          path="/register"
+          element={<RegisterPage />}
+        />
+
+
+        {/* ==================================================
             CUSTOMER APPLICATION
+            CustomerDashboardLayout handles customer navigation
         ================================================== */}
 
         <Route
@@ -69,7 +79,7 @@ function AppRoutes() {
           element={<CustomerDashboardLayout />}
         >
 
-          {/* /customer */}
+          {/* /customer → /customer/dashboard */}
           <Route
             index
             element={
@@ -128,7 +138,6 @@ function AppRoutes() {
         />
 
       </Routes>
-
     </BrowserRouter>
   )
 }

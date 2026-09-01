@@ -1,92 +1,136 @@
-import { BrowserRouter, Route, Routes } from 'react-router-dom'
+import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom'
 
+// ======================================================
+// PUBLIC LAYOUT
+// ======================================================
 import PublicLayout from '../layouts/PublicLayout'
 
+// ======================================================
+// PUBLIC PAGES
+// ======================================================
 import HomePage from '../pages/landing/HomePage'
 import LoginPage from '../pages/auth/LoginPage'
 import RegisterPage from '../pages/auth/RegisterPage'
-import TermsOfServicePage from '../pages/legal/TermsOfServicePage'
-import PrivacyPolicyPage from '../pages/legal/PrivacyPolicyPage'
 
+// ======================================================
+// CUSTOMER LAYOUT
+// ======================================================
+import CustomerDashboardLayout from '../layouts/customer/CustomerDashboardLayout'
+
+// ======================================================
+// CUSTOMER PAGES
+// ======================================================
 import CustomerDashboardPage from '../pages/customer/CustomerDashboardPage'
-import BusinessDashboardPage from '../pages/business/BusinessDashboardPage'
-import DeliveryDashboardPage from '../pages/delivery/DeliveryDashboardPage'
-import AdminDashboardPage from '../pages/admin/AdminDashboardPage'
+import CustomerBusinessesPage from '../pages/customer/CustomerBusinessesPage'
+import CustomerFavoritesPage from '../pages/customer/CustomerFavoritesPage'
+import CustomerOrdersPage from '../pages/customer/CustomerOrdersPage'
+import CustomerProfilePage from '../pages/customer/CustomerProfilePage'
+
 
 function AppRoutes() {
   return (
     <BrowserRouter>
+
       <Routes>
 
-        {/* =========================
+        {/* ==================================================
             PUBLIC WEBSITE
-        ========================== */}
+        ================================================== */}
+
         <Route element={<PublicLayout />}>
-          <Route path="/" element={<HomePage />} />
+
+          {/* Home */}
+          <Route
+            path="/"
+            element={<HomePage />}
+          />
+
+          {/* Login */}
+          <Route
+            path="/login"
+            element={<LoginPage />}
+          />
+
+          {/* Register */}
+          <Route
+            path="/register"
+            element={<RegisterPage />}
+          />
+
         </Route>
 
-        {/* =========================
-            AUTHENTICATION
-        ========================== */}
-        <Route
-          path="/login"
-          element={<LoginPage />}
-        />
+
+        {/* ==================================================
+            CUSTOMER APPLICATION
+        ================================================== */}
 
         <Route
-          path="/register"
-          element={<RegisterPage />}
-        />
+          path="/customer"
+          element={<CustomerDashboardLayout />}
+        >
 
-        {/* =========================
-            LEGAL
-        ========================== */}
-        <Route
-          path="/terms"
-          element={<TermsOfServicePage />}
-        />
+          {/* /customer */}
+          <Route
+            index
+            element={
+              <Navigate
+                to="/customer/dashboard"
+                replace
+              />
+            }
+          />
+
+          {/* Dashboard */}
+          <Route
+            path="dashboard"
+            element={<CustomerDashboardPage />}
+          />
+
+          {/* Businesses */}
+          <Route
+            path="businesses"
+            element={<CustomerBusinessesPage />}
+          />
+
+          {/* Favorites */}
+          <Route
+            path="favorites"
+            element={<CustomerFavoritesPage />}
+          />
+
+          {/* Orders */}
+          <Route
+            path="orders"
+            element={<CustomerOrdersPage />}
+          />
+
+          {/* Profile */}
+          <Route
+            path="profile"
+            element={<CustomerProfilePage />}
+          />
+
+        </Route>
+
+
+        {/* ==================================================
+            UNKNOWN ROUTE
+        ================================================== */}
 
         <Route
-          path="/privacy"
-          element={<PrivacyPolicyPage />}
-        />
-
-        {/* =========================
-            CUSTOMER
-        ========================== */}
-        <Route
-          path="/customer/dashboard"
-          element={<CustomerDashboardPage />}
-        />
-
-        {/* =========================
-            BUSINESS
-        ========================== */}
-        <Route
-          path="/business/dashboard"
-          element={<BusinessDashboardPage />}
-        />
-
-        {/* =========================
-            DELIVERY
-        ========================== */}
-        <Route
-          path="/delivery/dashboard"
-          element={<DeliveryDashboardPage />}
-        />
-
-        {/* =========================
-            ADMIN
-        ========================== */}
-        <Route
-          path="/admin/dashboard"
-          element={<AdminDashboardPage />}
+          path="*"
+          element={
+            <Navigate
+              to="/"
+              replace
+            />
+          }
         />
 
       </Routes>
+
     </BrowserRouter>
   )
 }
 
 export default AppRoutes
-

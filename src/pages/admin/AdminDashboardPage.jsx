@@ -14,13 +14,13 @@ import {
 import { Link } from 'react-router-dom'
 
 function AdminDashboardPage() {
-  // Dashboard statistics will be loaded from the backend later.
-  // No fake marketplace numbers are displayed.
+  // Dashboard statistics are prepared for backend integration.
+  // No fake marketplace data is displayed.
   const statistics = [
     {
       title: 'Total Users',
       value: '0',
-      description: 'Registered customers, businesses and riders',
+      description: 'Customers, business owners and delivery riders',
       icon: Users,
       href: '/admin/users',
     },
@@ -34,7 +34,7 @@ function AdminDashboardPage() {
     {
       title: 'Products & Services',
       value: '0',
-      description: 'Marketplace products and services',
+      description: 'Marketplace listings',
       icon: Package,
       href: '/admin/products',
     },
@@ -66,28 +66,28 @@ function AdminDashboardPage() {
     {
       title: 'Products & Services',
       description:
-        'Monitor products and services listed by registered businesses.',
+        'Manage products and services listed by registered businesses.',
       icon: Package,
       href: '/admin/products',
     },
     {
       title: 'Orders',
       description:
-        'Monitor marketplace orders and their current processing status.',
+        'Monitor marketplace orders and their processing status.',
       icon: ClipboardList,
       href: '/admin/orders',
     },
     {
       title: 'Deliveries',
       description:
-        'Monitor delivery operations and delivery rider activity.',
+        'Monitor delivery operations, assignments and delivery status.',
       icon: Bike,
       href: '/admin/deliveries',
     },
     {
       title: 'Payments',
       description:
-        'Monitor marketplace payment transactions and payment status.',
+        'Monitor payment transactions and payment verification status.',
       icon: CreditCard,
       href: '/admin/payments',
     },
@@ -109,9 +109,9 @@ function AdminDashboardPage() {
             </h1>
 
             <p className="mt-3 max-w-2xl text-sm leading-6 text-indigo-100 sm:text-base">
-              Manage users, local businesses, products, services, orders,
-              deliveries and payments from one central marketplace
-              administration portal.
+              Manage users, local businesses, products, services,
+              orders, deliveries and payments from one central
+              marketplace administration portal.
             </p>
           </div>
 
@@ -121,7 +121,7 @@ function AdminDashboardPage() {
         </div>
       </section>
 
-      {/* Platform overview */}
+      {/* Marketplace overview */}
       <section>
         <div className="mb-4">
           <h2 className="text-xl font-bold text-slate-900">
@@ -129,7 +129,7 @@ function AdminDashboardPage() {
           </h2>
 
           <p className="mt-1 text-sm text-slate-500">
-            These figures will display real marketplace data after the
+            Live marketplace statistics will appear here after the
             backend API is connected.
           </p>
         </div>
@@ -177,7 +177,7 @@ function AdminDashboardPage() {
           </h2>
 
           <p className="mt-1 text-sm text-slate-500">
-            Access the main management areas of JamiiMarket.
+            Access the main operational areas of JamiiMarket.
           </p>
         </div>
 
@@ -240,13 +240,13 @@ function AdminDashboardPage() {
             </h3>
 
             <p className="mx-auto mt-1 max-w-sm text-sm leading-5 text-slate-500">
-              Administrative activity will appear here when real activity
-              logs are connected to the backend.
+              Administrative activity will appear here when real
+              activity logs are received from the backend.
             </p>
 
             <Link
               to="/admin/activity"
-              className="mt-4 inline-flex items-center gap-2 text-sm font-semibold text-indigo-600 hover:text-indigo-700"
+              className="mt-4 inline-flex items-center gap-2 text-sm font-semibold text-indigo-600 transition hover:text-indigo-700"
             >
               View Activity Logs
               <ArrowRight className="h-4 w-4" />
@@ -254,7 +254,7 @@ function AdminDashboardPage() {
           </div>
         </div>
 
-        {/* Administrative controls */}
+        {/* Administration controls */}
         <div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
           <div className="flex items-center justify-between">
             <div>
@@ -263,7 +263,8 @@ function AdminDashboardPage() {
               </h2>
 
               <p className="mt-1 text-sm text-slate-500">
-                Manage platform administrators and security
+                Manage platform administrators and administrative
+                records.
               </p>
             </div>
 
@@ -273,6 +274,7 @@ function AdminDashboardPage() {
           </div>
 
           <div className="mt-6 space-y-3">
+            {/* Admin management */}
             <Link
               to="/admin/management"
               className="group flex items-center justify-between rounded-xl bg-slate-50 p-4 transition hover:bg-indigo-50"
@@ -294,6 +296,7 @@ function AdminDashboardPage() {
               <ArrowRight className="h-5 w-5 text-slate-300 transition group-hover:translate-x-1 group-hover:text-indigo-600" />
             </Link>
 
+            {/* Activity logs */}
             <Link
               to="/admin/activity"
               className="group flex items-center justify-between rounded-xl bg-slate-50 p-4 transition hover:bg-indigo-50"
@@ -315,16 +318,17 @@ function AdminDashboardPage() {
               <ArrowRight className="h-5 w-5 text-slate-300 transition group-hover:translate-x-1 group-hover:text-indigo-600" />
             </Link>
 
+            {/* Frontend status */}
             <div className="flex items-center gap-3 rounded-xl border border-emerald-100 bg-emerald-50 p-4">
-              <CheckCircle2 className="h-5 w-5 text-emerald-600" />
+              <CheckCircle2 className="h-5 w-5 shrink-0 text-emerald-600" />
 
               <div>
                 <p className="text-sm font-semibold text-emerald-800">
-                  Frontend Portal
+                  Admin Portal
                 </p>
 
                 <p className="mt-1 text-xs text-emerald-700">
-                  Admin interface is running
+                  Frontend interface is running
                 </p>
               </div>
             </div>
@@ -332,7 +336,7 @@ function AdminDashboardPage() {
         </div>
       </section>
 
-      {/* Backend connection notice */}
+      {/* Backend integration notice */}
       <section className="rounded-2xl border border-amber-200 bg-amber-50 p-5">
         <div className="flex items-start gap-3">
           <ShieldCheck className="mt-0.5 h-5 w-5 shrink-0 text-amber-600" />
@@ -343,10 +347,11 @@ function AdminDashboardPage() {
             </h2>
 
             <p className="mt-1 text-sm leading-6 text-amber-800">
-              The Admin Portal is currently using frontend-only states.
-              Real users, businesses, products, orders, deliveries,
-              payments and activity information will be loaded from the
-              backend when the API is connected.
+              The Admin Portal currently uses frontend state and
+              browser storage where applicable. Real users, businesses,
+              products, services, orders, deliveries, payments and
+              activity records will be loaded from the backend when
+              the API is integrated.
             </p>
           </div>
         </div>

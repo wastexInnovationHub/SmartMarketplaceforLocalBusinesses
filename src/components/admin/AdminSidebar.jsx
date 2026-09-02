@@ -20,16 +20,19 @@ function AdminSidebar({ isOpen, onClose }) {
   const navigate = useNavigate()
   const [user, setUser] = useState(null)
 
-  // Load the current admin account
+  // Load the current administrator account
   const loadUser = () => {
     try {
       const storedUser = localStorage.getItem('jamiiMarketUser')
 
-      if (storedUser) {
-        setUser(JSON.parse(storedUser))
-      } else {
+      if (!storedUser) {
         setUser(null)
+        return
       }
+
+      const parsedUser = JSON.parse(storedUser)
+
+      setUser(parsedUser)
     } catch {
       setUser(null)
     }
@@ -38,13 +41,19 @@ function AdminSidebar({ isOpen, onClose }) {
   useEffect(() => {
     loadUser()
 
-    // Update sidebar when profile information changes
+    // Update the sidebar after the administrator profile changes
     const handleProfileUpdate = () => {
       loadUser()
     }
 
-    const handleStorage = () => {
-      loadUser()
+    // Update the sidebar when localStorage changes in another tab
+    const handleStorage = (event) => {
+      if (
+        !event.key ||
+        event.key === 'jamiiMarketUser'
+      ) {
+        loadUser()
+      }
     }
 
     window.addEventListener(
@@ -70,17 +79,18 @@ function AdminSidebar({ isOpen, onClose }) {
     }
   }, [])
 
-  // Build admin display name
+  // Build the administrator display name
   const adminName =
     user?.firstName || user?.lastName
       ? `${user?.firstName || ''} ${user?.lastName || ''}`.trim()
       : 'Administrator'
 
-  // Build admin initials
+  // Build administrator initials
   const initials =
-    `${user?.firstName?.[0] || ''}${user?.lastName?.[0] || ''}`
+    `${user?.firstName?.charAt(0) || ''}${user?.lastName?.charAt(0) || ''}`
       .toUpperCase() || 'AD'
 
+  // Admin navigation sections
   const menuSections = [
     {
       title: 'MAIN',
@@ -159,12 +169,16 @@ function AdminSidebar({ isOpen, onClose }) {
     },
   ]
 
-  // Logout admin
+  // Logout the administrator
   const handleLogout = () => {
     localStorage.removeItem('token')
     localStorage.removeItem('user')
     localStorage.removeItem('role')
     localStorage.removeItem('jamiiMarketUser')
+
+    window.dispatchEvent(
+      new CustomEvent('jamiiMarketProfileUpdated')
+    )
 
     navigate('/login')
   }
@@ -191,7 +205,15 @@ function AdminSidebar({ isOpen, onClose }) {
       >
         {/* Brand */}
         <div className="flex h-20 shrink-0 items-center justify-between border-b border-white/10 px-6">
-          <div>
+          <button
+            type="button"
+            onClick={() => {
+              navigate('/admin/dashboard')
+              onClose()
+            }}
+            className="text-left"
+            aria-label="Go to admin dashboard"
+          >
             <h1 className="text-xl font-bold tracking-tight">
               JamiiMarket
             </h1>
@@ -199,20 +221,23 @@ function AdminSidebar({ isOpen, onClose }) {
             <p className="mt-0.5 text-xs text-slate-400">
               Admin Portal
             </p>
-          </div>
+          </button>
 
           <button
             type="button"
             onClick={onClose}
             className="rounded-lg p-2 text-slate-400 transition hover:bg-white/10 hover:text-white lg:hidden"
-            aria-label="Close sidebar"
+            aria-label="Close admin sidebar"
           >
             <X className="h-5 w-5" />
           </button>
         </div>
 
         {/* Navigation */}
-        <nav className="flex-1 overflow-y-auto px-4 py-5">
+        <nav
+          className="flex-1 overflow-y-auto px-4 py-5"
+          aria-label="Admin navigation"
+        >
           <div className="space-y-6">
             {menuSections.map((section) => (
               <div key={section.title}>
@@ -239,7 +264,9 @@ function AdminSidebar({ isOpen, onClose }) {
                       >
                         <Icon className="h-5 w-5 shrink-0" />
 
-                        <span>{item.label}</span>
+                        <span className="truncate">
+                          {item.label}
+                        </span>
                       </NavLink>
                     )
                   })}
@@ -249,14 +276,22 @@ function AdminSidebar({ isOpen, onClose }) {
           </div>
         </nav>
 
-        {/* Admin account */}
+        {/* Administrator account */}
         <div className="shrink-0 border-t border-white/10 p-4">
-          <div className="mb-3 flex items-center gap-3 rounded-xl bg-white/5 p-3">
+          <button
+            type="button"
+            onClick={() => {
+              navigate('/admin/profile')
+              onClose()
+            }}
+            className="mb-3 flex w-full items-center gap-3 rounded-xl bg-white/5 p-3 text-left transition hover:bg-white/10"
+            aria-label="Open administrator profile"
+          >
             {user?.profileImage ? (
               <img
                 src={user.profileImage}
                 alt={adminName}
-                className="h-10 w-10 rounded-full object-cover"
+                className="h-10 w-10 shrink-0 rounded-full object-cover"
               />
             ) : (
               <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-indigo-600 text-sm font-bold">
@@ -264,23 +299,24 @@ function AdminSidebar({ isOpen, onClose }) {
               </div>
             )}
 
-            <div className="min-w-0">
+            <div className="min-w-0 flex-1">
               <p className="truncate text-sm font-semibold text-white">
                 {adminName}
               </p>
 
-              <p className="text-xs text-slate-400">
-                Administrator
+              <p className="truncate text-xs text-slate-400">
+                {user?.email || 'Administrator'}
               </p>
             </div>
-          </div>
+          </button>
 
+          {/* Logout */}
           <button
             type="button"
             onClick={handleLogout}
             className="flex w-full items-center gap-3 rounded-xl px-3 py-3 text-sm font-medium text-slate-300 transition hover:bg-red-500/10 hover:text-red-400"
           >
-            <LogOut className="h-5 w-5" />
+            <LogOut className="h-5 w-5 shrink-0" />
 
             <span>Logout</span>
           </button>

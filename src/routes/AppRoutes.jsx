@@ -16,6 +16,7 @@ import CustomerDashboardLayout from '../layouts/customer/CustomerDashboardLayout
 // Customer pages
 import CustomerDashboardPage from '../pages/customer/CustomerDashboardPage'
 import CustomerBusinessesPage from '../pages/customer/CustomerBusinessesPage'
+import CustomerBusinessStorefrontPage from '../pages/customer/CustomerBusinessStorefrontPage'
 import CustomerFavoritesPage from '../pages/customer/CustomerFavoritesPage'
 import CustomerOrdersPage from '../pages/customer/CustomerOrdersPage'
 import CustomerProfilePage from '../pages/customer/CustomerProfilePage'
@@ -90,6 +91,12 @@ function AppRoutes() {
           <Route
             path="businesses"
             element={<CustomerBusinessesPage />}
+          />
+
+          {/* Individual business storefront */}
+          <Route
+            path="businesses/:businessId"
+            element={<CustomerBusinessStorefrontPage />}
           />
 
           <Route

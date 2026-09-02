@@ -20,15 +20,26 @@ const initialForm = {
 }
 
 const categories = [
-  'Food & Groceries',
-  'Clothing & Fashion',
-  'Electronics',
+  'Groceries',
+  'Food & Restaurants',
+  'Fashion & Clothing',
   'Beauty & Personal Care',
-  'Home & Living',
-  'Health',
+  'Electronics',
+  'Phones & Accessories',
+  'Home & Furniture',
+  'Health & Wellness',
+  'Books & Education',
+  'Crafts & Handmade',
   'Agriculture',
-  'Books & Stationery',
-  'Services',
+  'Fish & Seafood',
+  'Construction & Hardware',
+  'Automotive',
+  'Technology & Digital Services',
+  'Professional Services',
+  'Cleaning Services',
+  'Transport & Delivery',
+  'Accommodation',
+  'Events & Entertainment',
   'Other',
 ]
 

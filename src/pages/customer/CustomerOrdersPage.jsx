@@ -1,4 +1,3 @@
-
 import { useMemo, useState } from 'react'
 import {
   ShoppingBag,
@@ -41,38 +40,28 @@ function CustomerOrdersPage() {
   const [search, setSearch] = useState('')
   const [selectedStatus, setSelectedStatus] = useState('all')
 
-  /*
-   * IMPORTANT:
-   * Keep this empty until the real backend order API
-   * is connected.
-   *
-   * No fake orders are displayed.
-   */
+  // Real orders will come from the backend order API.
+  // Keep this empty until authenticated customer data is available.
   const orders = []
 
   const filteredOrders = useMemo(() => {
-    let result = orders
-
-    if (selectedStatus !== 'all') {
-      result = result.filter(
-        (order) => order.status === selectedStatus
-      )
-    }
-
     const query = search.trim().toLowerCase()
 
-    if (query) {
-      result = result.filter((order) => {
-        return (
-          order.id?.toString().toLowerCase().includes(query) ||
-          order.businessName?.toLowerCase().includes(query) ||
-          order.productName?.toLowerCase().includes(query)
-        )
-      })
-    }
+    return orders.filter((order) => {
+      const matchesStatus =
+        selectedStatus === 'all' ||
+        order.status?.toLowerCase() === selectedStatus
 
-    return result
-  }, [search, selectedStatus])
+      const matchesSearch =
+        !query ||
+        order.id?.toString().toLowerCase().includes(query) ||
+        order.businessName?.toLowerCase().includes(query) ||
+        order.orderNumber?.toLowerCase().includes(query) ||
+        order.productName?.toLowerCase().includes(query)
+
+      return matchesStatus && matchesSearch
+    })
+  }, [orders, search, selectedStatus])
 
   const clearFilters = () => {
     setSearch('')
@@ -90,12 +79,9 @@ function CustomerOrdersPage() {
   return (
     <div className="mx-auto w-full max-w-7xl space-y-7">
 
-      {/* =====================================================
-          HEADER
-      ===================================================== */}
+      {/* Header */}
       <section>
         <div className="rounded-3xl border border-[#E4D4CF] bg-white p-6 shadow-sm sm:p-8">
-
           <div className="flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
 
             <div className="flex items-start gap-4">
@@ -120,7 +106,6 @@ function CustomerOrdersPage() {
 
             </div>
 
-            {/* ONE SAFE MARKETPLACE DESTINATION */}
             <Link
               to="/customer/businesses"
               className="inline-flex shrink-0 items-center justify-center gap-2 rounded-xl bg-[#A03F28] px-5 py-3 text-sm font-bold text-white shadow-sm transition hover:bg-[#812914] active:scale-[0.98]"
@@ -134,15 +119,11 @@ function CustomerOrdersPage() {
         </div>
       </section>
 
-
-      {/* =====================================================
-          SEARCH + FILTERS
-      ===================================================== */}
+      {/* Search and filters */}
       <section className="rounded-2xl border border-[#E4D4CF] bg-white p-4 shadow-sm sm:p-5">
 
         <div className="flex flex-col gap-3 lg:flex-row">
 
-          {/* SEARCH */}
           <div className="relative flex-1">
 
             <Search
@@ -171,7 +152,6 @@ function CustomerOrdersPage() {
 
           </div>
 
-          {/* CLEAR FILTERS */}
           {hasFilters && (
             <button
               type="button"
@@ -185,8 +165,6 @@ function CustomerOrdersPage() {
 
         </div>
 
-
-        {/* STATUS FILTERS */}
         <div className="mt-5 border-t border-[#EEE7E4] pt-5">
 
           <p className="mb-3 text-xs font-bold uppercase tracking-wider text-[#8A726C]">
@@ -221,15 +199,13 @@ function CustomerOrdersPage() {
 
       </section>
 
-
-      {/* =====================================================
-          RESULTS HEADER
-      ===================================================== */}
+      {/* Results header */}
       <section>
 
         <div className="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
 
           <div>
+
             <p className="text-xs font-bold uppercase tracking-[0.14em] text-[#326460]">
               Orders
             </p>
@@ -243,16 +219,14 @@ function CustomerOrdersPage() {
               {filteredOrders.length === 1 ? '' : 's'}
               {search ? ` matching "${search}"` : ''}
             </p>
+
           </div>
 
         </div>
 
       </section>
 
-
-      {/* =====================================================
-          RESULTS
-      ===================================================== */}
+      {/* Order results */}
       <section>
 
         {filteredOrders.length > 0 ? (
@@ -275,12 +249,13 @@ function CustomerOrdersPage() {
                     </div>
 
                     <div>
+
                       <h3 className="font-bold text-[#1B1C1C]">
-                        {order.productName}
+                        {order.productName || 'Order'}
                       </h3>
 
                       <p className="mt-1 text-sm text-[#8A726C]">
-                        Order #{order.id}
+                        Order #{order.orderNumber || order.id}
                       </p>
 
                       {order.businessName && (
@@ -288,6 +263,7 @@ function CustomerOrdersPage() {
                           {order.businessName}
                         </p>
                       )}
+
                     </div>
 
                   </div>
@@ -306,14 +282,10 @@ function CustomerOrdersPage() {
 
         ) : (
 
-          /* =================================================
-             EMPTY STATE
-          ================================================= */
           <div className="overflow-hidden rounded-3xl border border-[#E4D4CF] bg-white shadow-sm">
 
             <div className="relative px-6 py-14 text-center sm:px-10 sm:py-16">
 
-              {/* Decorative background */}
               <div className="pointer-events-none absolute left-1/2 top-0 h-40 w-40 -translate-x-1/2 -translate-y-1/2 rounded-full bg-[#FFF4F0]" />
 
               <div className="relative">
@@ -330,12 +302,10 @@ function CustomerOrdersPage() {
 
                 <p className="mx-auto mt-3 max-w-xl text-sm leading-6 text-[#695D46]">
                   {hasFilters
-                    ? 'No real orders match your current search or status filter. Try changing the filters or clear them to see all available orders.'
+                    ? 'No orders match your current search or status filter. Try changing the filters or clear them to see all available orders.'
                     : 'When you place an order through JamiiMarket, your order information will appear here.'}
                 </p>
 
-
-                {/* ACTIONS */}
                 <div className="mt-7 flex flex-col items-center justify-center gap-3 sm:flex-row">
 
                   {hasFilters ? (
@@ -368,32 +338,6 @@ function CustomerOrdersPage() {
                   >
                     Back to Dashboard
                   </Link>
-
-                </div>
-
-
-                {/* Honest data message */}
-                <div className="mx-auto mt-8 max-w-xl rounded-2xl bg-[#FCF9F8] px-5 py-4 text-left">
-
-                  <div className="flex gap-3">
-
-                    <div className="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-[#E9F3F1] text-[#326460]">
-                      <ShoppingBag size={16} />
-                    </div>
-
-                    <div>
-                      <p className="text-xs font-bold text-[#1B1C1C]">
-                        Real order data only
-                      </p>
-
-                      <p className="mt-1 text-xs leading-5 text-[#8A726C]">
-                        No sample orders, prices, businesses, dates, or delivery
-                        details are displayed. Orders will appear after the
-                        marketplace is connected to the real backend data.
-                      </p>
-                    </div>
-
-                  </div>
 
                 </div>
 

@@ -46,6 +46,9 @@ import DeliveryEarningsPage from '../pages/delivery/DeliveryEarningsPage'
 import DeliveryNotificationsPage from '../pages/delivery/DeliveryNotificationsPage'
 import DeliveryProfilePage from '../pages/delivery/DeliveryProfilePage'
 
+// Admin layout
+import AdminDashboardLayout from '../layouts/admin/AdminDashboardLayout'
+
 // Admin pages
 import AdminDashboardPage from '../pages/admin/AdminDashboardPage'
 
@@ -98,7 +101,6 @@ function AppRoutes() {
             element={<CustomerBusinessesPage />}
           />
 
-          {/* Individual business storefront */}
           <Route
             path="businesses/:businessId"
             element={<CustomerBusinessStorefrontPage />}
@@ -230,6 +232,7 @@ function AppRoutes() {
         {/* Admin application */}
         <Route
           path="/admin"
+          element={<AdminDashboardLayout />}
         >
           <Route
             index

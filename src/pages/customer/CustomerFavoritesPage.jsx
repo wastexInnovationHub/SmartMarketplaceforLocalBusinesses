@@ -14,13 +14,8 @@ import { Link } from 'react-router-dom'
 function CustomerFavoritesPage() {
   const [search, setSearch] = useState('')
 
-  /*
-   * IMPORTANT:
-   * These arrays are intentionally empty until the real marketplace
-   * API/database is connected.
-   *
-   * No fake products or businesses are displayed.
-   */
+  // Real favorite data will come from the customer favorites API.
+  // Keep these arrays empty until the backend is connected.
   const favoriteProducts = []
   const favoriteBusinesses = []
 
@@ -31,9 +26,15 @@ function CustomerFavoritesPage() {
       return favoriteProducts
     }
 
-    return favoriteProducts.filter((item) =>
-      item?.name?.toLowerCase().includes(normalizedSearch)
-    )
+    return favoriteProducts.filter((product) => {
+      const name = product?.name?.toLowerCase() || ''
+      const category = product?.category?.toLowerCase() || ''
+
+      return (
+        name.includes(normalizedSearch) ||
+        category.includes(normalizedSearch)
+      )
+    })
   }, [normalizedSearch])
 
   const filteredBusinesses = useMemo(() => {
@@ -41,9 +42,17 @@ function CustomerFavoritesPage() {
       return favoriteBusinesses
     }
 
-    return favoriteBusinesses.filter((item) =>
-      item?.name?.toLowerCase().includes(normalizedSearch)
-    )
+    return favoriteBusinesses.filter((business) => {
+      const name = business?.name?.toLowerCase() || ''
+      const category = business?.category?.toLowerCase() || ''
+      const description = business?.description?.toLowerCase() || ''
+
+      return (
+        name.includes(normalizedSearch) ||
+        category.includes(normalizedSearch) ||
+        description.includes(normalizedSearch)
+      )
+    })
   }, [normalizedSearch])
 
   const totalFavorites =
@@ -58,11 +67,8 @@ function CustomerFavoritesPage() {
   return (
     <div className="min-h-full w-full">
 
-      {/* =====================================================
-          PAGE HEADER
-      ===================================================== */}
+      {/* Page header */}
       <section className="mb-7">
-
         <div className="flex flex-col gap-5 xl:flex-row xl:items-end xl:justify-between">
 
           <div className="min-w-0">
@@ -70,7 +76,10 @@ function CustomerFavoritesPage() {
             <div className="flex items-center gap-3">
 
               <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-[#FFF0EC] text-[#A03F28]">
-                <Heart size={23} strokeWidth={2.2} />
+                <Heart
+                  size={23}
+                  strokeWidth={2.2}
+                />
               </div>
 
               <div>
@@ -92,19 +101,13 @@ function CustomerFavoritesPage() {
 
           </div>
 
-          {/* IMPORTANT:
-              Use /customer/businesses.
-              Do NOT use /customer/search here.
-          */}
           <Link
             to="/customer/businesses"
             className="group inline-flex w-fit shrink-0 items-center justify-center gap-2 rounded-xl bg-[#A03F28] px-5 py-3 text-sm font-bold text-white shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:bg-[#812914] hover:shadow-md active:translate-y-0"
           >
             <Search size={18} />
 
-            <span>
-              Browse Marketplace
-            </span>
+            Browse Marketplace
 
             <ArrowRight
               size={17}
@@ -115,10 +118,7 @@ function CustomerFavoritesPage() {
         </div>
       </section>
 
-
-      {/* =====================================================
-          SEARCH
-      ===================================================== */}
+      {/* Search */}
       <section className="rounded-2xl border border-[#E4D4CF] bg-white p-4 shadow-sm sm:p-5">
 
         <div className="flex flex-col gap-3 lg:flex-row">
@@ -163,13 +163,9 @@ function CustomerFavoritesPage() {
         </div>
       </section>
 
-
-      {/* =====================================================
-          SUMMARY CARDS
-      ===================================================== */}
+      {/* Summary cards */}
       <section className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2">
 
-        {/* Products */}
         <div className="rounded-2xl border border-[#E4D4CF] bg-white p-5 shadow-sm">
 
           <div className="flex items-center justify-between gap-4">
@@ -193,10 +189,9 @@ function CustomerFavoritesPage() {
             </div>
 
           </div>
+
         </div>
 
-
-        {/* Businesses */}
         <div className="rounded-2xl border border-[#E4D4CF] bg-white p-5 shadow-sm">
 
           <div className="flex items-center justify-between gap-4">
@@ -220,48 +215,42 @@ function CustomerFavoritesPage() {
             </div>
 
           </div>
+
         </div>
 
       </section>
 
-
-      {/* =====================================================
-          FAVORITES CONTENT
-      ===================================================== */}
+      {/* Favorites content */}
       <section className="mt-7">
 
         {!hasFavorites ? (
 
-          /* =================================================
-             EMPTY STATE
-          ================================================= */
           <div className="overflow-hidden rounded-3xl border border-[#E4D4CF] bg-white shadow-sm">
 
             <div className="flex min-h-[430px] flex-col items-center justify-center px-6 py-14 text-center">
 
-              {/* Icon */}
               <div className="flex h-20 w-20 items-center justify-center rounded-full bg-[#FFF0EC] text-[#A03F28]">
-                <Heart size={34} strokeWidth={1.8} />
+                <Heart
+                  size={34}
+                  strokeWidth={1.8}
+                />
               </div>
 
-              {/* Title */}
               <h2 className="mt-6 text-2xl font-bold tracking-tight text-[#1B1C1C]">
                 {search
                   ? 'No matching favorites'
                   : 'Your favorites are empty'}
               </h2>
 
-              {/* Description */}
               <p className="mx-auto mt-3 max-w-lg text-sm leading-6 text-[#56423D]">
                 {search
                   ? `Nothing in your saved items matches "${search}". Try a different search.`
                   : 'Save businesses and products while browsing the marketplace and they will appear here.'}
               </p>
 
-              {/* Actions */}
               <div className="mt-7 flex flex-col gap-3 sm:flex-row">
 
-                {search ? (
+                {search && (
                   <button
                     type="button"
                     onClick={clearSearch}
@@ -270,12 +259,8 @@ function CustomerFavoritesPage() {
                     <X size={17} />
                     Clear Search
                   </button>
-                ) : null}
+                )}
 
-                {/* IMPORTANT:
-                    This is the safe customer route.
-                    It does NOT send the user to /customer/search.
-                */}
                 <Link
                   to="/customer/businesses"
                   className="group inline-flex items-center justify-center gap-2 rounded-xl bg-[#A03F28] px-5 py-3 text-sm font-bold text-white shadow-sm transition hover:bg-[#812914] hover:shadow-md"
@@ -292,7 +277,6 @@ function CustomerFavoritesPage() {
 
               </div>
 
-              {/* Information */}
               <div className="mt-8 flex max-w-lg items-start gap-3 rounded-2xl bg-[#FCF9F8] p-4 text-left">
 
                 <div className="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-[#DDF0ED] text-[#326460]">
@@ -313,38 +297,32 @@ function CustomerFavoritesPage() {
               </div>
 
             </div>
+
           </div>
 
         ) : (
 
-          /* =================================================
-             FAVORITES WITH DATA
-          ================================================= */
           <div className="space-y-8">
 
-            {/* Products */}
+            {/* Favorite products */}
             {filteredProducts.length > 0 && (
               <section>
 
-                <div className="mb-4 flex items-center justify-between gap-4">
+                <div className="mb-4 flex items-center gap-3">
 
-                  <div className="flex items-center gap-3">
+                  <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#FFF0EC] text-[#A03F28]">
+                    <ShoppingBag size={19} />
+                  </div>
 
-                    <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#FFF0EC] text-[#A03F28]">
-                      <ShoppingBag size={19} />
-                    </div>
+                  <div>
+                    <h2 className="text-xl font-bold text-[#1B1C1C]">
+                      Favorite Products
+                    </h2>
 
-                    <div>
-                      <h2 className="text-xl font-bold text-[#1B1C1C]">
-                        Favorite Products
-                      </h2>
-
-                      <p className="mt-0.5 text-xs text-[#8A726C]">
-                        {filteredProducts.length} saved product
-                        {filteredProducts.length !== 1 ? 's' : ''}
-                      </p>
-                    </div>
-
+                    <p className="mt-0.5 text-xs text-[#8A726C]">
+                      {filteredProducts.length} saved product
+                      {filteredProducts.length !== 1 ? 's' : ''}
+                    </p>
                   </div>
 
                 </div>
@@ -360,19 +338,23 @@ function CustomerFavoritesPage() {
                       <div className="flex items-start justify-between gap-4">
 
                         <div className="min-w-0">
+
                           <h3 className="truncate font-bold text-[#1B1C1C]">
                             {product.name}
                           </h3>
 
-                          <p className="mt-1 text-sm text-[#8A726C]">
-                            {product.category}
-                          </p>
+                          {product.category && (
+                            <p className="mt-1 text-sm text-[#8A726C]">
+                              {product.category}
+                            </p>
+                          )}
+
                         </div>
 
                         <button
                           type="button"
-                          className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg text-[#A03F28] transition hover:bg-[#FFF0EC]"
                           aria-label={`Remove ${product.name} from favorites`}
+                          className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg text-[#A03F28] transition hover:bg-[#FFF0EC]"
                         >
                           <Trash2 size={17} />
                         </button>
@@ -383,11 +365,11 @@ function CustomerFavoritesPage() {
                   ))}
 
                 </div>
+
               </section>
             )}
 
-
-            {/* Businesses */}
+            {/* Favorite businesses */}
             {filteredBusinesses.length > 0 && (
               <section>
 
@@ -421,40 +403,52 @@ function CustomerFavoritesPage() {
                       <div className="flex items-start justify-between gap-4">
 
                         <div className="min-w-0">
+
                           <h3 className="truncate font-bold text-[#1B1C1C]">
                             {business.name}
                           </h3>
 
-                          <p className="mt-1 text-sm text-[#8A726C]">
-                            {business.category}
-                          </p>
+                          {business.category && (
+                            <p className="mt-1 text-sm text-[#8A726C]">
+                              {business.category}
+                            </p>
+                          )}
+
                         </div>
 
                         <button
                           type="button"
-                          className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg text-[#A03F28] transition hover:bg-[#FFF0EC]"
                           aria-label={`Remove ${business.name} from favorites`}
+                          className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg text-[#A03F28] transition hover:bg-[#FFF0EC]"
                         >
                           <Trash2 size={17} />
                         </button>
 
                       </div>
 
+                      <Link
+                        to={`/customer/businesses/${business.id}`}
+                        className="mt-4 inline-flex items-center gap-1.5 text-sm font-bold text-[#326460] transition hover:text-[#244D4A]"
+                      >
+                        View Store
+                        <ChevronRight size={16} />
+                      </Link>
+
                     </article>
                   ))}
 
                 </div>
+
               </section>
             )}
 
           </div>
+
         )}
+
       </section>
 
-
-      {/* =====================================================
-          BOTTOM NAVIGATION
-      ===================================================== */}
+      {/* Bottom navigation */}
       <section className="mt-7 rounded-2xl border border-[#E4D4CF] bg-gradient-to-r from-[#FFF9F6] to-[#F4F9F8] p-5 shadow-sm sm:p-6">
 
         <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">

@@ -14,10 +14,7 @@ import {
 
 function CustomerProfilePage() {
 
-  /* ========================================
-      USER
-  ======================================== */
-
+  // Get the locally stored customer session
   const storedUser = localStorage.getItem('jamiiMarketUser')
 
   let user = null
@@ -28,10 +25,7 @@ function CustomerProfilePage() {
     user = null
   }
 
-  /* ========================================
-      PROFILE STATE
-  ======================================== */
-
+  // Profile state
   const [profile, setProfile] = useState({
     firstName: user?.firstName || '',
     lastName: user?.lastName || '',
@@ -41,13 +35,9 @@ function CustomerProfilePage() {
   })
 
   const [saved, setSaved] = useState(false)
-
   const [message, setMessage] = useState('')
 
-  /* ========================================
-      KEEP PROFILE IN SYNC
-  ======================================== */
-
+  // Keep profile fields synchronized with the stored customer
   useEffect(() => {
     if (!user) {
       return
@@ -62,10 +52,7 @@ function CustomerProfilePage() {
     })
   }, [])
 
-  /* ========================================
-      HANDLE INPUT
-  ======================================== */
-
+  // Handle profile input changes
   const handleChange = (event) => {
     const { name, value } = event.target
 
@@ -78,18 +65,12 @@ function CustomerProfilePage() {
     setMessage('')
   }
 
-  /* ========================================
-      SAVE PROFILE
-  ======================================== */
-
+  // Save profile information locally
   const handleSubmit = (event) => {
     event.preventDefault()
 
     try {
-
-      const existingUser = localStorage.getItem(
-        'jamiiMarketUser'
-      )
+      const existingUser = localStorage.getItem('jamiiMarketUser')
 
       const currentUser = existingUser
         ? JSON.parse(existingUser)
@@ -97,11 +78,11 @@ function CustomerProfilePage() {
 
       const updatedUser = {
         ...currentUser,
-        firstName: profile.firstName,
-        lastName: profile.lastName,
-        email: profile.email,
-        phone: profile.phone,
-        address: profile.address,
+        firstName: profile.firstName.trim(),
+        lastName: profile.lastName.trim(),
+        email: profile.email.trim(),
+        phone: profile.phone.trim(),
+        address: profile.address.trim(),
       }
 
       localStorage.setItem(
@@ -114,9 +95,7 @@ function CustomerProfilePage() {
       setMessage(
         'Your profile information has been saved on this device.'
       )
-
     } catch {
-
       setSaved(false)
 
       setMessage(
@@ -125,14 +104,12 @@ function CustomerProfilePage() {
     }
   }
 
-  /* ========================================
-      DISPLAY NAME
-  ======================================== */
-
+  // Display customer name
   const displayName =
     `${profile.firstName} ${profile.lastName}`.trim() ||
     'Customer'
 
+  // Generate customer initials
   const initials =
     `${profile.firstName?.charAt(0) || ''}${profile.lastName?.charAt(0) || ''}`
       .trim()
@@ -140,13 +117,28 @@ function CustomerProfilePage() {
     profile.email?.charAt(0).toUpperCase() ||
     'C'
 
+  // Password management will be connected to the backend later
+  const handleChangePassword = () => {
+    setSaved(false)
+
+    setMessage(
+      'Password management will be available when the account security API is connected.'
+    )
+  }
+
+  // Profile photo upload will be connected later
+  const handleProfilePhoto = () => {
+    setSaved(false)
+
+    setMessage(
+      'Profile photo upload will be available when customer media storage is connected.'
+    )
+  }
+
   return (
     <div className="min-h-screen bg-[#FCF9F8]">
 
-      {/* ====================================
-          PAGE INTRO
-      ==================================== */}
-
+      {/* Page introduction */}
       <section className="border-b border-[#DDC0BA] bg-white">
 
         <div className="mx-auto max-w-7xl px-4 py-7 sm:px-6 lg:px-8">
@@ -155,19 +147,15 @@ function CustomerProfilePage() {
             Account
           </p>
 
-          <div className="mt-2 flex flex-col justify-between gap-3 sm:flex-row sm:items-end">
+          <div className="mt-2">
 
-            <div>
+            <h2 className="text-3xl font-extrabold tracking-tight text-[#1B1C1C] sm:text-4xl">
+              Profile
+            </h2>
 
-              <h2 className="text-3xl font-extrabold tracking-tight text-[#1B1C1C] sm:text-4xl">
-                Profile
-              </h2>
-
-              <p className="mt-2 max-w-2xl text-sm leading-6 text-[#56423D] sm:text-base">
-                Manage your personal information and account security.
-              </p>
-
-            </div>
+            <p className="mt-2 max-w-2xl text-sm leading-6 text-[#56423D] sm:text-base">
+              Manage your personal information and account security.
+            </p>
 
           </div>
 
@@ -175,18 +163,12 @@ function CustomerProfilePage() {
 
       </section>
 
-      {/* ====================================
-          CONTENT
-      ==================================== */}
-
+      {/* Profile content */}
       <main className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
 
         <div className="grid gap-6 lg:grid-cols-[300px_minmax(0,1fr)]">
 
-          {/* ==================================
-              PROFILE SUMMARY
-          ================================== */}
-
+          {/* Profile summary */}
           <aside className="h-fit overflow-hidden rounded-2xl border border-[#DDC0BA] bg-white shadow-sm">
 
             <div className="bg-[#326460] px-6 py-8 text-center">
@@ -200,6 +182,7 @@ function CustomerProfilePage() {
 
                 <button
                   type="button"
+                  onClick={handleProfilePhoto}
                   aria-label="Change profile photo"
                   className="absolute bottom-0 right-0 flex h-9 w-9 items-center justify-center rounded-full border-4 border-[#326460] bg-white text-[#326460] shadow-md transition hover:bg-[#F2F7F6]"
                 >
@@ -242,7 +225,8 @@ function CustomerProfilePage() {
                   </p>
 
                   <p className="mt-1 text-xs leading-5 text-[#6B625F]">
-                    Keep your account information accurate and use a strong password.
+                    Keep your account information accurate and protect your
+                    account credentials.
                   </p>
 
                 </div>
@@ -271,16 +255,10 @@ function CustomerProfilePage() {
 
           </aside>
 
-          {/* ==================================
-              RIGHT CONTENT
-          ================================== */}
-
+          {/* Profile settings */}
           <section className="space-y-6">
 
-            {/* ==================================
-                PERSONAL INFORMATION
-            ================================== */}
-
+            {/* Personal information */}
             <div className="overflow-hidden rounded-2xl border border-[#DDC0BA] bg-white shadow-sm">
 
               <div className="border-b border-[#E8E3E1] px-6 py-5 sm:px-8">
@@ -298,7 +276,8 @@ function CustomerProfilePage() {
                     </h3>
 
                     <p className="mt-1 text-sm text-[#6B625F]">
-                      Update the information associated with your marketplace account.
+                      Update the information associated with your marketplace
+                      account.
                     </p>
 
                   </div>
@@ -478,33 +457,31 @@ function CustomerProfilePage() {
 
                 </div>
 
-                {/* Save area */}
+                {/* Save status and button */}
                 <div className="mt-7 flex flex-col gap-4 border-t border-[#E8E3E1] pt-6 sm:flex-row sm:items-center sm:justify-between">
 
                   <div className="min-h-10">
 
-                    {saved && (
-                      <div className="flex items-start gap-2 text-sm font-semibold text-[#326460]">
+                    {message && (
+                      <div
+                        className={`flex items-start gap-2 text-sm font-semibold ${
+                          saved
+                            ? 'text-[#326460]'
+                            : 'text-[#A03F28]'
+                        }`}
+                      >
 
-                        <CheckCircle2
-                          size={18}
-                          className="mt-0.5 shrink-0"
-                        />
-
-                        <span>
-                          {message}
-                        </span>
-
-                      </div>
-                    )}
-
-                    {!saved && message && (
-                      <div className="flex items-start gap-2 text-sm font-semibold text-[#A03F28]">
-
-                        <AlertCircle
-                          size={18}
-                          className="mt-0.5 shrink-0"
-                        />
+                        {saved ? (
+                          <CheckCircle2
+                            size={18}
+                            className="mt-0.5 shrink-0"
+                          />
+                        ) : (
+                          <AlertCircle
+                            size={18}
+                            className="mt-0.5 shrink-0"
+                          />
+                        )}
 
                         <span>
                           {message}
@@ -519,11 +496,8 @@ function CustomerProfilePage() {
                     type="submit"
                     className="inline-flex items-center justify-center gap-2 rounded-xl bg-[#A03F28] px-6 py-3.5 text-sm font-bold text-white shadow-sm transition hover:bg-[#812914] hover:shadow-md active:scale-[0.98]"
                   >
-
                     <Save size={17} />
-
                     Save Changes
-
                   </button>
 
                 </div>
@@ -532,10 +506,7 @@ function CustomerProfilePage() {
 
             </div>
 
-            {/* ==================================
-                SECURITY
-            ================================== */}
-
+            {/* Security */}
             <div className="rounded-2xl border border-[#DDC0BA] bg-white shadow-sm">
 
               <div className="p-6 sm:p-8">
@@ -571,13 +542,15 @@ function CustomerProfilePage() {
                       </p>
 
                       <p className="mt-1 text-xs text-[#7A706C]">
-                        Change your password when account security requires it.
+                        Password changes will be connected to the account
+                        security service later.
                       </p>
 
                     </div>
 
                     <button
                       type="button"
+                      onClick={handleChangePassword}
                       className="inline-flex items-center justify-center gap-2 rounded-xl border border-[#A03F28] px-4 py-2.5 text-sm font-bold text-[#A03F28] transition hover:bg-[#FFF1ED]"
                     >
                       Change Password
@@ -602,3 +575,4 @@ function CustomerProfilePage() {
 }
 
 export default CustomerProfilePage
+

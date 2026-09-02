@@ -1,49 +1,51 @@
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom'
 
-// ======================================================
-// PUBLIC LAYOUT
-// ======================================================
+// Public layout
 import PublicLayout from '../layouts/PublicLayout'
 
-// ======================================================
-// PUBLIC PAGES
-// ======================================================
+// Public pages
 import HomePage from '../pages/landing/HomePage'
 
-// ======================================================
-// AUTH PAGES
-// Login & Register intentionally have NO public header/footer
-// ======================================================
+// Authentication pages
 import LoginPage from '../pages/auth/LoginPage'
 import RegisterPage from '../pages/auth/RegisterPage'
 
-// ======================================================
-// CUSTOMER LAYOUT
-// ======================================================
+// Customer layout
 import CustomerDashboardLayout from '../layouts/customer/CustomerDashboardLayout'
 
-// ======================================================
-// CUSTOMER PAGES
-// ======================================================
+// Customer pages
 import CustomerDashboardPage from '../pages/customer/CustomerDashboardPage'
 import CustomerBusinessesPage from '../pages/customer/CustomerBusinessesPage'
 import CustomerFavoritesPage from '../pages/customer/CustomerFavoritesPage'
 import CustomerOrdersPage from '../pages/customer/CustomerOrdersPage'
 import CustomerProfilePage from '../pages/customer/CustomerProfilePage'
 
+// Business layout
+import BusinessDashboardLayout from '../layouts/business/BusinessDashboardLayout'
+
+// Business pages
+import BusinessDashboardPage from '../pages/business/BusinessDashboardPage'
+import BusinessProductsPage from '../pages/business/BusinessProductsPage'
+import BusinessOrdersPage from '../pages/business/BusinessOrdersPage'
+import BusinessDeliveryPage from '../pages/business/BusinessDeliveryPage'
+import BusinessPaymentsPage from '../pages/business/BusinessPaymentsPage'
+import BusinessProfilePage from '../pages/business/BusinessProfilePage'
+import BusinessNotificationsPage from '../pages/business/BusinessNotificationsPage'
+
+// Delivery pages
+import DeliveryDashboardPage from '../pages/delivery/DeliveryDashboardPage'
+
+// Admin pages
+import AdminDashboardPage from '../pages/admin/AdminDashboardPage'
+
 function AppRoutes() {
   return (
     <BrowserRouter>
       <Routes>
 
-        {/* ==================================================
-            PUBLIC WEBSITE
-            LandingHeader + LandingFooter
-        ================================================== */}
-
+        {/* Public website */}
         <Route element={<PublicLayout />}>
 
-          {/* Home */}
           <Route
             path="/"
             element={<HomePage />}
@@ -51,12 +53,7 @@ function AppRoutes() {
 
         </Route>
 
-
-        {/* ==================================================
-            AUTHENTICATION
-            NO LandingHeader
-            NO LandingFooter
-        ================================================== */}
+        {/* Authentication */}
 
         <Route
           path="/login"
@@ -68,18 +65,13 @@ function AppRoutes() {
           element={<RegisterPage />}
         />
 
-
-        {/* ==================================================
-            CUSTOMER APPLICATION
-            CustomerDashboardLayout handles customer navigation
-        ================================================== */}
+        {/* Customer application */}
 
         <Route
           path="/customer"
           element={<CustomerDashboardLayout />}
         >
 
-          {/* /customer → /customer/dashboard */}
           <Route
             index
             element={
@@ -90,31 +82,26 @@ function AppRoutes() {
             }
           />
 
-          {/* Dashboard */}
           <Route
             path="dashboard"
             element={<CustomerDashboardPage />}
           />
 
-          {/* Businesses */}
           <Route
             path="businesses"
             element={<CustomerBusinessesPage />}
           />
 
-          {/* Favorites */}
           <Route
             path="favorites"
             element={<CustomerFavoritesPage />}
           />
 
-          {/* Orders */}
           <Route
             path="orders"
             element={<CustomerOrdersPage />}
           />
 
-          {/* Profile */}
           <Route
             path="profile"
             element={<CustomerProfilePage />}
@@ -122,10 +109,107 @@ function AppRoutes() {
 
         </Route>
 
+        {/* Business application */}
 
-        {/* ==================================================
-            UNKNOWN ROUTE
-        ================================================== */}
+        <Route
+          path="/business"
+          element={<BusinessDashboardLayout />}
+        >
+
+          <Route
+            index
+            element={
+              <Navigate
+                to="/business/dashboard"
+                replace
+              />
+            }
+          />
+
+          <Route
+            path="dashboard"
+            element={<BusinessDashboardPage />}
+          />
+
+          <Route
+            path="products"
+            element={<BusinessProductsPage />}
+          />
+
+          <Route
+            path="orders"
+            element={<BusinessOrdersPage />}
+          />
+
+          <Route
+            path="delivery"
+            element={<BusinessDeliveryPage />}
+          />
+
+          <Route
+            path="payments"
+            element={<BusinessPaymentsPage />}
+          />
+
+          <Route
+            path="profile"
+            element={<BusinessProfilePage />}
+          />
+
+          <Route
+            path="notifications"
+            element={<BusinessNotificationsPage />}
+          />
+
+        </Route>
+
+        {/* Delivery application */}
+
+        <Route
+          path="/delivery"
+        >
+
+          <Route
+            index
+            element={
+              <Navigate
+                to="/delivery/dashboard"
+                replace
+              />
+            }
+          />
+
+          <Route
+            path="dashboard"
+            element={<DeliveryDashboardPage />}
+          />
+
+        </Route>
+
+        {/* Admin application */}
+
+        <Route
+          path="/admin"
+        >
+
+          <Route
+            index
+            element={
+              <Navigate
+                to="/admin/dashboard"
+                replace
+              />
+            }
+          />
+
+          <Route
+            path="dashboard"
+            element={<AdminDashboardPage />}
+          />
+
+        </Route>
+
+        {/* Unknown routes */}
 
         <Route
           path="*"
@@ -143,3 +227,4 @@ function AppRoutes() {
 }
 
 export default AppRoutes
+

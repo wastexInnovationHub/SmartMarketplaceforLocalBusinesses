@@ -33,8 +33,18 @@ import BusinessPaymentsPage from '../pages/business/BusinessPaymentsPage'
 import BusinessProfilePage from '../pages/business/BusinessProfilePage'
 import BusinessNotificationsPage from '../pages/business/BusinessNotificationsPage'
 
+// Delivery layout
+import DeliveryDashboardLayout from '../layouts/delivery/DeliveryDashboardLayout'
+
 // Delivery pages
 import DeliveryDashboardPage from '../pages/delivery/DeliveryDashboardPage'
+import AvailableDeliveriesPage from '../pages/delivery/AvailableDeliveriesPage'
+import MyDeliveriesPage from '../pages/delivery/MyDeliveriesPage'
+import ActiveDeliveryPage from '../pages/delivery/ActiveDeliveryPage'
+import DeliveryHistoryPage from '../pages/delivery/DeliveryHistoryPage'
+import DeliveryEarningsPage from '../pages/delivery/DeliveryEarningsPage'
+import DeliveryNotificationsPage from '../pages/delivery/DeliveryNotificationsPage'
+import DeliveryProfilePage from '../pages/delivery/DeliveryProfilePage'
 
 // Admin pages
 import AdminDashboardPage from '../pages/admin/AdminDashboardPage'
@@ -46,16 +56,13 @@ function AppRoutes() {
 
         {/* Public website */}
         <Route element={<PublicLayout />}>
-
           <Route
             path="/"
             element={<HomePage />}
           />
-
         </Route>
 
         {/* Authentication */}
-
         <Route
           path="/login"
           element={<LoginPage />}
@@ -67,12 +74,10 @@ function AppRoutes() {
         />
 
         {/* Customer application */}
-
         <Route
           path="/customer"
           element={<CustomerDashboardLayout />}
         >
-
           <Route
             index
             element={
@@ -113,16 +118,13 @@ function AppRoutes() {
             path="profile"
             element={<CustomerProfilePage />}
           />
-
         </Route>
 
         {/* Business application */}
-
         <Route
           path="/business"
           element={<BusinessDashboardLayout />}
         >
-
           <Route
             index
             element={
@@ -167,15 +169,13 @@ function AppRoutes() {
             path="notifications"
             element={<BusinessNotificationsPage />}
           />
-
         </Route>
 
         {/* Delivery application */}
-
         <Route
           path="/delivery"
+          element={<DeliveryDashboardLayout />}
         >
-
           <Route
             index
             element={
@@ -191,14 +191,46 @@ function AppRoutes() {
             element={<DeliveryDashboardPage />}
           />
 
+          <Route
+            path="available"
+            element={<AvailableDeliveriesPage />}
+          />
+
+          <Route
+            path="my-deliveries"
+            element={<MyDeliveriesPage />}
+          />
+
+          <Route
+            path="active"
+            element={<ActiveDeliveryPage />}
+          />
+
+          <Route
+            path="history"
+            element={<DeliveryHistoryPage />}
+          />
+
+          <Route
+            path="earnings"
+            element={<DeliveryEarningsPage />}
+          />
+
+          <Route
+            path="notifications"
+            element={<DeliveryNotificationsPage />}
+          />
+
+          <Route
+            path="profile"
+            element={<DeliveryProfilePage />}
+          />
         </Route>
 
         {/* Admin application */}
-
         <Route
           path="/admin"
         >
-
           <Route
             index
             element={
@@ -213,11 +245,9 @@ function AppRoutes() {
             path="dashboard"
             element={<AdminDashboardPage />}
           />
-
         </Route>
 
         {/* Unknown routes */}
-
         <Route
           path="*"
           element={

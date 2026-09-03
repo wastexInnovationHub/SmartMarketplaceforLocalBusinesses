@@ -9,8 +9,16 @@ function DeliveryNavbar({ onMenuClick }) {
 
   const { language, changeLanguage, t } = useLanguage()
 
+  // Get rider information
   const storedUser = localStorage.getItem('jamiiMarketUser')
-  const user = storedUser ? JSON.parse(storedUser) : null
+
+  let user = null
+
+  try {
+    user = storedUser ? JSON.parse(storedUser) : null
+  } catch {
+    user = null
+  }
 
   const firstName = user?.firstName || 'Rider'
   const lastName = user?.lastName || ''
@@ -37,40 +45,48 @@ function DeliveryNavbar({ onMenuClick }) {
   }
 
   return (
-    <header className="fixed left-0 right-0 top-0 z-30 h-20 border-b border-slate-200 bg-white lg:left-72">
-      <div className="flex h-full items-center justify-between px-4 sm:px-6 lg:px-8">
+    <header className="fixed left-0 right-0 top-0 z-30 h-16 border-b border-slate-200 bg-white lg:left-72">
+      <div className="flex h-full items-center justify-between px-3 sm:px-5 lg:px-6">
 
         {/* Left side */}
-        <div className="flex items-center gap-3">
+        <div className="flex min-w-0 items-center gap-2.5">
           <button
             type="button"
             onClick={onMenuClick}
-            className="rounded-lg p-2 text-slate-600 hover:bg-slate-100 lg:hidden"
-            aria-label={language === 'sw' ? 'Fungua menyu ya dereva' : 'Open delivery menu'}
+            className="rounded-lg p-2 text-slate-600 transition hover:bg-slate-100 lg:hidden"
+            aria-label={
+              language === 'sw'
+                ? 'Fungua menyu ya usafirishaji'
+                : 'Open delivery menu'
+            }
           >
-            <Menu size={22} />
+            <Menu size={20} />
           </button>
 
-          <div className="hidden sm:block">
-            <p className="text-sm font-semibold text-slate-900">
-              {t('deliveryDashboard')}
+          <div className="hidden min-w-0 sm:block">
+            <p className="truncate text-sm font-semibold text-slate-900">
+              {language === 'sw'
+                ? 'Dashibodi ya Usafirishaji'
+                : 'Delivery Dashboard'}
             </p>
 
-            <p className="text-xs text-slate-500">
-              {t('manageDeliveries')}
+            <p className="truncate text-[11px] text-slate-500">
+              {language === 'sw'
+                ? 'Simamia usafirishaji wako'
+                : 'Manage your deliveries'}
             </p>
           </div>
         </div>
 
         {/* Right side */}
-        <div className="flex items-center gap-2 sm:gap-4">
+        <div className="flex items-center gap-1.5 sm:gap-2.5">
 
           {/* Language switcher */}
-          <div className="flex items-center rounded-xl border border-slate-200 bg-slate-50 p-1">
+          <div className="flex items-center rounded-lg border border-slate-200 bg-slate-50 p-0.5">
             <button
               type="button"
               onClick={() => changeLanguage('sw')}
-              className={`rounded-lg px-2.5 py-1.5 text-xs font-semibold transition ${
+              className={`rounded-md px-2 py-1 text-[11px] font-semibold transition ${
                 language === 'sw'
                   ? 'bg-emerald-600 text-white shadow-sm'
                   : 'text-slate-600 hover:bg-white'
@@ -84,7 +100,7 @@ function DeliveryNavbar({ onMenuClick }) {
             <button
               type="button"
               onClick={() => changeLanguage('en')}
-              className={`rounded-lg px-2.5 py-1.5 text-xs font-semibold transition ${
+              className={`rounded-md px-2 py-1 text-[11px] font-semibold transition ${
                 language === 'en'
                   ? 'bg-emerald-600 text-white shadow-sm'
                   : 'text-slate-600 hover:bg-white'
@@ -92,7 +108,7 @@ function DeliveryNavbar({ onMenuClick }) {
               aria-label="English"
               aria-pressed={language === 'en'}
             >
-              ENG
+              EN
             </button>
           </div>
 
@@ -100,10 +116,14 @@ function DeliveryNavbar({ onMenuClick }) {
           <button
             type="button"
             onClick={() => navigate('/delivery/notifications')}
-            className="relative rounded-xl p-2.5 text-slate-600 transition hover:bg-slate-100"
-            aria-label={t('notifications')}
+            className="relative rounded-lg p-2 text-slate-600 transition hover:bg-slate-100"
+            aria-label={
+              language === 'sw'
+                ? 'Arifa'
+                : 'Notifications'
+            }
           >
-            <Bell size={20} />
+            <Bell size={19} />
           </button>
 
           {/* Profile dropdown */}
@@ -112,31 +132,33 @@ function DeliveryNavbar({ onMenuClick }) {
             {/* Profile button */}
             <button
               type="button"
-              onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-              className="flex items-center gap-2 rounded-xl px-2 py-1.5 transition hover:bg-slate-100"
+              onClick={() => setIsDropdownOpen((current) => !current)}
+              className="flex items-center gap-1.5 rounded-lg px-1.5 py-1 transition hover:bg-slate-100 sm:px-2"
               aria-expanded={isDropdownOpen}
               aria-haspopup="menu"
             >
               {/* Avatar */}
-              <div className="flex h-9 w-9 items-center justify-center rounded-full bg-emerald-100 text-sm font-bold text-emerald-700">
-                {initials || <User size={17} />}
+              <div className="flex h-8 w-8 items-center justify-center rounded-full bg-emerald-100 text-xs font-bold text-emerald-700">
+                {initials || <User size={15} />}
               </div>
 
-              {/* Rider name */}
+              {/* Rider information */}
               <div className="hidden text-left sm:block">
-                <p className="text-sm font-semibold text-slate-900">
+                <p className="max-w-28 truncate text-xs font-semibold text-slate-900 lg:max-w-36">
                   {riderName}
                 </p>
 
-                <p className="text-xs text-slate-500">
-                  {t('deliveryRider')}
+                <p className="text-[10px] text-slate-500">
+                  {language === 'sw'
+                    ? 'Msafirishaji'
+                    : 'Delivery Rider'}
                 </p>
               </div>
 
               {/* Dropdown arrow */}
               <ChevronDown
-                size={16}
-                className={`hidden text-slate-500 transition-transform sm:block ${
+                size={14}
+                className={`hidden text-slate-400 transition-transform sm:block ${
                   isDropdownOpen ? 'rotate-180' : ''
                 }`}
               />
@@ -145,25 +167,31 @@ function DeliveryNavbar({ onMenuClick }) {
             {/* Dropdown menu */}
             {isDropdownOpen && (
               <div
-                className="absolute right-0 mt-2 w-56 overflow-hidden rounded-xl border border-slate-200 bg-white shadow-lg"
+                className="absolute right-0 mt-2 w-52 overflow-hidden rounded-xl border border-slate-200 bg-white shadow-lg"
                 role="menu"
               >
                 {/* Profile */}
                 <button
                   type="button"
                   onClick={handleProfile}
-                  className="flex w-full items-center gap-3 px-4 py-3 text-left text-sm text-slate-700 transition hover:bg-slate-50"
+                  className="flex w-full items-center gap-3 px-3.5 py-3 text-left transition hover:bg-slate-50"
                   role="menuitem"
                 >
-                  <User size={18} className="text-slate-500" />
+                  <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-emerald-50 text-emerald-600">
+                    <User size={17} />
+                  </div>
 
-                  <div>
-                    <p className="font-medium text-slate-900">
-                      {t('profile')}
+                  <div className="min-w-0">
+                    <p className="text-sm font-semibold text-slate-900">
+                      {language === 'sw'
+                        ? 'Wasifu'
+                        : 'Profile'}
                     </p>
 
-                    <p className="text-xs text-slate-500">
-                      {t('viewProfile')}
+                    <p className="text-[11px] text-slate-500">
+                      {language === 'sw'
+                        ? 'Angalia wasifu wako'
+                        : 'View your profile'}
                     </p>
                   </div>
                 </button>
@@ -174,18 +202,24 @@ function DeliveryNavbar({ onMenuClick }) {
                 <button
                   type="button"
                   onClick={handleLogout}
-                  className="flex w-full items-center gap-3 px-4 py-3 text-left text-sm text-red-600 transition hover:bg-red-50"
+                  className="flex w-full items-center gap-3 px-3.5 py-3 text-left transition hover:bg-red-50"
                   role="menuitem"
                 >
-                  <LogOut size={18} />
+                  <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-red-50 text-red-600">
+                    <LogOut size={17} />
+                  </div>
 
-                  <div>
-                    <p className="font-medium">
-                      {t('logout')}
+                  <div className="min-w-0">
+                    <p className="text-sm font-semibold text-red-600">
+                      {language === 'sw'
+                        ? 'Toka'
+                        : 'Logout'}
                     </p>
 
-                    <p className="text-xs text-red-400">
-                      {t('signOut')}
+                    <p className="text-[11px] text-red-400">
+                      {language === 'sw'
+                        ? 'Toka kwenye akaunti'
+                        : 'Sign out of your account'}
                     </p>
                   </div>
                 </button>

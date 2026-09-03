@@ -6,20 +6,158 @@ import {
   RefreshCw,
   Eye,
 } from 'lucide-react'
+import { useLanguage } from '../../i18n/LanguageContext'
 
 function BusinessOrdersPage() {
+  const { language } = useLanguage()
+
+  const text = {
+    en: {
+      orders: 'Orders',
+      description: 'Manage and process customer orders',
+
+      totalOrders: 'Total Orders',
+      allCustomerOrders: 'All customer orders',
+
+      pending: 'Pending',
+      waitingForAction: 'Waiting for action',
+
+      activeOrders: 'Active Orders',
+      currentlyBeingProcessed: 'Currently being processed',
+
+      completed: 'Completed',
+      successfullyCompleted: 'Successfully completed',
+
+      orderManagement: 'Order Management',
+      orderManagementDescription:
+        'Review and manage orders received by your business.',
+
+      searchOrders: 'Search orders...',
+
+      filterByStatus: 'Filter by status',
+
+      all: 'All',
+      accepted: 'Accepted',
+      preparing: 'Preparing',
+      ready: 'Ready',
+      cancelled: 'Cancelled',
+
+      noOrdersYet: 'No orders yet',
+      noOrdersFound: 'No orders found',
+
+      noOrdersDescription:
+        'Customer orders will appear here when customers purchase your products.',
+
+      noOrdersFilterDescription:
+        'Try changing your search or status filter.',
+
+      clearFilters: 'Clear Filters',
+
+      order: 'Order',
+      customer: 'Customer',
+      items: 'Items',
+      total: 'Total',
+      status: 'Status',
+      action: 'Action',
+
+      viewOrder: 'View order',
+
+      orderDetails: 'Order',
+      customerLabel: 'Customer',
+      statusLabel: 'Status',
+    },
+
+    sw: {
+      orders: 'Oda',
+      description: 'Simamia na kushughulikia oda za wateja',
+
+      totalOrders: 'Jumla ya Oda',
+      allCustomerOrders: 'Oda zote za wateja',
+
+      pending: 'Inasubiri',
+      waitingForAction: 'Inasubiri hatua',
+
+      activeOrders: 'Oda Zinazoendelea',
+      currentlyBeingProcessed: 'Zinashughulikiwa kwa sasa',
+
+      completed: 'Imekamilika',
+      successfullyCompleted: 'Zimekamilika kwa mafanikio',
+
+      orderManagement: 'Usimamizi wa Oda',
+      orderManagementDescription:
+        'Kagua na simamia oda zilizopokelewa na biashara yako.',
+
+      searchOrders: 'Tafuta oda...',
+
+      filterByStatus: 'Chuja kwa hali',
+
+      all: 'Zote',
+      accepted: 'Imekubaliwa',
+      preparing: 'Inaandaliwa',
+      ready: 'Iko Tayari',
+      cancelled: 'Imeghairiwa',
+
+      noOrdersYet: 'Bado Hakuna Oda',
+      noOrdersFound: 'Hakuna Oda Zilizopatikana',
+
+      noOrdersDescription:
+        'Oda za wateja zitaonekana hapa wateja watakaponunua bidhaa zako.',
+
+      noOrdersFilterDescription:
+        'Jaribu kubadilisha utafutaji au kichujio cha hali.',
+
+      clearFilters: 'Futa Vichujio',
+
+      order: 'Oda',
+      customer: 'Mteja',
+      items: 'Vitu',
+      total: 'Jumla',
+      status: 'Hali',
+      action: 'Kitendo',
+
+      viewOrder: 'Angalia oda',
+
+      orderDetails: 'Oda',
+      customerLabel: 'Mteja',
+      statusLabel: 'Hali',
+    },
+  }
+
+  const currentText = text[language] || text.en
+
   const [orders, setOrders] = useState([])
   const [searchTerm, setSearchTerm] = useState('')
   const [statusFilter, setStatusFilter] = useState('All')
 
   const statuses = [
-    'All',
-    'Pending',
-    'Accepted',
-    'Preparing',
-    'Ready',
-    'Completed',
-    'Cancelled',
+    {
+      value: 'All',
+      label: currentText.all,
+    },
+    {
+      value: 'Pending',
+      label: currentText.pending,
+    },
+    {
+      value: 'Accepted',
+      label: currentText.accepted,
+    },
+    {
+      value: 'Preparing',
+      label: currentText.preparing,
+    },
+    {
+      value: 'Ready',
+      label: currentText.ready,
+    },
+    {
+      value: 'Completed',
+      label: currentText.completed,
+    },
+    {
+      value: 'Cancelled',
+      label: currentText.cancelled,
+    },
   ]
 
   const filteredOrders = useMemo(() => {
@@ -57,9 +195,40 @@ function BusinessOrdersPage() {
   }
 
   const handleViewOrder = (order) => {
-    window.alert(
-      `Order ${order.orderNumber}\n\nCustomer: ${order.customerName}\nStatus: ${order.status}`
+    const message =
+      language === 'sw'
+        ? `${currentText.orderDetails} ${order.orderNumber}\n\n${currentText.customerLabel}: ${order.customerName}\n${currentText.statusLabel}: ${getStatusLabel(
+            order.status
+          )}`
+        : `${currentText.orderDetails} ${order.orderNumber}\n\n${currentText.customerLabel}: ${order.customerName}\n${currentText.statusLabel}: ${getStatusLabel(
+            order.status
+          )}`
+
+    window.alert(message)
+  }
+
+  const getStatusLabel = (status) => {
+    const matchingStatus = statuses.find(
+      (item) => item.value === status
     )
+
+    return matchingStatus?.label || status
+  }
+
+  const getStatusStyle = (status) => {
+    if (status === 'Completed') {
+      return 'bg-green-50 text-green-700'
+    }
+
+    if (status === 'Cancelled') {
+      return 'bg-red-50 text-red-700'
+    }
+
+    if (status === 'Pending') {
+      return 'bg-yellow-50 text-yellow-700'
+    }
+
+    return 'bg-blue-50 text-blue-700'
   }
 
   return (
@@ -77,13 +246,15 @@ function BusinessOrdersPage() {
             </div>
 
             <div className="min-w-0">
+
               <h1 className="truncate text-xl font-bold text-[#1B1C1C] sm:text-2xl">
-                Orders
+                {currentText.orders}
               </h1>
 
               <p className="mt-0.5 text-sm text-gray-500">
-                Manage and process customer orders
+                {currentText.description}
               </p>
+
             </div>
 
           </div>
@@ -94,8 +265,9 @@ function BusinessOrdersPage() {
         <div className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
 
           <div className="rounded-2xl border border-gray-200 bg-white p-5 shadow-sm">
+
             <p className="text-sm font-medium text-gray-500">
-              Total Orders
+              {currentText.totalOrders}
             </p>
 
             <p className="mt-2 text-2xl font-bold text-[#1B1C1C]">
@@ -103,13 +275,15 @@ function BusinessOrdersPage() {
             </p>
 
             <p className="mt-1 text-xs text-gray-400">
-              All customer orders
+              {currentText.allCustomerOrders}
             </p>
+
           </div>
 
           <div className="rounded-2xl border border-gray-200 bg-white p-5 shadow-sm">
+
             <p className="text-sm font-medium text-gray-500">
-              Pending
+              {currentText.pending}
             </p>
 
             <p className="mt-2 text-2xl font-bold text-[#1B1C1C]">
@@ -117,13 +291,15 @@ function BusinessOrdersPage() {
             </p>
 
             <p className="mt-1 text-xs text-gray-400">
-              Waiting for action
+              {currentText.waitingForAction}
             </p>
+
           </div>
 
           <div className="rounded-2xl border border-gray-200 bg-white p-5 shadow-sm">
+
             <p className="text-sm font-medium text-gray-500">
-              Active Orders
+              {currentText.activeOrders}
             </p>
 
             <p className="mt-2 text-2xl font-bold text-[#1B1C1C]">
@@ -131,13 +307,15 @@ function BusinessOrdersPage() {
             </p>
 
             <p className="mt-1 text-xs text-gray-400">
-              Currently being processed
+              {currentText.currentlyBeingProcessed}
             </p>
+
           </div>
 
           <div className="rounded-2xl border border-gray-200 bg-white p-5 shadow-sm">
+
             <p className="text-sm font-medium text-gray-500">
-              Completed
+              {currentText.completed}
             </p>
 
             <p className="mt-2 text-2xl font-bold text-[#1B1C1C]">
@@ -145,8 +323,9 @@ function BusinessOrdersPage() {
             </p>
 
             <p className="mt-1 text-xs text-gray-400">
-              Successfully completed
+              {currentText.successfullyCompleted}
             </p>
+
           </div>
 
         </div>
@@ -160,13 +339,15 @@ function BusinessOrdersPage() {
             <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
 
               <div>
+
                 <h2 className="text-base font-semibold text-[#1B1C1C] sm:text-lg">
-                  Order Management
+                  {currentText.orderManagement}
                 </h2>
 
                 <p className="mt-1 text-sm text-gray-500">
-                  Review and manage orders received by your business.
+                  {currentText.orderManagementDescription}
                 </p>
+
               </div>
 
               {/* Search */}
@@ -183,7 +364,7 @@ function BusinessOrdersPage() {
                   onChange={(event) =>
                     setSearchTerm(event.target.value)
                   }
-                  placeholder="Search orders..."
+                  placeholder={currentText.searchOrders}
                   className="h-11 w-full rounded-xl border border-gray-200 bg-gray-50 pl-10 pr-4 text-sm text-gray-700 outline-none transition placeholder:text-gray-400 focus:border-[#326460] focus:bg-white focus:ring-2 focus:ring-[#326460]/10"
                 />
 
@@ -196,23 +377,25 @@ function BusinessOrdersPage() {
 
               <div className="flex items-center gap-2 text-sm font-medium text-gray-600">
                 <SlidersHorizontal size={17} />
-                Filter by status
+                {currentText.filterByStatus}
               </div>
 
               <div className="flex flex-1 flex-wrap gap-2">
 
                 {statuses.map((status) => (
                   <button
-                    key={status}
+                    key={status.value}
                     type="button"
-                    onClick={() => setStatusFilter(status)}
+                    onClick={() =>
+                      setStatusFilter(status.value)
+                    }
                     className={`rounded-lg px-3 py-2 text-xs font-semibold transition ${
-                      statusFilter === status
+                      statusFilter === status.value
                         ? 'bg-[#326460] text-white'
                         : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
                     }`}
                   >
-                    {status}
+                    {status.label}
                   </button>
                 ))}
 
@@ -233,14 +416,14 @@ function BusinessOrdersPage() {
 
               <h3 className="mt-5 text-lg font-semibold text-[#1B1C1C]">
                 {orders.length === 0
-                  ? 'No orders yet'
-                  : 'No orders found'}
+                  ? currentText.noOrdersYet
+                  : currentText.noOrdersFound}
               </h3>
 
               <p className="mx-auto mt-2 max-w-md text-sm leading-6 text-gray-500">
                 {orders.length === 0
-                  ? 'Customer orders will appear here when customers purchase your products.'
-                  : 'Try changing your search or status filter.'}
+                  ? currentText.noOrdersDescription
+                  : currentText.noOrdersFilterDescription}
               </p>
 
               {orders.length > 0 && (
@@ -250,7 +433,7 @@ function BusinessOrdersPage() {
                   className="mt-6 inline-flex min-h-11 items-center justify-center gap-2 rounded-xl border border-gray-200 bg-white px-5 py-3 text-sm font-semibold text-gray-600 transition hover:bg-gray-50"
                 >
                   <RefreshCw size={17} />
-                  Clear Filters
+                  {currentText.clearFilters}
                 </button>
               )}
 
@@ -263,33 +446,35 @@ function BusinessOrdersPage() {
               <table className="min-w-[900px] w-full">
 
                 <thead>
+
                   <tr className="border-b border-gray-200 bg-gray-50 text-left">
 
                     <th className="px-6 py-4 text-xs font-semibold uppercase tracking-wide text-gray-500">
-                      Order
+                      {currentText.order}
                     </th>
 
                     <th className="px-6 py-4 text-xs font-semibold uppercase tracking-wide text-gray-500">
-                      Customer
+                      {currentText.customer}
                     </th>
 
                     <th className="px-6 py-4 text-xs font-semibold uppercase tracking-wide text-gray-500">
-                      Items
+                      {currentText.items}
                     </th>
 
                     <th className="px-6 py-4 text-xs font-semibold uppercase tracking-wide text-gray-500">
-                      Total
+                      {currentText.total}
                     </th>
 
                     <th className="px-6 py-4 text-xs font-semibold uppercase tracking-wide text-gray-500">
-                      Status
+                      {currentText.status}
                     </th>
 
                     <th className="px-6 py-4 text-right text-xs font-semibold uppercase tracking-wide text-gray-500">
-                      Action
+                      {currentText.action}
                     </th>
 
                   </tr>
+
                 </thead>
 
                 <tbody>
@@ -302,6 +487,7 @@ function BusinessOrdersPage() {
                     >
 
                       <td className="px-6 py-4">
+
                         <p className="text-sm font-semibold text-[#1B1C1C]">
                           {order.orderNumber}
                         </p>
@@ -309,9 +495,11 @@ function BusinessOrdersPage() {
                         <p className="mt-0.5 text-xs text-gray-500">
                           {order.date}
                         </p>
+
                       </td>
 
                       <td className="px-6 py-4">
+
                         <p className="text-sm font-medium text-[#1B1C1C]">
                           {order.customerName}
                         </p>
@@ -319,6 +507,7 @@ function BusinessOrdersPage() {
                         <p className="mt-0.5 text-xs text-gray-500">
                           {order.customerPhone}
                         </p>
+
                       </td>
 
                       <td className="px-6 py-4 text-sm text-gray-600">
@@ -332,17 +521,11 @@ function BusinessOrdersPage() {
                       <td className="px-6 py-4">
 
                         <span
-                          className={`inline-flex rounded-full px-3 py-1 text-xs font-semibold ${
-                            order.status === 'Completed'
-                              ? 'bg-green-50 text-green-700'
-                              : order.status === 'Cancelled'
-                                ? 'bg-red-50 text-red-700'
-                                : order.status === 'Pending'
-                                  ? 'bg-yellow-50 text-yellow-700'
-                                  : 'bg-blue-50 text-blue-700'
-                          }`}
+                          className={`inline-flex rounded-full px-3 py-1 text-xs font-semibold ${getStatusStyle(
+                            order.status
+                          )}`}
                         >
-                          {order.status}
+                          {getStatusLabel(order.status)}
                         </span>
 
                       </td>
@@ -357,7 +540,8 @@ function BusinessOrdersPage() {
                               handleViewOrder(order)
                             }
                             className="flex h-9 w-9 items-center justify-center rounded-lg text-gray-500 transition hover:bg-gray-100 hover:text-[#326460]"
-                            aria-label={`View ${order.orderNumber}`}
+                            aria-label={`${currentText.viewOrder} ${order.orderNumber}`}
+                            title={currentText.viewOrder}
                           >
                             <Eye size={17} />
                           </button>

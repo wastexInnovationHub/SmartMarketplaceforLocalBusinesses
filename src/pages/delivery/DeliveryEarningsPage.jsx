@@ -11,12 +11,88 @@ import {
 } from 'lucide-react'
 import { Link } from 'react-router-dom'
 
+import { useLanguage } from '../../i18n/LanguageContext'
+
 function DeliveryEarningsPage() {
+  const { language } = useLanguage()
+  const isSwahili = language === 'sw'
+
   const [searchTerm, setSearchTerm] = useState('')
   const [period, setPeriod] = useState('all')
 
   // Real earnings will come from the backend payment and delivery system.
   const earnings = []
+
+  const text = {
+    financialOverview: isSwahili ? 'Muhtasari wa Fedha' : 'Financial Overview',
+    earnings: isSwahili ? 'Mapato' : 'Earnings',
+    description: isSwahili
+      ? 'Fuatilia mapato yako ya usafirishaji na malipo ya usafirishaji yaliyokamilika.'
+      : 'Track your delivery earnings and completed delivery payments.',
+    deliveryHistory: isSwahili ? 'Historia ya Usafirishaji' : 'Delivery History',
+
+    totalEarnings: isSwahili ? 'Jumla ya Mapato' : 'Total Earnings',
+    verifiedDeliveryEarnings: isSwahili
+      ? 'Mapato ya usafirishaji yaliyothibitishwa'
+      : 'Verified delivery earnings',
+
+    todaysEarnings: isSwahili ? 'Mapato ya Leo' : "Today's Earnings",
+    todaysCompletedDeliveries: isSwahili
+      ? 'Mapato kutoka usafirishaji uliokamilika leo'
+      : "Earnings from today's completed deliveries",
+
+    completed: isSwahili ? 'Imekamilika' : 'Completed',
+    deliveriesContributing: isSwahili
+      ? 'Usafirishaji unaochangia mapato'
+      : 'Deliveries contributing to earnings',
+
+    pending: isSwahili ? 'Inasubiri' : 'Pending',
+    awaitingVerification: isSwahili
+      ? 'Mapato yanayosubiri kuthibitishwa'
+      : 'Earnings awaiting verification',
+
+    earningsRecords: isSwahili ? 'Rekodi za Mapato' : 'Earnings Records',
+    recordsDescription: isSwahili
+      ? 'Rekodi za malipo ya huduma za usafirishaji zilizokamilika.'
+      : 'Payment records for completed delivery services.',
+
+    searchEarnings: isSwahili
+      ? 'Tafuta mapato...'
+      : 'Search earnings...',
+
+    allTime: isSwahili ? 'Muda Wote' : 'All Time',
+    today: isSwahili ? 'Leo' : 'Today',
+    thisWeek: isSwahili ? 'Wiki Hii' : 'This Week',
+    thisMonth: isSwahili ? 'Mwezi Huu' : 'This Month',
+
+    noEarningsYet: isSwahili ? 'Bado Hakuna Mapato' : 'No earnings yet',
+    noEarningsDescription: isSwahili
+      ? 'Mapato yako ya usafirishaji yaliyothibitishwa yataonekana hapa baada ya kukamilisha maombi ya usafirishaji.'
+      : 'Your verified delivery earnings will appear here after you complete delivery requests.',
+
+    findDeliveries: isSwahili ? 'Tafuta Usafirishaji' : 'Find Deliveries',
+
+    verifiedEarnings: isSwahili
+      ? 'Mapato Yaliyothibitishwa'
+      : 'Verified Earnings',
+    verifiedEarningsDescription: isSwahili
+      ? 'Mapato yatarekodiwa tu baada ya usafirishaji husika kuthibitishwa kwa mafanikio.'
+      : 'Earnings will only be recorded after the corresponding delivery has been successfully verified.',
+
+    paymentTracking: isSwahili
+      ? 'Ufuatiliaji wa Malipo'
+      : 'Payment Tracking',
+    paymentTrackingDescription: isSwahili
+      ? 'Hali ya malipo na taarifa za malipo yako zitatolewa na mfumo wa malipo wa backend.'
+      : 'Payment status and payout information will be supplied by the backend payment system.',
+
+    earningsGrowth: isSwahili
+      ? 'Ukuaji wa Mapato'
+      : 'Earnings Growth',
+    earningsGrowthDescription: isSwahili
+      ? 'Baada ya taarifa halisi za usafirishaji kupatikana, sehemu hii inaweza kuonyesha mwenendo wa mapato na utendaji wako kwa muda.'
+      : 'Once real delivery data is available, this area can show earning trends and performance over time.',
+  }
 
   const filteredEarnings = useMemo(() => {
     return earnings.filter((earning) => {
@@ -36,29 +112,28 @@ function DeliveryEarningsPage() {
   }, [earnings, searchTerm, period])
 
   const periodOptions = [
-    { value: 'all', label: 'All Time' },
-    { value: 'today', label: 'Today' },
-    { value: 'week', label: 'This Week' },
-    { value: 'month', label: 'This Month' },
+    { value: 'all', label: text.allTime },
+    { value: 'today', label: text.today },
+    { value: 'week', label: text.thisWeek },
+    { value: 'month', label: text.thisMonth },
   ]
 
   return (
     <div className="space-y-6">
-
       {/* Page header */}
       <div>
         <p className="text-sm font-medium text-emerald-600">
-          Financial Overview
+          {text.financialOverview}
         </p>
 
         <div className="mt-1 flex flex-col justify-between gap-4 sm:flex-row sm:items-end">
           <div>
             <h1 className="text-2xl font-bold tracking-tight text-slate-900 sm:text-3xl">
-              Earnings
+              {text.earnings}
             </h1>
 
             <p className="mt-2 max-w-2xl text-sm leading-6 text-slate-500 sm:text-base">
-              Track your delivery earnings and completed delivery payments.
+              {text.description}
             </p>
           </div>
 
@@ -67,20 +142,19 @@ function DeliveryEarningsPage() {
             className="inline-flex w-fit items-center justify-center gap-2 rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-sm font-semibold text-slate-700 shadow-sm transition hover:bg-slate-50"
           >
             <History size={18} />
-            Delivery History
+            {text.deliveryHistory}
           </Link>
         </div>
       </div>
 
       {/* Earnings summary */}
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
-
         {/* Total earnings */}
         <div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
           <div className="flex items-start justify-between">
             <div>
               <p className="text-sm font-medium text-slate-500">
-                Total Earnings
+                {text.totalEarnings}
               </p>
 
               <p className="mt-2 text-2xl font-bold text-slate-900">
@@ -94,7 +168,7 @@ function DeliveryEarningsPage() {
           </div>
 
           <p className="mt-3 text-xs text-slate-400">
-            Verified delivery earnings
+            {text.verifiedDeliveryEarnings}
           </p>
         </div>
 
@@ -103,7 +177,7 @@ function DeliveryEarningsPage() {
           <div className="flex items-start justify-between">
             <div>
               <p className="text-sm font-medium text-slate-500">
-                Today's Earnings
+                {text.todaysEarnings}
               </p>
 
               <p className="mt-2 text-2xl font-bold text-slate-900">
@@ -117,7 +191,7 @@ function DeliveryEarningsPage() {
           </div>
 
           <p className="mt-3 text-xs text-slate-400">
-            Earnings from today's completed deliveries
+            {text.todaysCompletedDeliveries}
           </p>
         </div>
 
@@ -126,7 +200,7 @@ function DeliveryEarningsPage() {
           <div className="flex items-start justify-between">
             <div>
               <p className="text-sm font-medium text-slate-500">
-                Completed
+                {text.completed}
               </p>
 
               <p className="mt-2 text-2xl font-bold text-slate-900">
@@ -140,7 +214,7 @@ function DeliveryEarningsPage() {
           </div>
 
           <p className="mt-3 text-xs text-slate-400">
-            Deliveries contributing to earnings
+            {text.deliveriesContributing}
           </p>
         </div>
 
@@ -149,7 +223,7 @@ function DeliveryEarningsPage() {
           <div className="flex items-start justify-between">
             <div>
               <p className="text-sm font-medium text-slate-500">
-                Pending
+                {text.pending}
               </p>
 
               <p className="mt-2 text-2xl font-bold text-slate-900">
@@ -163,25 +237,23 @@ function DeliveryEarningsPage() {
           </div>
 
           <p className="mt-3 text-xs text-slate-400">
-            Earnings awaiting verification
+            {text.awaitingVerification}
           </p>
         </div>
       </div>
 
       {/* Earnings records */}
       <section className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
-
         {/* Section header */}
         <div className="border-b border-slate-200 p-5 sm:p-6">
           <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
-
             <div>
               <h2 className="text-lg font-bold text-slate-900">
-                Earnings Records
+                {text.earningsRecords}
               </h2>
 
               <p className="mt-1 text-sm text-slate-500">
-                Payment records for completed delivery services.
+                {text.recordsDescription}
               </p>
             </div>
 
@@ -195,7 +267,7 @@ function DeliveryEarningsPage() {
                 type="text"
                 value={searchTerm}
                 onChange={(event) => setSearchTerm(event.target.value)}
-                placeholder="Search earnings..."
+                placeholder={text.searchEarnings}
                 className="w-full rounded-xl border border-slate-200 bg-slate-50 py-2.5 pl-10 pr-4 text-sm text-slate-900 outline-none transition focus:border-emerald-500 focus:bg-white focus:ring-2 focus:ring-emerald-100"
               />
             </div>
@@ -228,18 +300,16 @@ function DeliveryEarningsPage() {
         <div className="p-5 sm:p-6">
           {filteredEarnings.length === 0 ? (
             <div className="flex flex-col items-center justify-center rounded-2xl border border-dashed border-slate-300 bg-slate-50 px-6 py-14 text-center">
-
               <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-emerald-100 text-emerald-600">
                 <DollarSign size={30} />
               </div>
 
               <h3 className="mt-5 text-lg font-bold text-slate-900">
-                No earnings yet
+                {text.noEarningsYet}
               </h3>
 
               <p className="mt-2 max-w-md text-sm leading-6 text-slate-500">
-                Your verified delivery earnings will appear here after you
-                complete delivery requests.
+                {text.noEarningsDescription}
               </p>
 
               <Link
@@ -247,7 +317,7 @@ function DeliveryEarningsPage() {
                 className="mt-6 inline-flex items-center gap-2 rounded-xl bg-emerald-600 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-emerald-700"
               >
                 <TrendingUp size={18} />
-                Find Deliveries
+                {text.findDeliveries}
               </Link>
             </div>
           ) : (
@@ -287,19 +357,17 @@ function DeliveryEarningsPage() {
 
       {/* Earnings information */}
       <section className="grid grid-cols-1 gap-4 md:grid-cols-3">
-
         <div className="rounded-2xl border border-slate-200 bg-white p-5">
           <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-emerald-50 text-emerald-600">
             <CheckCircle2 size={20} />
           </div>
 
           <h3 className="mt-4 font-semibold text-slate-900">
-            Verified Earnings
+            {text.verifiedEarnings}
           </h3>
 
           <p className="mt-2 text-sm leading-6 text-slate-500">
-            Earnings will only be recorded after the corresponding delivery
-            has been successfully verified.
+            {text.verifiedEarningsDescription}
           </p>
         </div>
 
@@ -309,12 +377,11 @@ function DeliveryEarningsPage() {
           </div>
 
           <h3 className="mt-4 font-semibold text-slate-900">
-            Payment Tracking
+            {text.paymentTracking}
           </h3>
 
           <p className="mt-2 text-sm leading-6 text-slate-500">
-            Payment status and payout information will be supplied by the
-            backend payment system.
+            {text.paymentTrackingDescription}
           </p>
         </div>
 
@@ -324,15 +391,13 @@ function DeliveryEarningsPage() {
           </div>
 
           <h3 className="mt-4 font-semibold text-slate-900">
-            Earnings Growth
+            {text.earningsGrowth}
           </h3>
 
           <p className="mt-2 text-sm leading-6 text-slate-500">
-            Once real delivery data is available, this area can show earning
-            trends and performance over time.
+            {text.earningsGrowthDescription}
           </p>
         </div>
-
       </section>
     </div>
   )

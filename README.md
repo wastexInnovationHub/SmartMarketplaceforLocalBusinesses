@@ -172,8 +172,7 @@ SmartMarketplaceforLocalBusinesses/
 │   │
 │   ├── i18n/
 │   │   ├── LanguageContext.jsx
-│   │   ├── en.js
-│   │   └── sw.js
+│   │   └── translations.js
 │   │
 │   ├── utils/
 │   │   ├── auth.js

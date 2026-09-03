@@ -1,7 +1,12 @@
 import { ArrowRight, Store } from 'lucide-react'
 import heroMarket from '../../assets/images/hero-market.jpg'
+import { useLanguage } from '../../i18n/LanguageContext'
 
 function HeroSection() {
+  const { language } = useLanguage()
+
+  const isSwahili = language === 'sw'
+
   return (
     <section
       id="home"
@@ -9,30 +14,37 @@ function HeroSection() {
     >
       <div className="mx-auto max-w-7xl">
         <div className="grid items-center gap-10 lg:grid-cols-2 lg:gap-16">
-          
+
           {/* Text */}
           <div className="text-center lg:text-left">
             <div className="mb-5 inline-flex items-center gap-2 rounded-full bg-[#F2E0C3] px-4 py-2 text-sm font-semibold text-[#695D46]">
               <Store size={16} />
-              <span>Local commerce, connected</span>
+              <span>
+                {isSwahili
+                  ? 'Biashara za ndani, zimeunganishwa'
+                  : 'Local commerce, connected'}
+              </span>
             </div>
 
             <h1 className="text-4xl font-bold leading-tight tracking-tight text-[#1B1C1C] sm:text-5xl lg:text-6xl">
-              Local Businesses.
+              {isSwahili ? 'Biashara za Ndani.' : 'Local Businesses.'}
               <br />
 
               <span className="text-[#A03F28]">
-                Local Products.
+                {isSwahili ? 'Bidhaa za Ndani.' : 'Local Products.'}
               </span>
 
               <br />
 
-              One Connected Marketplace.
+              {isSwahili
+                ? 'Soko Moja Lililounganishwa.'
+                : 'One Connected Marketplace.'}
             </h1>
 
             <p className="mx-auto mt-6 max-w-xl text-base leading-7 text-[#56423D] sm:text-lg sm:leading-8 lg:mx-0">
-              Connecting customers, shops, food vendors, and riders
-              seamlessly across your community.
+              {isSwahili
+                ? 'Kuunganisha wateja, maduka, wauzaji wa chakula, na waendesha usafirishaji kwa urahisi katika jamii yako.'
+                : 'Connecting customers, shops, food vendors, and riders seamlessly across your community.'}
             </p>
 
             {/* Actions */}
@@ -41,7 +53,7 @@ function HeroSection() {
                 href="/login"
                 className="inline-flex min-h-12 items-center justify-center gap-2 rounded-full bg-[#A03F28] px-6 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-[#812914] active:scale-[0.98]"
               >
-                Explore Marketplace
+                {isSwahili ? 'Gundua Soko' : 'Explore Marketplace'}
                 <ArrowRight size={18} />
               </a>
 
@@ -49,7 +61,7 @@ function HeroSection() {
                 href="/register"
                 className="inline-flex min-h-12 items-center justify-center rounded-full bg-[#F2E0C3] px-6 py-3 text-sm font-semibold text-[#231A08] transition hover:bg-[#E6D0AB] active:scale-[0.98]"
               >
-                Join JamiiMarket
+                {isSwahili ? 'Jiunge na JamiiMarket' : 'Join JamiiMarket'}
               </a>
             </div>
           </div>
@@ -59,7 +71,11 @@ function HeroSection() {
             <div className="overflow-hidden rounded-3xl border border-[#DDC0BA] bg-[#F0EDEB] shadow-[0_12px_40px_-12px_rgba(160,63,40,0.16)]">
               <img
                 src={heroMarket}
-                alt="Local marketplace and community vendors"
+                alt={
+                  isSwahili
+                    ? 'Soko la ndani na wafanyabiashara wa jamii'
+                    : 'Local marketplace and community vendors'
+                }
                 className="h-[280px] w-full object-cover sm:h-[380px] lg:h-[500px]"
               />
 
@@ -69,12 +85,15 @@ function HeroSection() {
             {/* Small information card */}
             <div className="absolute bottom-4 left-4 right-4 rounded-2xl border border-white/50 bg-white/90 p-4 shadow-lg backdrop-blur-md sm:bottom-6 sm:left-6 sm:right-auto sm:max-w-xs">
               <p className="text-sm font-semibold text-[#1B1C1C]">
-                Built around local communities
+                {isSwahili
+                  ? 'Imejengwa kwa ajili ya jamii za ndani'
+                  : 'Built around local communities'}
               </p>
 
               <p className="mt-1 text-xs leading-5 text-[#56423D]">
-                Discover local products, services, businesses, and
-                delivery options through one marketplace.
+                {isSwahili
+                  ? 'Gundua bidhaa, huduma, biashara, na chaguo za usafirishaji kupitia soko moja.'
+                  : 'Discover local products, services, businesses, and delivery options through one marketplace.'}
               </p>
             </div>
           </div>
@@ -86,3 +105,4 @@ function HeroSection() {
 }
 
 export default HeroSection
+

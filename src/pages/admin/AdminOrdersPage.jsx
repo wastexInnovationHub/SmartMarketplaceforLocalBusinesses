@@ -6,16 +6,16 @@ import {
   ClipboardList,
   Clock3,
   Eye,
-  MapPin,
   Package,
   Pencil,
   Search,
   Store,
-  Trash2,
   User,
   X,
   XCircle,
 } from 'lucide-react'
+
+import { useLanguage } from '../../i18n/LanguageContext'
 
 // Empty until real orders are loaded from the backend.
 const initialOrders = []
@@ -50,6 +50,278 @@ const emptyEditForm = {
 
 // Admin Order Management page
 function AdminOrdersPage() {
+  const { language } = useLanguage()
+
+  const text =
+    language === 'sw'
+      ? {
+          marketplaceManagement: 'Usimamizi wa Soko',
+          orderManagement: 'Usimamizi wa Oda',
+          pageDescription:
+            'Fuatilia oda za soko, hali ya malipo, njia za usafirishaji, na maendeleo ya oda.',
+
+          totalOrders: 'Jumla ya Oda',
+          pendingOrders: 'Oda Zinazosubiri',
+          activeOrders: 'Oda Zinazoendelea',
+          deliveredOrders: 'Oda Zilizofikishwa',
+
+          searchOrders:
+            'Tafuta oda, mteja, biashara...',
+          allOrderStatuses: 'Hali Zote za Oda',
+          allPaymentStatuses: 'Hali Zote za Malipo',
+          allDeliveryMethods: 'Njia Zote za Usafirishaji',
+
+          marketplaceOrders: 'Oda za Soko',
+          orderShown: 'oda imeonyeshwa',
+          ordersShown: 'oda zimeonyeshwa',
+
+          noOrdersFound: 'Hakuna Oda Zilizopatikana',
+          noOrdersDescription:
+            'Kwa sasa hakuna oda za soko, au hakuna oda zinazolingana na utafutaji na vichujio vyako.',
+
+          order: 'Oda',
+          customer: 'Mteja',
+          business: 'Biashara',
+          total: 'Jumla',
+          payment: 'Malipo',
+          delivery: 'Usafirishaji',
+          status: 'Hali',
+          actions: 'Vitendo',
+
+          notProvided: 'Haijatolewa',
+          noPhone: 'Hakuna namba ya simu',
+          notAssigned: 'Hajapangiwa',
+          unnamedItem: 'Kipengele kisicho na jina',
+          noOrderItemDetails:
+            'Hakuna maelezo ya vipengele vya oda.',
+          quantity: 'Idadi',
+          created: 'Imeundwa',
+          dateNotAvailable: 'Tarehe haipatikani',
+
+          viewOrder: 'Angalia oda',
+          editOrder: 'Hariri oda',
+          cancelOrder: 'Ghairi oda',
+
+          orderStatus: 'Hali ya Oda',
+          orderPayment: 'Malipo',
+          orderItems: 'Vipengele vya Oda',
+
+          deliveryInformation: 'Taarifa za Usafirishaji',
+          method: 'Njia',
+          rider: 'Msafirishaji',
+          deliveryAddress: 'Anwani ya Usafirishaji',
+
+          name: 'Jina',
+          phone: 'Simu',
+          address: 'Anwani',
+
+          editOrderTitle: 'Hariri Oda',
+          paymentStatus: 'Hali ya Malipo',
+
+          backendValidationNotice:
+            'Katika mfumo wa uzalishaji, hali ya oda na malipo lazima ithibitishwe na backend. Sehemu ya admin haipaswi kuweka oda kuwa imelipwa bila uthibitisho wa malipo kutoka backend.',
+
+          cancel: 'Ghairi',
+          saveChanges: 'Hifadhi Mabadiliko',
+
+          cancelOrderTitle: 'Ghairi Oda',
+          cancelConfirmation:
+            'Hii itabadilisha hali ya oda kuwa Imeghairiwa.',
+          keepOrder: 'Acha Oda',
+          confirmCancelOrder: 'Ghairi Oda',
+
+          closeModal: 'Funga dirisha',
+
+          businessDelivery:
+            'Usafirishaji wa Biashara',
+          jamiiDelivery:
+            'Usafirishaji wa JamiiMarket',
+          pickup: 'Kuchukua Mwenyewe',
+
+          pending: 'Inasubiri',
+          accepted: 'Imekubaliwa',
+          preparing: 'Inaandaliwa',
+          ready: 'Tayari',
+          outForDelivery: 'Iko Njiani',
+          delivered: 'Imefikishwa',
+          cancelled: 'Imeghairiwa',
+
+          paid: 'Imelipwa',
+          failed: 'Imeshindikana',
+          refunded: 'Imerejeshwa',
+
+          dateCreated: 'Imeundwa',
+        }
+      : {
+          marketplaceManagement: 'Marketplace Management',
+          orderManagement: 'Order Management',
+          pageDescription:
+            'Monitor marketplace orders, payment states, delivery methods, and order progress.',
+
+          totalOrders: 'Total Orders',
+          pendingOrders: 'Pending Orders',
+          activeOrders: 'Active Orders',
+          deliveredOrders: 'Delivered Orders',
+
+          searchOrders:
+            'Search order, customer, business...',
+          allOrderStatuses: 'All Order Statuses',
+          allPaymentStatuses: 'All Payment Statuses',
+          allDeliveryMethods: 'All Delivery Methods',
+
+          marketplaceOrders: 'Marketplace Orders',
+          orderShown: 'order shown',
+          ordersShown: 'orders shown',
+
+          noOrdersFound: 'No Orders Found',
+          noOrdersDescription:
+            'There are currently no marketplace orders, or no orders match your search and filters.',
+
+          order: 'Order',
+          customer: 'Customer',
+          business: 'Business',
+          total: 'Total',
+          payment: 'Payment',
+          delivery: 'Delivery',
+          status: 'Status',
+          actions: 'Actions',
+
+          notProvided: 'Not provided',
+          noPhone: 'No phone',
+          notAssigned: 'Not assigned',
+          unnamedItem: 'Unnamed item',
+          noOrderItemDetails:
+            'No order item details available.',
+          quantity: 'Quantity',
+          created: 'Created',
+          dateNotAvailable: 'Date not available',
+
+          viewOrder: 'View order',
+          editOrder: 'Edit order',
+          cancelOrder: 'Cancel order',
+
+          orderStatus: 'Order Status',
+          orderPayment: 'Payment',
+          orderItems: 'Order Items',
+
+          deliveryInformation: 'Delivery Information',
+          method: 'Method',
+          rider: 'Rider',
+          deliveryAddress: 'Delivery Address',
+
+          name: 'Name',
+          phone: 'Phone',
+          address: 'Address',
+
+          editOrderTitle: 'Edit Order',
+          paymentStatus: 'Payment Status',
+
+          backendValidationNotice:
+            'In the production version, order status and payment status must be validated by the backend. The admin interface should not independently mark an order as paid.',
+
+          cancel: 'Cancel',
+          saveChanges: 'Save Changes',
+
+          cancelOrderTitle: 'Cancel Order',
+          cancelConfirmation:
+            'This will change the order status to Cancelled.',
+          keepOrder: 'Keep Order',
+          confirmCancelOrder: 'Cancel Order',
+
+          closeModal: 'Close modal',
+
+          businessDelivery: 'Business Delivery',
+          jamiiDelivery: 'JamiiMarket Delivery',
+          pickup: 'Pickup',
+
+          pending: 'Pending',
+          accepted: 'Accepted',
+          preparing: 'Preparing',
+          ready: 'Ready',
+          outForDelivery: 'Out for Delivery',
+          delivered: 'Delivered',
+          cancelled: 'Cancelled',
+
+          paid: 'Paid',
+          failed: 'Failed',
+          refunded: 'Refunded',
+
+          dateCreated: 'Created',
+        }
+
+  // Format an order status for display
+  const formatStatus = (value) => {
+    if (!value) {
+      return text.notProvided
+    }
+
+    const statusLabels = {
+      pending: text.pending,
+      accepted: text.accepted,
+      preparing: text.preparing,
+      ready: text.ready,
+      out_for_delivery: text.outForDelivery,
+      delivered: text.delivered,
+      cancelled: text.cancelled,
+      paid: text.paid,
+      failed: text.failed,
+      refunded: text.refunded,
+    }
+
+    return statusLabels[value] || value
+  }
+
+  // Format delivery method for display
+  const formatDeliveryMethod = (value) => {
+    if (!value) {
+      return text.notProvided
+    }
+
+    const labels = {
+      business_delivery: text.businessDelivery,
+      jamii_delivery: text.jamiiDelivery,
+      pickup: text.pickup,
+    }
+
+    return labels[value] || value
+  }
+
+  // Format currency
+  const formatCurrency = (value) => {
+    if (
+      value === undefined ||
+      value === null ||
+      value === ''
+    ) {
+      return text.notProvided
+    }
+
+    const number = Number(value)
+
+    if (Number.isNaN(number)) {
+      return String(value)
+    }
+
+    return `TSh ${number.toLocaleString()}`
+  }
+
+  // Format order date
+  const formatDate = (value) => {
+    if (!value) {
+      return text.dateNotAvailable
+    }
+
+    const date = new Date(value)
+
+    if (Number.isNaN(date.getTime())) {
+      return text.dateNotAvailable
+    }
+
+    return date.toLocaleString(
+      language === 'sw' ? 'sw-TZ' : 'en-TZ',
+    )
+  }
+
   const [orders, setOrders] = useState(initialOrders)
 
   const [search, setSearch] = useState('')
@@ -129,7 +401,7 @@ function AdminOrdersPage() {
     setShowEditModal(true)
   }
 
-  // Open delete/cancel confirmation
+  // Open cancel confirmation
   const openDeleteModal = (order) => {
     setOrderToDelete(order)
     setShowDeleteModal(true)
@@ -219,16 +491,15 @@ function AdminOrdersPage() {
       <div>
         <div className="mb-2 flex items-center gap-2 text-sm font-medium text-indigo-600">
           <ClipboardList className="h-4 w-4" />
-          Marketplace Management
+          {text.marketplaceManagement}
         </div>
 
         <h1 className="text-2xl font-bold tracking-tight text-slate-900 sm:text-3xl">
-          Order Management
+          {text.orderManagement}
         </h1>
 
         <p className="mt-1 max-w-2xl text-sm text-slate-500">
-          Monitor marketplace orders, payment states, delivery
-          methods, and order progress.
+          {text.pageDescription}
         </p>
       </div>
 
@@ -236,25 +507,25 @@ function AdminOrdersPage() {
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
         <StatCard
           icon={ClipboardList}
-          label="Total Orders"
+          label={text.totalOrders}
           value={totalOrders}
         />
 
         <StatCard
           icon={Clock3}
-          label="Pending Orders"
+          label={text.pendingOrders}
           value={pendingOrders}
         />
 
         <StatCard
           icon={Package}
-          label="Active Orders"
+          label={text.activeOrders}
           value={activeOrders}
         />
 
         <StatCard
           icon={CheckCircle2}
-          label="Delivered Orders"
+          label={text.deliveredOrders}
           value={deliveredOrders}
         />
       </div>
@@ -271,7 +542,7 @@ function AdminOrdersPage() {
               onChange={(event) =>
                 setSearch(event.target.value)
               }
-              placeholder="Search order, customer, business..."
+              placeholder={text.searchOrders}
               className="w-full rounded-xl border border-slate-200 bg-slate-50 py-2.5 pl-10 pr-4 text-sm outline-none transition focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-100"
             />
           </div>
@@ -283,7 +554,9 @@ function AdminOrdersPage() {
             }
             className="rounded-xl border border-slate-200 bg-slate-50 px-4 py-2.5 text-sm outline-none focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-100"
           >
-            <option value="all">All Order Statuses</option>
+            <option value="all">
+              {text.allOrderStatuses}
+            </option>
 
             {orderStatuses.map((status) => (
               <option key={status} value={status}>
@@ -299,7 +572,9 @@ function AdminOrdersPage() {
             }
             className="rounded-xl border border-slate-200 bg-slate-50 px-4 py-2.5 text-sm outline-none focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-100"
           >
-            <option value="all">All Payment Statuses</option>
+            <option value="all">
+              {text.allPaymentStatuses}
+            </option>
 
             {paymentStatuses.map((status) => (
               <option key={status} value={status}>
@@ -315,7 +590,9 @@ function AdminOrdersPage() {
             }
             className="rounded-xl border border-slate-200 bg-slate-50 px-4 py-2.5 text-sm outline-none focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-100"
           >
-            <option value="all">All Delivery Methods</option>
+            <option value="all">
+              {text.allDeliveryMethods}
+            </option>
 
             {deliveryMethods.map((method) => (
               <option key={method} value={method}>
@@ -330,12 +607,14 @@ function AdminOrdersPage() {
       <div className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
         <div className="border-b border-slate-200 px-5 py-4">
           <h2 className="font-semibold text-slate-900">
-            Marketplace Orders
+            {text.marketplaceOrders}
           </h2>
 
           <p className="mt-1 text-sm text-slate-500">
-            {filteredOrders.length} order
-            {filteredOrders.length === 1 ? '' : 's'} shown.
+            {filteredOrders.length}{' '}
+            {filteredOrders.length === 1
+              ? text.orderShown
+              : text.ordersShown}
           </p>
         </div>
 
@@ -346,12 +625,11 @@ function AdminOrdersPage() {
             </div>
 
             <h3 className="mt-5 text-lg font-semibold text-slate-900">
-              No orders found
+              {text.noOrdersFound}
             </h3>
 
             <p className="mt-2 max-w-md text-sm leading-6 text-slate-500">
-              There are currently no marketplace orders, or no
-              orders match your search and filters.
+              {text.noOrdersDescription}
             </p>
           </div>
         ) : (
@@ -359,15 +637,15 @@ function AdminOrdersPage() {
             <table className="min-w-[1200px] w-full">
               <thead className="bg-slate-50">
                 <tr className="text-left text-xs font-semibold uppercase tracking-wide text-slate-500">
-                  <th className="px-5 py-4">Order</th>
-                  <th className="px-5 py-4">Customer</th>
-                  <th className="px-5 py-4">Business</th>
-                  <th className="px-5 py-4">Total</th>
-                  <th className="px-5 py-4">Payment</th>
-                  <th className="px-5 py-4">Delivery</th>
-                  <th className="px-5 py-4">Status</th>
+                  <th className="px-5 py-4">{text.order}</th>
+                  <th className="px-5 py-4">{text.customer}</th>
+                  <th className="px-5 py-4">{text.business}</th>
+                  <th className="px-5 py-4">{text.total}</th>
+                  <th className="px-5 py-4">{text.payment}</th>
+                  <th className="px-5 py-4">{text.delivery}</th>
+                  <th className="px-5 py-4">{text.status}</th>
                   <th className="px-5 py-4 text-right">
-                    Actions
+                    {text.actions}
                   </th>
                 </tr>
               </thead>
@@ -391,18 +669,18 @@ function AdminOrdersPage() {
                     <td className="px-5 py-4">
                       <p className="text-sm font-medium text-slate-800">
                         {order.customerName ||
-                          'Not provided'}
+                          text.notProvided}
                       </p>
 
                       <p className="mt-1 text-xs text-slate-500">
                         {order.customerPhone ||
-                          'No phone'}
+                          text.noPhone}
                       </p>
                     </td>
 
                     <td className="px-5 py-4 text-sm text-slate-700">
                       {order.businessName ||
-                        'Not provided'}
+                        text.notProvided}
                     </td>
 
                     <td className="px-5 py-4 text-sm font-semibold text-slate-800">
@@ -413,6 +691,7 @@ function AdminOrdersPage() {
                       <StatusBadge
                         type="payment"
                         value={order.paymentStatus}
+                        formatStatus={formatStatus}
                       />
                     </td>
 
@@ -426,13 +705,14 @@ function AdminOrdersPage() {
                       <StatusBadge
                         type="order"
                         value={order.status}
+                        formatStatus={formatStatus}
                       />
                     </td>
 
                     <td className="px-5 py-4">
                       <div className="flex justify-end gap-2">
                         <ActionButton
-                          title="View order"
+                          title={text.viewOrder}
                           onClick={() =>
                             openDetailsModal(order)
                           }
@@ -441,7 +721,7 @@ function AdminOrdersPage() {
                         </ActionButton>
 
                         <ActionButton
-                          title="Edit order"
+                          title={text.editOrder}
                           onClick={() =>
                             openEditModal(order)
                           }
@@ -450,7 +730,7 @@ function AdminOrdersPage() {
                         </ActionButton>
 
                         <ActionButton
-                          title="Cancel order"
+                          title={text.cancelOrder}
                           onClick={() =>
                             openDeleteModal(order)
                           }
@@ -475,8 +755,9 @@ function AdminOrdersPage() {
       {/* Order details modal */}
       {showDetailsModal && selectedOrder && (
         <Modal
-          title={`Order #${selectedOrder.id}`}
+          title={`${text.order} #${selectedOrder.id}`}
           onClose={() => setShowDetailsModal(false)}
+          closeLabel={text.closeModal}
           wide
         >
           <div className="space-y-5">
@@ -484,7 +765,7 @@ function AdminOrdersPage() {
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
               <SummaryBox
                 icon={ClipboardList}
-                label="Order Status"
+                label={text.orderStatus}
                 value={formatStatus(
                   selectedOrder.status,
                 )}
@@ -492,7 +773,7 @@ function AdminOrdersPage() {
 
               <SummaryBox
                 icon={CheckCircle2}
-                label="Payment"
+                label={text.orderPayment}
                 value={formatStatus(
                   selectedOrder.paymentStatus,
                 )}
@@ -500,7 +781,7 @@ function AdminOrdersPage() {
 
               <SummaryBox
                 icon={Package}
-                label="Total"
+                label={text.total}
                 value={formatCurrency(
                   selectedOrder.total,
                 )}
@@ -511,58 +792,58 @@ function AdminOrdersPage() {
             <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
               <InfoSection
                 icon={User}
-                title="Customer"
+                title={text.customer}
               >
                 <DetailRow
-                  label="Name"
+                  label={text.name}
                   value={
                     selectedOrder.customerName ||
-                    'Not provided'
+                    text.notProvided
                   }
                 />
 
                 <DetailRow
-                  label="Phone"
+                  label={text.phone}
                   value={
                     selectedOrder.customerPhone ||
-                    'Not provided'
+                    text.notProvided
                   }
                 />
 
                 <DetailRow
-                  label="Address"
+                  label={text.address}
                   value={
                     selectedOrder.customerAddress ||
-                    'Not provided'
+                    text.notProvided
                   }
                 />
               </InfoSection>
 
               <InfoSection
                 icon={Store}
-                title="Business"
+                title={text.business}
               >
                 <DetailRow
-                  label="Business"
+                  label={text.business}
                   value={
                     selectedOrder.businessName ||
-                    'Not provided'
+                    text.notProvided
                   }
                 />
 
                 <DetailRow
-                  label="Phone"
+                  label={text.phone}
                   value={
                     selectedOrder.businessPhone ||
-                    'Not provided'
+                    text.notProvided
                   }
                 />
 
                 <DetailRow
-                  label="Address"
+                  label={text.address}
                   value={
                     selectedOrder.businessAddress ||
-                    'Not provided'
+                    text.notProvided
                   }
                 />
               </InfoSection>
@@ -571,29 +852,29 @@ function AdminOrdersPage() {
             {/* Delivery information */}
             <InfoSection
               icon={Bike}
-              title="Delivery Information"
+              title={text.deliveryInformation}
             >
               <DetailRow
-                label="Method"
+                label={text.method}
                 value={formatDeliveryMethod(
                   selectedOrder.deliveryMethod,
                 )}
               />
 
               <DetailRow
-                label="Rider"
+                label={text.rider}
                 value={
                   selectedOrder.riderName ||
-                  'Not assigned'
+                  text.notAssigned
                 }
               />
 
               <DetailRow
-                label="Delivery Address"
+                label={text.deliveryAddress}
                 value={
                   selectedOrder.deliveryAddress ||
                   selectedOrder.customerAddress ||
-                  'Not provided'
+                  text.notProvided
                 }
               />
             </InfoSection>
@@ -604,7 +885,7 @@ function AdminOrdersPage() {
                 <Package className="h-4 w-4 text-indigo-600" />
 
                 <h3 className="font-semibold text-slate-900">
-                  Order Items
+                  {text.orderItems}
                 </h3>
               </div>
 
@@ -623,11 +904,12 @@ function AdminOrdersPage() {
                           <div>
                             <p className="font-medium text-slate-800">
                               {item.name ||
-                                'Unnamed item'}
+                                text.unnamedItem}
                             </p>
 
                             <p className="mt-1 text-xs text-slate-500">
-                              Quantity: {item.quantity || 0}
+                              {text.quantity}:{' '}
+                              {item.quantity || 0}
                             </p>
                           </div>
 
@@ -641,7 +923,7 @@ function AdminOrdersPage() {
                 </div>
               ) : (
                 <div className="rounded-xl bg-slate-50 p-5 text-center text-sm text-slate-500">
-                  No order item details available.
+                  {text.noOrderItemDetails}
                 </div>
               )}
             </div>
@@ -649,7 +931,7 @@ function AdminOrdersPage() {
             {/* Date */}
             <div className="flex items-center gap-2 text-sm text-slate-500">
               <Clock3 className="h-4 w-4" />
-              Created:{' '}
+              {text.dateCreated}:{' '}
               {formatDate(selectedOrder.createdAt)}
             </div>
           </div>
@@ -659,8 +941,9 @@ function AdminOrdersPage() {
       {/* Edit order modal */}
       {showEditModal && selectedOrder && (
         <Modal
-          title={`Edit Order #${selectedOrder.id}`}
+          title={`${text.editOrderTitle} #${selectedOrder.id}`}
           onClose={() => setShowEditModal(false)}
+          closeLabel={text.closeModal}
         >
           <form
             onSubmit={handleEditSubmit}
@@ -668,7 +951,7 @@ function AdminOrdersPage() {
           >
             <div>
               <label className="mb-2 block text-sm font-medium text-slate-700">
-                Order Status
+                {text.orderStatus}
               </label>
 
               <select
@@ -687,7 +970,7 @@ function AdminOrdersPage() {
 
             <div>
               <label className="mb-2 block text-sm font-medium text-slate-700">
-                Payment Status
+                {text.paymentStatus}
               </label>
 
               <select
@@ -709,10 +992,7 @@ function AdminOrdersPage() {
                 <AlertCircle className="mt-0.5 h-5 w-5 shrink-0 text-amber-600" />
 
                 <p className="text-sm leading-6 text-amber-800">
-                  In the production version, order status and
-                  payment status must be validated by the
-                  backend. The admin interface should not
-                  independently mark an order as paid.
+                  {text.backendValidationNotice}
                 </p>
               </div>
             </div>
@@ -723,14 +1003,14 @@ function AdminOrdersPage() {
                 onClick={() => setShowEditModal(false)}
                 className="rounded-xl border border-slate-200 px-5 py-2.5 text-sm font-semibold text-slate-700 hover:bg-slate-50"
               >
-                Cancel
+                {text.cancel}
               </button>
 
               <button
                 type="submit"
                 className="rounded-xl bg-indigo-600 px-5 py-2.5 text-sm font-semibold text-white hover:bg-indigo-700"
               >
-                Save Changes
+                {text.saveChanges}
               </button>
             </div>
           </form>
@@ -740,8 +1020,9 @@ function AdminOrdersPage() {
       {/* Cancel order confirmation */}
       {showDeleteModal && orderToDelete && (
         <Modal
-          title="Cancel Order"
+          title={text.cancelOrderTitle}
           onClose={() => setShowDeleteModal(false)}
+          closeLabel={text.closeModal}
         >
           <div className="text-center">
             <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-red-50">
@@ -749,16 +1030,11 @@ function AdminOrdersPage() {
             </div>
 
             <h3 className="mt-4 text-lg font-bold text-slate-900">
-              Cancel order #{orderToDelete.id}?
+              {text.cancelOrderTitle} #{orderToDelete.id}?
             </h3>
 
             <p className="mx-auto mt-2 max-w-md text-sm leading-6 text-slate-500">
-              This will change the order status to
-              <span className="font-semibold text-red-600">
-                {' '}
-                Cancelled
-              </span>
-              .
+              {text.cancelConfirmation}
             </p>
 
             <div className="mt-6 flex flex-col-reverse gap-3 sm:flex-row sm:justify-center">
@@ -769,7 +1045,7 @@ function AdminOrdersPage() {
                 }
                 className="rounded-xl border border-slate-200 px-5 py-2.5 text-sm font-semibold text-slate-700 hover:bg-slate-50"
               >
-                Keep Order
+                {text.keepOrder}
               </button>
 
               <button
@@ -777,7 +1053,7 @@ function AdminOrdersPage() {
                 onClick={confirmCancelOrder}
                 className="rounded-xl bg-red-600 px-5 py-2.5 text-sm font-semibold text-white hover:bg-red-700"
               >
-                Cancel Order
+                {text.confirmCancelOrder}
               </button>
             </div>
           </div>
@@ -811,7 +1087,11 @@ function StatCard({ icon: Icon, label, value }) {
 }
 
 // Summary box
-function SummaryBox({ icon: Icon, label, value }) {
+function SummaryBox({
+  icon: Icon,
+  label,
+  value,
+}) {
   return (
     <div className="rounded-xl border border-slate-200 p-4">
       <div className="flex items-center gap-2 text-xs font-medium uppercase tracking-wide text-slate-400">
@@ -865,11 +1145,15 @@ function DetailRow({ label, value }) {
 }
 
 // Status badge
-function StatusBadge({ type, value }) {
+function StatusBadge({
+  type,
+  value,
+  formatStatus,
+}) {
   if (!value) {
     return (
       <span className="inline-flex rounded-full bg-slate-100 px-3 py-1 text-xs font-semibold text-slate-500">
-        Not available
+        {formatStatus(value)}
       </span>
     )
   }
@@ -946,6 +1230,7 @@ function Modal({
   title,
   children,
   onClose,
+  closeLabel,
   wide = false,
 }) {
   return (
@@ -963,80 +1248,17 @@ function Modal({
           <button
             type="button"
             onClick={onClose}
+            aria-label={closeLabel}
             className="flex h-9 w-9 items-center justify-center rounded-lg text-slate-400 hover:bg-slate-100 hover:text-slate-700"
           >
             <X className="h-5 w-5" />
           </button>
         </div>
 
-        <div className="p-5">
-          {children}
-        </div>
+        <div className="p-5">{children}</div>
       </div>
     </div>
   )
-}
-
-// Format an order status for display
-function formatStatus(value) {
-  if (!value) {
-    return 'Not provided'
-  }
-
-  return value
-    .replaceAll('_', ' ')
-    .replace(/\b\w/g, (letter) =>
-      letter.toUpperCase(),
-    )
-}
-
-// Format delivery method for display
-function formatDeliveryMethod(value) {
-  if (!value) {
-    return 'Not provided'
-  }
-
-  const labels = {
-    business_delivery: 'Business Delivery',
-    jamii_delivery: 'JamiiMarket Delivery',
-    pickup: 'Pickup',
-  }
-
-  return labels[value] || formatStatus(value)
-}
-
-// Format currency
-function formatCurrency(value) {
-  if (
-    value === undefined ||
-    value === null ||
-    value === ''
-  ) {
-    return 'Not provided'
-  }
-
-  const number = Number(value)
-
-  if (Number.isNaN(number)) {
-    return String(value)
-  }
-
-  return `TSh ${number.toLocaleString()}`
-}
-
-// Format order date
-function formatDate(value) {
-  if (!value) {
-    return 'Date not available'
-  }
-
-  const date = new Date(value)
-
-  if (Number.isNaN(date.getTime())) {
-    return 'Date not available'
-  }
-
-  return date.toLocaleString()
 }
 
 export default AdminOrdersPage

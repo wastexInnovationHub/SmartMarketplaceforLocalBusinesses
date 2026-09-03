@@ -12,7 +12,11 @@ import {
   AlertCircle,
 } from 'lucide-react'
 
+import { useLanguage } from '../../i18n/LanguageContext'
+
 function CustomerProfilePage() {
+  const { language } = useLanguage()
+  const isSwahili = language === 'sw'
 
   // Get the locally stored customer session
   const storedUser = localStorage.getItem('jamiiMarketUser')
@@ -36,6 +40,101 @@ function CustomerProfilePage() {
 
   const [saved, setSaved] = useState(false)
   const [message, setMessage] = useState('')
+
+  // Page text
+  const text = {
+    account: isSwahili ? 'Akaunti' : 'Account',
+    profile: isSwahili ? 'Wasifu' : 'Profile',
+    profileDescription: isSwahili
+      ? 'Simamia taarifa zako binafsi na usalama wa akaunti yako.'
+      : 'Manage your personal information and account security.',
+
+    customer: isSwahili ? 'Mteja' : 'Customer',
+    noEmail: isSwahili ? 'Hakuna barua pepe' : 'No email available',
+    changeProfilePhoto: isSwahili
+      ? 'Badilisha picha ya wasifu'
+      : 'Change profile photo',
+
+    accountSecurity: isSwahili
+      ? 'Usalama wa akaunti'
+      : 'Account security',
+    accountSecurityDescription: isSwahili
+      ? 'Hakikisha taarifa za akaunti yako ni sahihi na linda taarifa zako za kuingia.'
+      : 'Keep your account information accurate and protect your account credentials.',
+
+    profileStatus: isSwahili
+      ? 'Hali ya wasifu'
+      : 'Profile status',
+    activeAccount: isSwahili
+      ? 'Akaunti inayotumika'
+      : 'Active account',
+
+    personalInformation: isSwahili
+      ? 'Taarifa Binafsi'
+      : 'Personal Information',
+    personalInformationDescription: isSwahili
+      ? 'Sasisha taarifa zinazohusiana na akaunti yako ya JamiiMarket.'
+      : 'Update the information associated with your marketplace account.',
+
+    firstName: isSwahili ? 'Jina la kwanza' : 'First name',
+    lastName: isSwahili ? 'Jina la mwisho' : 'Last name',
+    emailAddress: isSwahili ? 'Barua pepe' : 'Email address',
+    phoneNumber: isSwahili ? 'Namba ya simu' : 'Phone number',
+    address: isSwahili ? 'Anwani' : 'Address',
+
+    enterFirstName: isSwahili
+      ? 'Ingiza jina lako la kwanza'
+      : 'Enter your first name',
+    enterLastName: isSwahili
+      ? 'Ingiza jina lako la mwisho'
+      : 'Enter your last name',
+    enterPhone: isSwahili
+      ? 'Ingiza namba yako ya simu'
+      : 'Enter your phone number',
+    enterAddress: isSwahili
+      ? 'Ingiza anwani yako ya kupelewa oda au anwani ya mawasiliano'
+      : 'Enter your delivery or contact address',
+
+    emailReadOnly: isSwahili
+      ? 'Barua pepe unayotumia kuingia haiwezi kubadilishwa hapa.'
+      : 'Your login email is read-only here.',
+
+    saveChanges: isSwahili
+      ? 'Hifadhi Mabadiliko'
+      : 'Save Changes',
+
+    profileSaved: isSwahili
+      ? 'Taarifa za wasifu wako zimehifadhiwa kwenye kifaa hiki.'
+      : 'Your profile information has been saved on this device.',
+
+    saveError: isSwahili
+      ? 'Imeshindikana kuhifadhi taarifa za wasifu wako.'
+      : 'Unable to save your profile information.',
+
+    passwordSecurity: isSwahili
+      ? 'Nenosiri na Usalama'
+      : 'Password & Security',
+    passwordSecurityDescription: isSwahili
+      ? 'Linda akaunti yako ya JamiiMarket.'
+      : 'Keep your JamiiMarket account protected.',
+
+    password: isSwahili ? 'Nenosiri' : 'Password',
+    passwordLater: isSwahili
+      ? 'Kubadilisha nenosiri kutaunganishwa na huduma ya usalama wa akaunti baadaye.'
+      : 'Password changes will be connected to the account security service later.',
+
+    changePassword: isSwahili
+      ? 'Badilisha Nenosiri'
+      : 'Change Password',
+
+    passwordMessage: isSwahili
+      ? 'Kubadilisha nenosiri kutapatikana baada ya kuunganisha API ya usalama wa akaunti.'
+      : 'Password management will be available when the account security API is connected.',
+
+    photoMessage: isSwahili
+      ? 'Kupakia picha ya wasifu kutapatikana baada ya kuunganisha hifadhi ya picha za wateja.'
+      : 'Profile photo upload will be available when customer media storage is connected.',
+  }
 
   // Keep profile fields synchronized with the stored customer
   useEffect(() => {
@@ -90,24 +189,24 @@ function CustomerProfilePage() {
         JSON.stringify(updatedUser)
       )
 
+      window.dispatchEvent(
+        new Event('jamiiMarketProfileUpdated')
+      )
+
       setSaved(true)
 
-      setMessage(
-        'Your profile information has been saved on this device.'
-      )
+      setMessage(text.profileSaved)
     } catch {
       setSaved(false)
 
-      setMessage(
-        'Unable to save your profile information.'
-      )
+      setMessage(text.saveError)
     }
   }
 
   // Display customer name
   const displayName =
     `${profile.firstName} ${profile.lastName}`.trim() ||
-    'Customer'
+    text.customer
 
   // Generate customer initials
   const initials =
@@ -120,19 +219,13 @@ function CustomerProfilePage() {
   // Password management will be connected to the backend later
   const handleChangePassword = () => {
     setSaved(false)
-
-    setMessage(
-      'Password management will be available when the account security API is connected.'
-    )
+    setMessage(text.passwordMessage)
   }
 
   // Profile photo upload will be connected later
   const handleProfilePhoto = () => {
     setSaved(false)
-
-    setMessage(
-      'Profile photo upload will be available when customer media storage is connected.'
-    )
+    setMessage(text.photoMessage)
   }
 
   return (
@@ -144,17 +237,17 @@ function CustomerProfilePage() {
         <div className="mx-auto max-w-7xl px-4 py-7 sm:px-6 lg:px-8">
 
           <p className="text-sm font-bold uppercase tracking-[0.15em] text-[#326460]">
-            Account
+            {text.account}
           </p>
 
           <div className="mt-2">
 
             <h2 className="text-3xl font-extrabold tracking-tight text-[#1B1C1C] sm:text-4xl">
-              Profile
+              {text.profile}
             </h2>
 
             <p className="mt-2 max-w-2xl text-sm leading-6 text-[#56423D] sm:text-base">
-              Manage your personal information and account security.
+              {text.profileDescription}
             </p>
 
           </div>
@@ -183,7 +276,7 @@ function CustomerProfilePage() {
                 <button
                   type="button"
                   onClick={handleProfilePhoto}
-                  aria-label="Change profile photo"
+                  aria-label={text.changeProfilePhoto}
                   className="absolute bottom-0 right-0 flex h-9 w-9 items-center justify-center rounded-full border-4 border-[#326460] bg-white text-[#326460] shadow-md transition hover:bg-[#F2F7F6]"
                 >
                   <Camera size={16} />
@@ -196,13 +289,13 @@ function CustomerProfilePage() {
               </h3>
 
               <p className="mt-1 break-all text-sm text-white/75">
-                {profile.email || 'No email available'}
+                {profile.email || text.noEmail}
               </p>
 
               <div className="mt-4 inline-flex rounded-full bg-white/15 px-4 py-1.5">
 
                 <span className="text-xs font-bold uppercase tracking-wider text-white">
-                  Customer
+                  {text.customer}
                 </span>
 
               </div>
@@ -221,12 +314,11 @@ function CustomerProfilePage() {
                 <div>
 
                   <p className="text-sm font-bold text-[#1B1C1C]">
-                    Account security
+                    {text.accountSecurity}
                   </p>
 
                   <p className="mt-1 text-xs leading-5 text-[#6B625F]">
-                    Keep your account information accurate and protect your
-                    account credentials.
+                    {text.accountSecurityDescription}
                   </p>
 
                 </div>
@@ -236,7 +328,7 @@ function CustomerProfilePage() {
               <div className="mt-5 border-t border-[#E8E3E1] pt-5">
 
                 <p className="text-xs font-bold uppercase tracking-wider text-[#8A726C]">
-                  Profile status
+                  {text.profileStatus}
                 </p>
 
                 <div className="mt-2 flex items-center gap-2">
@@ -244,7 +336,7 @@ function CustomerProfilePage() {
                   <span className="h-2.5 w-2.5 rounded-full bg-[#326460]" />
 
                   <span className="text-sm font-semibold text-[#326460]">
-                    Active account
+                    {text.activeAccount}
                   </span>
 
                 </div>
@@ -272,12 +364,11 @@ function CustomerProfilePage() {
                   <div>
 
                     <h3 className="text-xl font-bold text-[#1B1C1C]">
-                      Personal Information
+                      {text.personalInformation}
                     </h3>
 
                     <p className="mt-1 text-sm text-[#6B625F]">
-                      Update the information associated with your marketplace
-                      account.
+                      {text.personalInformationDescription}
                     </p>
 
                   </div>
@@ -300,7 +391,7 @@ function CustomerProfilePage() {
                       htmlFor="firstName"
                       className="mb-2 block text-sm font-bold text-[#1B1C1C]"
                     >
-                      First name
+                      {text.firstName}
                     </label>
 
                     <div className="relative">
@@ -316,7 +407,7 @@ function CustomerProfilePage() {
                         type="text"
                         value={profile.firstName}
                         onChange={handleChange}
-                        placeholder="Enter your first name"
+                        placeholder={text.enterFirstName}
                         autoComplete="given-name"
                         className="w-full rounded-xl border border-[#D9D3D0] bg-[#FCF9F8] py-3.5 pl-11 pr-4 text-sm text-[#1B1C1C] outline-none transition placeholder:text-[#9B918D] focus:border-[#A03F28] focus:ring-2 focus:ring-[#A03F28]/10"
                       />
@@ -332,7 +423,7 @@ function CustomerProfilePage() {
                       htmlFor="lastName"
                       className="mb-2 block text-sm font-bold text-[#1B1C1C]"
                     >
-                      Last name
+                      {text.lastName}
                     </label>
 
                     <div className="relative">
@@ -348,7 +439,7 @@ function CustomerProfilePage() {
                         type="text"
                         value={profile.lastName}
                         onChange={handleChange}
-                        placeholder="Enter your last name"
+                        placeholder={text.enterLastName}
                         autoComplete="family-name"
                         className="w-full rounded-xl border border-[#D9D3D0] bg-[#FCF9F8] py-3.5 pl-11 pr-4 text-sm text-[#1B1C1C] outline-none transition placeholder:text-[#9B918D] focus:border-[#A03F28] focus:ring-2 focus:ring-[#A03F28]/10"
                       />
@@ -364,7 +455,7 @@ function CustomerProfilePage() {
                       htmlFor="email"
                       className="mb-2 block text-sm font-bold text-[#1B1C1C]"
                     >
-                      Email address
+                      {text.emailAddress}
                     </label>
 
                     <div className="relative">
@@ -386,7 +477,7 @@ function CustomerProfilePage() {
                     </div>
 
                     <p className="mt-2 text-xs text-[#7A706C]">
-                      Your login email is read-only here.
+                      {text.emailReadOnly}
                     </p>
 
                   </div>
@@ -398,7 +489,7 @@ function CustomerProfilePage() {
                       htmlFor="phone"
                       className="mb-2 block text-sm font-bold text-[#1B1C1C]"
                     >
-                      Phone number
+                      {text.phoneNumber}
                     </label>
 
                     <div className="relative">
@@ -414,7 +505,7 @@ function CustomerProfilePage() {
                         type="tel"
                         value={profile.phone}
                         onChange={handleChange}
-                        placeholder="Enter your phone number"
+                        placeholder={text.enterPhone}
                         autoComplete="tel"
                         className="w-full rounded-xl border border-[#D9D3D0] bg-[#FCF9F8] py-3.5 pl-11 pr-4 text-sm text-[#1B1C1C] outline-none transition placeholder:text-[#9B918D] focus:border-[#A03F28] focus:ring-2 focus:ring-[#A03F28]/10"
                       />
@@ -430,7 +521,7 @@ function CustomerProfilePage() {
                       htmlFor="address"
                       className="mb-2 block text-sm font-bold text-[#1B1C1C]"
                     >
-                      Address
+                      {text.address}
                     </label>
 
                     <div className="relative">
@@ -446,7 +537,7 @@ function CustomerProfilePage() {
                         value={profile.address}
                         onChange={handleChange}
                         rows={4}
-                        placeholder="Enter your delivery or contact address"
+                        placeholder={text.enterAddress}
                         autoComplete="street-address"
                         className="w-full resize-none rounded-xl border border-[#D9D3D0] bg-[#FCF9F8] py-3.5 pl-11 pr-4 text-sm text-[#1B1C1C] outline-none transition placeholder:text-[#9B918D] focus:border-[#A03F28] focus:ring-2 focus:ring-[#A03F28]/10"
                       />
@@ -497,7 +588,7 @@ function CustomerProfilePage() {
                     className="inline-flex items-center justify-center gap-2 rounded-xl bg-[#A03F28] px-6 py-3.5 text-sm font-bold text-white shadow-sm transition hover:bg-[#812914] hover:shadow-md active:scale-[0.98]"
                   >
                     <Save size={17} />
-                    Save Changes
+                    {text.saveChanges}
                   </button>
 
                 </div>
@@ -520,11 +611,11 @@ function CustomerProfilePage() {
                   <div className="flex-1">
 
                     <h3 className="text-lg font-bold text-[#1B1C1C]">
-                      Password & Security
+                      {text.passwordSecurity}
                     </h3>
 
                     <p className="mt-1 text-sm leading-6 text-[#6B625F]">
-                      Keep your JamiiMarket account protected.
+                      {text.passwordSecurityDescription}
                     </p>
 
                   </div>
@@ -538,12 +629,11 @@ function CustomerProfilePage() {
                     <div>
 
                       <p className="text-sm font-bold text-[#1B1C1C]">
-                        Password
+                        {text.password}
                       </p>
 
                       <p className="mt-1 text-xs text-[#7A706C]">
-                        Password changes will be connected to the account
-                        security service later.
+                        {text.passwordLater}
                       </p>
 
                     </div>
@@ -553,7 +643,7 @@ function CustomerProfilePage() {
                       onClick={handleChangePassword}
                       className="inline-flex items-center justify-center gap-2 rounded-xl border border-[#A03F28] px-4 py-2.5 text-sm font-bold text-[#A03F28] transition hover:bg-[#FFF1ED]"
                     >
-                      Change Password
+                      {text.changePassword}
                     </button>
 
                   </div>

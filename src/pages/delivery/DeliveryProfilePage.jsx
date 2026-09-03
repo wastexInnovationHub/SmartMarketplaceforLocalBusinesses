@@ -10,7 +10,12 @@ import {
   User,
 } from 'lucide-react'
 
+import { useLanguage } from '../../i18n/LanguageContext'
+
 function DeliveryProfilePage() {
+  const { language } = useLanguage()
+  const isSwahili = language === 'sw'
+
   const [form, setForm] = useState({
     firstName: '',
     lastName: '',
@@ -20,6 +25,132 @@ function DeliveryProfilePage() {
   })
 
   const [message, setMessage] = useState('')
+
+  const text = {
+    accountManagement: isSwahili
+      ? 'Usimamizi wa Akaunti'
+      : 'Account Management',
+
+    deliveryProfile: isSwahili
+      ? 'Wasifu wa Msafirishaji'
+      : 'Delivery Profile',
+
+    description: isSwahili
+      ? 'Simamia taarifa zako binafsi na maelezo ya akaunti ya usafirishaji.'
+      : 'Manage your personal information and delivery account details.',
+
+    deliveryRider: isSwahili
+      ? 'Msafirishaji'
+      : 'Delivery Rider',
+
+    yourDeliveryProfile: isSwahili
+      ? 'Wasifu Wako wa Usafirishaji'
+      : 'Your Delivery Profile',
+
+    profileDescription: isSwahili
+      ? 'Weka taarifa zako katika hali sahihi kwa ajili ya usafirishaji wenye mafanikio.'
+      : 'Keep your information up to date for successful deliveries.',
+
+    personalInformation: isSwahili
+      ? 'Taarifa Binafsi'
+      : 'Personal Information',
+
+    personalInformationDescription: isSwahili
+      ? 'Sasisha taarifa zinazohusishwa na akaunti yako.'
+      : 'Update the information associated with your account.',
+
+    firstName: isSwahili
+      ? 'Jina la Kwanza'
+      : 'First Name',
+
+    lastName: isSwahili
+      ? 'Jina la Mwisho'
+      : 'Last Name',
+
+    emailAddress: isSwahili
+      ? 'Anwani ya Barua Pepe'
+      : 'Email Address',
+
+    phoneNumber: isSwahili
+      ? 'Namba ya Simu'
+      : 'Phone Number',
+
+    address: isSwahili
+      ? 'Anwani'
+      : 'Address',
+
+    enterFirstName: isSwahili
+      ? 'Ingiza jina la kwanza'
+      : 'Enter first name',
+
+    enterLastName: isSwahili
+      ? 'Ingiza jina la mwisho'
+      : 'Enter last name',
+
+    enterPhone: isSwahili
+      ? 'Ingiza namba ya simu'
+      : 'Enter phone number',
+
+    enterAddress: isSwahili
+      ? 'Ingiza anwani yako'
+      : 'Enter your address',
+
+    emailVerification: isSwahili
+      ? 'Mabadiliko ya barua pepe yatahitaji uthibitishaji wa akaunti kupitia backend.'
+      : 'Email changes will require backend account verification.',
+
+    saveChanges: isSwahili
+      ? 'Hifadhi Mabadiliko'
+      : 'Save Changes',
+
+    profileSaved: isSwahili
+      ? 'Taarifa za wasifu wako zimehifadhiwa kwenye kifaa hiki.'
+      : 'Your profile information has been saved on this device.',
+
+    accountSecurity: isSwahili
+      ? 'Usalama wa Akaunti'
+      : 'Account Security',
+
+    accountSecurityDescription: isSwahili
+      ? 'Mipangilio ya nenosiri na usalama wa akaunti itasimamiwa kupitia mfumo wa uthibitishaji.'
+      : 'Password and account security settings will be managed through the authentication system.',
+
+    changePassword: isSwahili
+      ? 'Badilisha Nenosiri'
+      : 'Change Password',
+
+    riderVerification: isSwahili
+      ? 'Uthibitishaji wa Msafirishaji'
+      : 'Rider Verification',
+
+    riderVerificationDescription: isSwahili
+      ? 'Uthibitishaji wa msafirishaji, taarifa za chombo cha usafiri, na nyaraka zinazohitajika zitaunganishwa na backend ya usafirishaji.'
+      : 'Rider verification, vehicle information, and required documents will be connected to the delivery backend.',
+
+    manageVerification: isSwahili
+      ? 'Simamia Uthibitishaji'
+      : 'Manage Verification',
+
+    deliveryAccount: isSwahili
+      ? 'Akaunti ya Usafirishaji'
+      : 'Delivery Account',
+
+    deliveryAccountDescription: isSwahili
+      ? 'Taarifa za wasifu wako kwa sasa zimehifadhiwa kwenye kifaa hiki. Backend itakapounganishwa, masasisho ya wasifu yatahifadhiwa kwa usalama kwenye akaunti yako ya JamiiMarket.'
+      : 'Your profile information is currently stored on this device. Once the backend is connected, profile updates will be securely saved to your JamiiMarket account.',
+
+    passwordManagement: isSwahili
+      ? 'Usimamizi wa nenosiri'
+      : 'Password management',
+
+    verificationManagement: isSwahili
+      ? 'Uthibitishaji wa msafirishaji'
+      : 'Rider verification',
+
+    backendComingSoon: isSwahili
+      ? 'kipengele hiki kitapatikana backend ya usafirishaji itakapounganishwa.'
+      : 'will be available when the delivery backend is connected.',
+  }
 
   useEffect(() => {
     const storedUser = localStorage.getItem('jamiiMarketUser')
@@ -87,30 +218,27 @@ function DeliveryProfilePage() {
       new Event('jamiiMarketProfileUpdated')
     )
 
-    setMessage('Your profile information has been saved on this device.')
+    setMessage(text.profileSaved)
   }
 
   const handleComingSoon = (feature) => {
-    setMessage(
-      `${feature} will be available when the delivery backend is connected.`
-    )
+    setMessage(`${feature} ${text.backendComingSoon}`)
   }
 
   return (
     <div className="space-y-6">
-
       {/* Page header */}
       <div>
         <p className="text-sm font-medium text-emerald-600">
-          Account Management
+          {text.accountManagement}
         </p>
 
         <h1 className="mt-1 text-2xl font-bold tracking-tight text-slate-900 sm:text-3xl">
-          Delivery Profile
+          {text.deliveryProfile}
         </h1>
 
         <p className="mt-2 max-w-2xl text-sm leading-6 text-slate-500 sm:text-base">
-          Manage your personal information and delivery account details.
+          {text.description}
         </p>
       </div>
 
@@ -128,27 +256,25 @@ function DeliveryProfilePage() {
 
       {/* Profile header card */}
       <section className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
-
         <div className="bg-gradient-to-r from-emerald-600 to-teal-600 px-5 py-8 sm:px-8">
           <div className="flex flex-col gap-5 sm:flex-row sm:items-center">
-
             <div className="flex h-20 w-20 shrink-0 items-center justify-center rounded-2xl bg-white text-emerald-600 shadow-lg">
               <Bike size={38} />
             </div>
 
             <div className="text-white">
               <p className="text-sm font-medium text-emerald-100">
-                Delivery Rider
+                {text.deliveryRider}
               </p>
 
               <h2 className="mt-1 text-2xl font-bold">
                 {form.firstName || form.lastName
                   ? `${form.firstName} ${form.lastName}`.trim()
-                  : 'Your Delivery Profile'}
+                  : text.yourDeliveryProfile}
               </h2>
 
               <p className="mt-1 text-sm text-emerald-100">
-                Keep your information up to date for successful deliveries.
+                {text.profileDescription}
               </p>
             </div>
           </div>
@@ -161,23 +287,22 @@ function DeliveryProfilePage() {
         >
           <div className="mb-6">
             <h3 className="text-lg font-bold text-slate-900">
-              Personal Information
+              {text.personalInformation}
             </h3>
 
             <p className="mt-1 text-sm text-slate-500">
-              Update the information associated with your account.
+              {text.personalInformationDescription}
             </p>
           </div>
 
           <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
-
             {/* First name */}
             <div>
               <label
                 htmlFor="firstName"
                 className="mb-2 block text-sm font-semibold text-slate-700"
               >
-                First Name
+                {text.firstName}
               </label>
 
               <div className="relative">
@@ -192,7 +317,7 @@ function DeliveryProfilePage() {
                   type="text"
                   value={form.firstName}
                   onChange={handleChange}
-                  placeholder="Enter first name"
+                  placeholder={text.enterFirstName}
                   className="w-full rounded-xl border border-slate-200 bg-slate-50 py-3 pl-10 pr-4 text-sm text-slate-900 outline-none transition focus:border-emerald-500 focus:bg-white focus:ring-2 focus:ring-emerald-100"
                 />
               </div>
@@ -204,7 +329,7 @@ function DeliveryProfilePage() {
                 htmlFor="lastName"
                 className="mb-2 block text-sm font-semibold text-slate-700"
               >
-                Last Name
+                {text.lastName}
               </label>
 
               <div className="relative">
@@ -219,7 +344,7 @@ function DeliveryProfilePage() {
                   type="text"
                   value={form.lastName}
                   onChange={handleChange}
-                  placeholder="Enter last name"
+                  placeholder={text.enterLastName}
                   className="w-full rounded-xl border border-slate-200 bg-slate-50 py-3 pl-10 pr-4 text-sm text-slate-900 outline-none transition focus:border-emerald-500 focus:bg-white focus:ring-2 focus:ring-emerald-100"
                 />
               </div>
@@ -231,7 +356,7 @@ function DeliveryProfilePage() {
                 htmlFor="email"
                 className="mb-2 block text-sm font-semibold text-slate-700"
               >
-                Email Address
+                {text.emailAddress}
               </label>
 
               <div className="relative">
@@ -251,7 +376,7 @@ function DeliveryProfilePage() {
               </div>
 
               <p className="mt-1.5 text-xs text-slate-400">
-                Email changes will require backend account verification.
+                {text.emailVerification}
               </p>
             </div>
 
@@ -261,7 +386,7 @@ function DeliveryProfilePage() {
                 htmlFor="phone"
                 className="mb-2 block text-sm font-semibold text-slate-700"
               >
-                Phone Number
+                {text.phoneNumber}
               </label>
 
               <div className="relative">
@@ -276,7 +401,7 @@ function DeliveryProfilePage() {
                   type="tel"
                   value={form.phone}
                   onChange={handleChange}
-                  placeholder="Enter phone number"
+                  placeholder={text.enterPhone}
                   className="w-full rounded-xl border border-slate-200 bg-slate-50 py-3 pl-10 pr-4 text-sm text-slate-900 outline-none transition focus:border-emerald-500 focus:bg-white focus:ring-2 focus:ring-emerald-100"
                 />
               </div>
@@ -288,7 +413,7 @@ function DeliveryProfilePage() {
                 htmlFor="address"
                 className="mb-2 block text-sm font-semibold text-slate-700"
               >
-                Address
+                {text.address}
               </label>
 
               <div className="relative">
@@ -303,7 +428,7 @@ function DeliveryProfilePage() {
                   rows={3}
                   value={form.address}
                   onChange={handleChange}
-                  placeholder="Enter your address"
+                  placeholder={text.enterAddress}
                   className="w-full resize-none rounded-xl border border-slate-200 bg-slate-50 py-3 pl-10 pr-4 text-sm text-slate-900 outline-none transition focus:border-emerald-500 focus:bg-white focus:ring-2 focus:ring-emerald-100"
                 />
               </div>
@@ -317,7 +442,7 @@ function DeliveryProfilePage() {
               className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-emerald-600 px-5 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-emerald-700 sm:w-auto"
             >
               <Save size={18} />
-              Save Changes
+              {text.saveChanges}
             </button>
           </div>
         </form>
@@ -325,7 +450,6 @@ function DeliveryProfilePage() {
 
       {/* Account settings */}
       <section className="grid grid-cols-1 gap-4 md:grid-cols-2">
-
         {/* Password */}
         <div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm sm:p-6">
           <div className="flex items-start gap-4">
@@ -335,20 +459,19 @@ function DeliveryProfilePage() {
 
             <div className="min-w-0">
               <h3 className="font-bold text-slate-900">
-                Account Security
+                {text.accountSecurity}
               </h3>
 
               <p className="mt-1 text-sm leading-6 text-slate-500">
-                Password and account security settings will be managed through
-                the authentication system.
+                {text.accountSecurityDescription}
               </p>
 
               <button
                 type="button"
-                onClick={() => handleComingSoon('Password management')}
+                onClick={() => handleComingSoon(text.passwordManagement)}
                 className="mt-4 rounded-xl border border-slate-200 px-4 py-2.5 text-sm font-semibold text-slate-700 transition hover:bg-slate-50"
               >
-                Change Password
+                {text.changePassword}
               </button>
             </div>
           </div>
@@ -363,25 +486,25 @@ function DeliveryProfilePage() {
 
             <div className="min-w-0">
               <h3 className="font-bold text-slate-900">
-                Rider Verification
+                {text.riderVerification}
               </h3>
 
               <p className="mt-1 text-sm leading-6 text-slate-500">
-                Rider verification, vehicle information, and required
-                documents will be connected to the delivery backend.
+                {text.riderVerificationDescription}
               </p>
 
               <button
                 type="button"
-                onClick={() => handleComingSoon('Rider verification')}
+                onClick={() =>
+                  handleComingSoon(text.verificationManagement)
+                }
                 className="mt-4 rounded-xl border border-slate-200 px-4 py-2.5 text-sm font-semibold text-slate-700 transition hover:bg-slate-50"
               >
-                Manage Verification
+                {text.manageVerification}
               </button>
             </div>
           </div>
         </div>
-
       </section>
 
       {/* Delivery account note */}
@@ -393,13 +516,11 @@ function DeliveryProfilePage() {
 
           <div>
             <h3 className="font-semibold text-emerald-900">
-              Delivery Account
+              {text.deliveryAccount}
             </h3>
 
             <p className="mt-1 text-sm leading-6 text-emerald-800">
-              Your profile information is currently stored on this device.
-              Once the backend is connected, profile updates will be securely
-              saved to your JamiiMarket account.
+              {text.deliveryAccountDescription}
             </p>
           </div>
         </div>

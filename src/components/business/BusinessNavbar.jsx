@@ -38,6 +38,10 @@ const pageTitles = {
     title: 'Business Profile',
     description: 'Manage your business information',
   },
+  '/business/settings': {
+    title: 'Business Settings',
+    description: 'Manage your business account preferences',
+  },
   '/business/notifications': {
     title: 'Notifications',
     description: 'Stay updated about your business activity',
@@ -79,6 +83,11 @@ function BusinessNavbar({ onMenuClick }) {
       )
     }
   }, [])
+
+  // Close dropdown when changing pages
+  useEffect(() => {
+    setProfileOpen(false)
+  }, [location.pathname])
 
   // Open business profile
   const handleProfile = () => {
@@ -131,7 +140,6 @@ function BusinessNavbar({ onMenuClick }) {
             {currentPage.description}
           </p>
         </div>
-
       </div>
 
       {/* Right side */}
@@ -268,7 +276,6 @@ function BusinessNavbar({ onMenuClick }) {
             </div>
           )}
         </div>
-
       </div>
     </header>
   )

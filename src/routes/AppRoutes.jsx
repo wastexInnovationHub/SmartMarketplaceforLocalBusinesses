@@ -1,4 +1,9 @@
-import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom'
+import {
+  BrowserRouter,
+  Navigate,
+  Route,
+  Routes,
+} from 'react-router-dom'
 
 // Public layout
 import PublicLayout from '../layouts/PublicLayout'
@@ -32,6 +37,7 @@ import BusinessDeliveryPage from '../pages/business/BusinessDeliveryPage'
 import BusinessPaymentsPage from '../pages/business/BusinessPaymentsPage'
 import BusinessProfilePage from '../pages/business/BusinessProfilePage'
 import BusinessNotificationsPage from '../pages/business/BusinessNotificationsPage'
+import BusinessSettingsPage from '../pages/business/BusinessSettingsPage'
 
 // Delivery layout
 import DeliveryDashboardLayout from '../layouts/delivery/DeliveryDashboardLayout'
@@ -180,6 +186,12 @@ function AppRoutes() {
           <Route
             path="notifications"
             element={<BusinessNotificationsPage />}
+          />
+
+          {/* Business settings */}
+          <Route
+            path="settings"
+            element={<BusinessSettingsPage />}
           />
         </Route>
 

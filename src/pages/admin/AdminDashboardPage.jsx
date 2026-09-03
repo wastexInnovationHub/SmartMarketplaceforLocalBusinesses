@@ -12,82 +12,239 @@ import {
   Users,
 } from 'lucide-react'
 import { Link } from 'react-router-dom'
+import { useLanguage } from '../../i18n/LanguageContext'
 
 function AdminDashboardPage() {
-  // Dashboard statistics are prepared for backend integration.
-  // No fake marketplace data is displayed.
+  const { language } = useLanguage()
+
+  const text =
+    language === 'sw'
+      ? {
+          administration: 'Usimamizi wa JamiiMarket',
+          dashboard: 'Dashibodi ya Admin',
+          dashboardDescription:
+            'Simamia watumiaji, biashara za ndani, bidhaa, huduma, oda, usafirishaji na malipo kutoka sehemu moja.',
+
+          marketplaceOverview: 'Muhtasari wa Soko',
+          marketplaceOverviewDescription:
+            'Takwimu halisi za soko zitaonekana hapa baada ya API ya backend kuunganishwa.',
+
+          totalUsers: 'Jumla ya Watumiaji',
+          usersDescription:
+            'Wateja, wamiliki wa biashara na wasafirishaji',
+
+          businesses: 'Biashara',
+          businessesDescription:
+            'Biashara za ndani zilizosajiliwa',
+
+          productsServices: 'Bidhaa na Huduma',
+          productsServicesDescription:
+            'Bidhaa na huduma zilizowekwa sokoni',
+
+          orders: 'Oda',
+          ordersDescription:
+            'Oda za soko',
+
+          marketplaceManagement: 'Usimamizi wa Soko',
+          marketplaceManagementDescription:
+            'Fikia maeneo makuu ya uendeshaji wa JamiiMarket.',
+
+          userManagement: 'Usimamizi wa Watumiaji',
+          userManagementDescription:
+            'Simamia wateja, wamiliki wa biashara na wasafirishaji waliosajiliwa JamiiMarket.',
+
+          businessManagement: 'Usimamizi wa Biashara',
+          businessManagementDescription:
+            'Kagua na simamia biashara za ndani zinazofanya kazi kwenye soko.',
+
+          productsServicesManagement: 'Bidhaa na Huduma',
+          productsServicesManagementDescription:
+            'Simamia bidhaa na huduma zilizowekwa na biashara zilizosajiliwa.',
+
+          orderManagement: 'Oda',
+          orderManagementDescription:
+            'Fuatilia oda za soko na hali ya usindikaji wake.',
+
+          deliveryManagement: 'Usafirishaji',
+          deliveryManagementDescription:
+            'Fuatilia shughuli za usafirishaji, ugawaji na hali ya usafirishaji.',
+
+          paymentManagement: 'Malipo',
+          paymentManagementDescription:
+            'Fuatilia miamala ya malipo na hali ya uthibitishaji wa malipo.',
+
+          recentActivity: 'Shughuli za Hivi Karibuni',
+          latestAdminActions: 'Hatua za hivi karibuni za kiutawala',
+          noActivity: 'Hakuna shughuli kwa sasa',
+          noActivityDescription:
+            'Shughuli za kiutawala zitaonekana hapa kumbukumbu halisi zitakapopokelewa kutoka backend.',
+          viewActivityLogs: 'Angalia Kumbukumbu za Shughuli',
+
+          administration: 'Usimamizi',
+          administrationDescription:
+            'Simamia wasimamizi wa mfumo na kumbukumbu za kiutawala.',
+
+          adminManagement: 'Usimamizi wa Admin',
+          adminManagementDescription:
+            'Simamia akaunti za wasimamizi',
+
+          activityLogs: 'Kumbukumbu za Shughuli',
+          activityLogsDescription:
+            'Kagua shughuli za wasimamizi',
+
+          adminPortal: 'Sehemu ya Admin',
+          frontendRunning: 'Muonekano wa mfumo unaendelea kufanya kazi',
+
+          backendPending: 'Muunganisho wa Backend Unasubiri',
+          backendDescription:
+            'Admin Portal kwa sasa inatumia hali ya frontend na browser storage pale inapohitajika. Watumiaji, biashara, bidhaa, huduma, oda, usafirishaji, malipo na kumbukumbu za shughuli zita loaded kutoka backend API itakapounganishwa.',
+        }
+      : {
+          administration: 'JamiiMarket Administration',
+          dashboard: 'Admin Dashboard',
+          dashboardDescription:
+            'Manage users, local businesses, products, services, orders, deliveries and payments from one central marketplace administration portal.',
+
+          marketplaceOverview: 'Marketplace Overview',
+          marketplaceOverviewDescription:
+            'Live marketplace statistics will appear here after the backend API is connected.',
+
+          totalUsers: 'Total Users',
+          usersDescription:
+            'Customers, business owners and delivery riders',
+
+          businesses: 'Businesses',
+          businessesDescription:
+            'Registered local businesses',
+
+          productsServices: 'Products & Services',
+          productsServicesDescription:
+            'Marketplace listings',
+
+          orders: 'Orders',
+          ordersDescription:
+            'Marketplace orders',
+
+          marketplaceManagement: 'Marketplace Management',
+          marketplaceManagementDescription:
+            'Access the main operational areas of JamiiMarket.',
+
+          userManagement: 'User Management',
+          userManagementDescription:
+            'Manage customers, business owners and delivery riders registered on JamiiMarket.',
+
+          businessManagement: 'Business Management',
+          businessManagementDescription:
+            'Review and manage local businesses operating on the marketplace.',
+
+          productsServicesManagement: 'Products & Services',
+          productsServicesManagementDescription:
+            'Manage products and services listed by registered businesses.',
+
+          orderManagement: 'Orders',
+          orderManagementDescription:
+            'Monitor marketplace orders and their processing status.',
+
+          deliveryManagement: 'Deliveries',
+          deliveryManagementDescription:
+            'Monitor delivery operations, assignments and delivery status.',
+
+          paymentManagement: 'Payments',
+          paymentManagementDescription:
+            'Monitor payment transactions and payment verification status.',
+
+          recentActivity: 'Recent Activity',
+          latestAdminActions: 'Latest administrative actions',
+          noActivity: 'No activity available',
+          noActivityDescription:
+            'Administrative activity will appear here when real activity logs are received from the backend.',
+          viewActivityLogs: 'View Activity Logs',
+
+          administration: 'Administration',
+          administrationDescription:
+            'Manage platform administrators and administrative records.',
+
+          adminManagement: 'Admin Management',
+          adminManagementDescription:
+            'Manage administrator accounts',
+
+          activityLogs: 'Activity Logs',
+          activityLogsDescription:
+            'Review administrator activity',
+
+          adminPortal: 'Admin Portal',
+          frontendRunning: 'Frontend interface is running',
+
+          backendPending: 'Backend connection pending',
+          backendDescription:
+            'The Admin Portal currently uses frontend state and browser storage where applicable. Real users, businesses, products, services, orders, deliveries, payments and activity records will be loaded from the backend when the API is integrated.',
+        }
+
   const statistics = [
     {
-      title: 'Total Users',
+      title: text.totalUsers,
       value: '0',
-      description: 'Customers, business owners and delivery riders',
+      description: text.usersDescription,
       icon: Users,
       href: '/admin/users',
     },
     {
-      title: 'Businesses',
+      title: text.businesses,
       value: '0',
-      description: 'Registered local businesses',
+      description: text.businessesDescription,
       icon: Building2,
       href: '/admin/businesses',
     },
     {
-      title: 'Products & Services',
+      title: text.productsServices,
       value: '0',
-      description: 'Marketplace listings',
+      description: text.productsServicesDescription,
       icon: Package,
       href: '/admin/products',
     },
     {
-      title: 'Orders',
+      title: text.orders,
       value: '0',
-      description: 'Marketplace orders',
+      description: text.ordersDescription,
       icon: ClipboardList,
       href: '/admin/orders',
     },
   ]
 
-  // Main marketplace management areas
   const managementCards = [
     {
-      title: 'User Management',
-      description:
-        'Manage customers, business owners and delivery riders registered on JamiiMarket.',
+      title: text.userManagement,
+      description: text.userManagementDescription,
       icon: Users,
       href: '/admin/users',
     },
     {
-      title: 'Business Management',
-      description:
-        'Review and manage local businesses operating on the marketplace.',
+      title: text.businessManagement,
+      description: text.businessManagementDescription,
       icon: Building2,
       href: '/admin/businesses',
     },
     {
-      title: 'Products & Services',
-      description:
-        'Manage products and services listed by registered businesses.',
+      title: text.productsServicesManagement,
+      description: text.productsServicesManagementDescription,
       icon: Package,
       href: '/admin/products',
     },
     {
-      title: 'Orders',
-      description:
-        'Monitor marketplace orders and their processing status.',
+      title: text.orderManagement,
+      description: text.orderManagementDescription,
       icon: ClipboardList,
       href: '/admin/orders',
     },
     {
-      title: 'Deliveries',
-      description:
-        'Monitor delivery operations, assignments and delivery status.',
+      title: text.deliveryManagement,
+      description: text.deliveryManagementDescription,
       icon: Bike,
       href: '/admin/deliveries',
     },
     {
-      title: 'Payments',
-      description:
-        'Monitor payment transactions and payment verification status.',
+      title: text.paymentManagement,
+      description: text.paymentManagementDescription,
       icon: CreditCard,
       href: '/admin/payments',
     },
@@ -101,17 +258,15 @@ function AdminDashboardPage() {
           <div className="max-w-3xl">
             <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-3 py-1.5 text-sm font-medium text-indigo-100">
               <ShieldCheck className="h-4 w-4" />
-              JamiiMarket Administration
+              {text.administration}
             </div>
 
             <h1 className="text-2xl font-bold tracking-tight sm:text-3xl lg:text-4xl">
-              Admin Dashboard
+              {text.dashboard}
             </h1>
 
             <p className="mt-3 max-w-2xl text-sm leading-6 text-indigo-100 sm:text-base">
-              Manage users, local businesses, products, services,
-              orders, deliveries and payments from one central
-              marketplace administration portal.
+              {text.dashboardDescription}
             </p>
           </div>
 
@@ -125,12 +280,11 @@ function AdminDashboardPage() {
       <section>
         <div className="mb-4">
           <h2 className="text-xl font-bold text-slate-900">
-            Marketplace Overview
+            {text.marketplaceOverview}
           </h2>
 
           <p className="mt-1 text-sm text-slate-500">
-            Live marketplace statistics will appear here after the
-            backend API is connected.
+            {text.marketplaceOverviewDescription}
           </p>
         </div>
 
@@ -173,11 +327,11 @@ function AdminDashboardPage() {
       <section>
         <div className="mb-4">
           <h2 className="text-xl font-bold text-slate-900">
-            Marketplace Management
+            {text.marketplaceManagement}
           </h2>
 
           <p className="mt-1 text-sm text-slate-500">
-            Access the main operational areas of JamiiMarket.
+            {text.marketplaceManagementDescription}
           </p>
         </div>
 
@@ -219,11 +373,11 @@ function AdminDashboardPage() {
           <div className="flex items-center justify-between">
             <div>
               <h2 className="font-bold text-slate-900">
-                Recent Activity
+                {text.recentActivity}
               </h2>
 
               <p className="mt-1 text-sm text-slate-500">
-                Latest administrative actions
+                {text.latestAdminActions}
               </p>
             </div>
 
@@ -236,19 +390,18 @@ function AdminDashboardPage() {
             <Activity className="mx-auto h-8 w-8 text-slate-300" />
 
             <h3 className="mt-3 font-medium text-slate-700">
-              No activity available
+              {text.noActivity}
             </h3>
 
             <p className="mx-auto mt-1 max-w-sm text-sm leading-5 text-slate-500">
-              Administrative activity will appear here when real
-              activity logs are received from the backend.
+              {text.noActivityDescription}
             </p>
 
             <Link
               to="/admin/activity"
               className="mt-4 inline-flex items-center gap-2 text-sm font-semibold text-indigo-600 transition hover:text-indigo-700"
             >
-              View Activity Logs
+              {text.viewActivityLogs}
               <ArrowRight className="h-4 w-4" />
             </Link>
           </div>
@@ -259,12 +412,11 @@ function AdminDashboardPage() {
           <div className="flex items-center justify-between">
             <div>
               <h2 className="font-bold text-slate-900">
-                Administration
+                {text.administration}
               </h2>
 
               <p className="mt-1 text-sm text-slate-500">
-                Manage platform administrators and administrative
-                records.
+                {text.administrationDescription}
               </p>
             </div>
 
@@ -284,11 +436,11 @@ function AdminDashboardPage() {
 
                 <div>
                   <p className="text-sm font-semibold text-slate-800">
-                    Admin Management
+                    {text.adminManagement}
                   </p>
 
                   <p className="mt-1 text-xs text-slate-500">
-                    Manage administrator accounts
+                    {text.adminManagementDescription}
                   </p>
                 </div>
               </div>
@@ -306,11 +458,11 @@ function AdminDashboardPage() {
 
                 <div>
                   <p className="text-sm font-semibold text-slate-800">
-                    Activity Logs
+                    {text.activityLogs}
                   </p>
 
                   <p className="mt-1 text-xs text-slate-500">
-                    Review administrator activity
+                    {text.activityLogsDescription}
                   </p>
                 </div>
               </div>
@@ -324,11 +476,11 @@ function AdminDashboardPage() {
 
               <div>
                 <p className="text-sm font-semibold text-emerald-800">
-                  Admin Portal
+                  {text.adminPortal}
                 </p>
 
                 <p className="mt-1 text-xs text-emerald-700">
-                  Frontend interface is running
+                  {text.frontendRunning}
                 </p>
               </div>
             </div>
@@ -343,15 +495,11 @@ function AdminDashboardPage() {
 
           <div>
             <h2 className="font-semibold text-amber-900">
-              Backend connection pending
+              {text.backendPending}
             </h2>
 
             <p className="mt-1 text-sm leading-6 text-amber-800">
-              The Admin Portal currently uses frontend state and
-              browser storage where applicable. Real users, businesses,
-              products, services, orders, deliveries, payments and
-              activity records will be loaded from the backend when
-              the API is integrated.
+              {text.backendDescription}
             </p>
           </div>
         </div>

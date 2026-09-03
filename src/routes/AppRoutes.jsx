@@ -51,6 +51,16 @@ import AdminDashboardLayout from '../layouts/admin/AdminDashboardLayout'
 
 // Admin pages
 import AdminDashboardPage from '../pages/admin/AdminDashboardPage'
+import AdminUsersPage from '../pages/admin/AdminUsersPage'
+import AdminBusinessesPage from '../pages/admin/AdminBusinessesPage'
+import AdminProductsPage from '../pages/admin/AdminProductsPage'
+import AdminOrdersPage from '../pages/admin/AdminOrdersPage'
+import AdminDeliveriesPage from '../pages/admin/AdminDeliveriesPage'
+import AdminPaymentsPage from '../pages/admin/AdminPaymentsPage'
+import AdminManagementPage from '../pages/admin/AdminManagementPage'
+import AdminActivityPage from '../pages/admin/AdminActivityPage'
+import AdminProfilePage from '../pages/admin/AdminProfilePage'
+import AdminSettingsPage from '../pages/admin/AdminSettingsPage'
 
 function AppRoutes() {
   return (
@@ -247,6 +257,56 @@ function AppRoutes() {
           <Route
             path="dashboard"
             element={<AdminDashboardPage />}
+          />
+
+          <Route
+            path="users"
+            element={<AdminUsersPage />}
+          />
+
+          <Route
+            path="businesses"
+            element={<AdminBusinessesPage />}
+          />
+
+          <Route
+            path="products"
+            element={<AdminProductsPage />}
+          />
+
+          <Route
+            path="orders"
+            element={<AdminOrdersPage />}
+          />
+
+          <Route
+            path="deliveries"
+            element={<AdminDeliveriesPage />}
+          />
+
+          <Route
+            path="payments"
+            element={<AdminPaymentsPage />}
+          />
+
+          <Route
+            path="management"
+            element={<AdminManagementPage />}
+          />
+
+          <Route
+            path="activity"
+            element={<AdminActivityPage />}
+          />
+
+          <Route
+            path="profile"
+            element={<AdminProfilePage />}
+          />
+
+          <Route
+            path="settings"
+            element={<AdminSettingsPage />}
           />
         </Route>
 

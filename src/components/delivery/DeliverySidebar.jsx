@@ -13,8 +13,57 @@ import {
   X,
 } from 'lucide-react'
 
+import { useLanguage } from '../../i18n/LanguageContext'
+
 function DeliverySidebar({ isOpen, onClose }) {
   const navigate = useNavigate()
+  const { language } = useLanguage()
+
+  const isSwahili = language === 'sw'
+
+  const text = {
+    deliveryPortal: isSwahili ? 'Sehemu ya Usafirishaji' : 'Delivery Portal',
+    deliveryRider: isSwahili ? 'Msafirishaji' : 'Delivery Rider',
+
+    dashboard: isSwahili ? 'Dashibodi' : 'Dashboard',
+    availableDeliveries: isSwahili
+      ? 'Usafirishaji Uliopo'
+      : 'Available Deliveries',
+    myDeliveries: isSwahili ? 'Usafirishaji Wangu' : 'My Deliveries',
+    activeDelivery: isSwahili
+      ? 'Usafirishaji Unaendelea'
+      : 'Active Delivery',
+
+    deliveryHistory: isSwahili
+      ? 'Historia ya Usafirishaji'
+      : 'Delivery History',
+    earnings: isSwahili ? 'Mapato' : 'Earnings',
+    notifications: isSwahili ? 'Arifa' : 'Notifications',
+
+    profile: isSwahili ? 'Wasifu' : 'Profile',
+
+    main: isSwahili ? 'Mkuu' : 'Main',
+    management: isSwahili ? 'Usimamizi' : 'Management',
+    account: isSwahili ? 'Akaunti' : 'Account',
+
+    logout: isSwahili ? 'Toka' : 'Logout',
+
+    closeDeliverySidebar: isSwahili
+      ? 'Funga menyu ya usafirishaji'
+      : 'Close delivery sidebar',
+
+    deliveryPortalSidebar: isSwahili
+      ? 'Menyu ya sehemu ya usafirishaji'
+      : 'Delivery portal sidebar',
+
+    goToDeliveryDashboard: isSwahili
+      ? 'Nenda kwenye dashibodi ya usafirishaji'
+      : 'Go to delivery dashboard',
+
+    closeDeliveryNavigation: isSwahili
+      ? 'Funga menyu ya usafirishaji'
+      : 'Close delivery sidebar',
+  }
 
   const [rider, setRider] = useState({
     firstName: '',
@@ -91,7 +140,7 @@ function DeliverySidebar({ isOpen, onClose }) {
   const riderName =
     [rider.firstName, rider.lastName]
       .filter(Boolean)
-      .join(' ') || 'Delivery Rider'
+      .join(' ') || text.deliveryRider
 
   const initials =
     `${rider.firstName?.charAt(0) || ''}${rider.lastName?.charAt(0) || ''}`
@@ -99,22 +148,22 @@ function DeliverySidebar({ isOpen, onClose }) {
 
   const mainMenu = [
     {
-      name: 'Dashboard',
+      name: text.dashboard,
       path: '/delivery/dashboard',
       icon: LayoutDashboard,
     },
     {
-      name: 'Available Deliveries',
+      name: text.availableDeliveries,
       path: '/delivery/available',
       icon: ClipboardList,
     },
     {
-      name: 'My Deliveries',
+      name: text.myDeliveries,
       path: '/delivery/my-deliveries',
       icon: Bike,
     },
     {
-      name: 'Active Delivery',
+      name: text.activeDelivery,
       path: '/delivery/active',
       icon: Map,
     },
@@ -122,17 +171,17 @@ function DeliverySidebar({ isOpen, onClose }) {
 
   const managementMenu = [
     {
-      name: 'Delivery History',
+      name: text.deliveryHistory,
       path: '/delivery/history',
       icon: History,
     },
     {
-      name: 'Earnings',
+      name: text.earnings,
       path: '/delivery/earnings',
       icon: DollarSign,
     },
     {
-      name: 'Notifications',
+      name: text.notifications,
       path: '/delivery/notifications',
       icon: Bell,
     },
@@ -140,7 +189,7 @@ function DeliverySidebar({ isOpen, onClose }) {
 
   const accountMenu = [
     {
-      name: 'Profile',
+      name: text.profile,
       path: '/delivery/profile',
       icon: User,
     },
@@ -172,7 +221,7 @@ function DeliverySidebar({ isOpen, onClose }) {
     return (
       <nav
         className="space-y-1"
-        aria-label="Delivery navigation"
+        aria-label={text.deliveryPortalSidebar}
       >
         {items.map((item) => {
           const Icon = item.icon
@@ -211,7 +260,7 @@ function DeliverySidebar({ isOpen, onClose }) {
       {/* Mobile backdrop */}
       <button
         type="button"
-        aria-label="Close delivery sidebar"
+        aria-label={text.closeDeliverySidebar}
         onClick={onClose}
         className={`fixed inset-0 z-40 bg-slate-950/40 backdrop-blur-[2px] transition-opacity duration-300 lg:hidden ${
           isOpen
@@ -222,7 +271,7 @@ function DeliverySidebar({ isOpen, onClose }) {
 
       {/* Delivery sidebar */}
       <aside
-        aria-label="Delivery portal sidebar"
+        aria-label={text.deliveryPortalSidebar}
         className={`fixed inset-y-0 left-0 z-50 flex w-[280px] max-w-[85vw] flex-col border-r border-slate-200 bg-white shadow-xl transition-transform duration-300 ease-in-out lg:w-72 lg:translate-x-0 lg:shadow-none ${
           isOpen
             ? 'translate-x-0'
@@ -237,14 +286,14 @@ function DeliverySidebar({ isOpen, onClose }) {
             type="button"
             onClick={handleDashboard}
             className="min-w-0 text-left"
-            aria-label="Go to delivery dashboard"
+            aria-label={text.goToDeliveryDashboard}
           >
             <h1 className="truncate text-xl font-bold tracking-tight text-slate-900">
               JamiiMarket
             </h1>
 
             <p className="mt-0.5 text-xs font-semibold text-emerald-600">
-              Delivery Portal
+              {text.deliveryPortal}
             </p>
           </button>
 
@@ -253,7 +302,7 @@ function DeliverySidebar({ isOpen, onClose }) {
             type="button"
             onClick={onClose}
             className="rounded-xl p-2 text-slate-500 transition hover:bg-slate-100 hover:text-slate-900 lg:hidden"
-            aria-label="Close delivery sidebar"
+            aria-label={text.closeDeliveryNavigation}
           >
             <X size={21} />
           </button>
@@ -289,7 +338,7 @@ function DeliverySidebar({ isOpen, onClose }) {
               </p>
 
               <p className="mt-0.5 truncate text-xs text-slate-500">
-                Delivery Rider
+                {text.deliveryRider}
               </p>
             </div>
           </button>
@@ -301,7 +350,7 @@ function DeliverySidebar({ isOpen, onClose }) {
           {/* Main menu */}
           <div className="mb-7">
             <p className="mb-3 px-3 text-[11px] font-bold uppercase tracking-[0.14em] text-slate-400">
-              Main
+              {text.main}
             </p>
 
             {renderMenu(mainMenu)}
@@ -310,7 +359,7 @@ function DeliverySidebar({ isOpen, onClose }) {
           {/* Management menu */}
           <div className="mb-7">
             <p className="mb-3 px-3 text-[11px] font-bold uppercase tracking-[0.14em] text-slate-400">
-              Management
+              {text.management}
             </p>
 
             {renderMenu(managementMenu)}
@@ -319,7 +368,7 @@ function DeliverySidebar({ isOpen, onClose }) {
           {/* Account menu */}
           <div>
             <p className="mb-3 px-3 text-[11px] font-bold uppercase tracking-[0.14em] text-slate-400">
-              Account
+              {text.account}
             </p>
 
             {renderMenu(accountMenu)}
@@ -341,7 +390,7 @@ function DeliverySidebar({ isOpen, onClose }) {
             />
 
             <span>
-              Logout
+              {text.logout}
             </span>
           </button>
         </div>

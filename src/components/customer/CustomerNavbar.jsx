@@ -10,12 +10,16 @@ import {
 } from 'lucide-react'
 
 import { Link, useNavigate } from 'react-router-dom'
+import { useLanguage } from '../../i18n/LanguageContext'
 
 function CustomerNavbar({ onMenuClick }) {
   const navigate = useNavigate()
   const menuRef = useRef(null)
 
   const [profileOpen, setProfileOpen] = useState(false)
+
+  // Global language system
+  const { language, changeLanguage, t } = useLanguage()
 
   // Load the customer profile from local storage
   const getStoredUser = () => {
@@ -100,6 +104,11 @@ function CustomerNavbar({ onMenuClick }) {
     }
   }, [])
 
+  // Close profile dropdown when the language changes
+  useEffect(() => {
+    setProfileOpen(false)
+  }, [language])
+
   // Logout customer
   const handleLogout = () => {
     localStorage.removeItem('token')
@@ -114,17 +123,20 @@ function CustomerNavbar({ onMenuClick }) {
 
   return (
     <header className="fixed left-0 right-0 top-0 z-30 h-20 border-b border-[#DDC0BA] bg-[#FCF9F8]/95 backdrop-blur lg:left-72">
-
       <div className="flex h-full items-center justify-between gap-4 px-4 sm:px-6 lg:px-8">
 
-        {/* Left */}
+        {/* Left side */}
         <div className="flex min-w-0 items-center gap-3">
 
           {/* Mobile menu */}
           <button
             type="button"
             onClick={onMenuClick}
-            aria-label="Open customer navigation"
+            aria-label={
+              language === 'sw'
+                ? 'Fungua menyu ya mteja'
+                : 'Open customer navigation'
+            }
             className="rounded-xl p-2.5 text-[#56423D] transition hover:bg-[#F0E7E4] hover:text-[#A03F28] lg:hidden"
           >
             <Menu size={22} />
@@ -135,43 +147,34 @@ function CustomerNavbar({ onMenuClick }) {
             to="/customer/dashboard"
             className="flex items-center gap-2 lg:hidden"
           >
-
             <div className="relative flex h-10 w-10 items-center justify-center rounded-xl bg-[#A03F28] text-white shadow-sm">
-
               <ShoppingBag size={20} />
 
               <span className="absolute -right-1 -top-1 flex h-4 w-4 items-center justify-center rounded-full border-2 border-[#FCF9F8] bg-[#326460]">
                 <span className="h-1.5 w-1.5 rounded-full bg-white" />
               </span>
-
             </div>
 
             <span className="hidden text-lg font-bold tracking-tight text-[#A03F28] sm:block">
               JamiiMarket
             </span>
-
           </Link>
 
           {/* Desktop page identity */}
           <div className="hidden lg:block">
-
             <p className="text-xs font-bold uppercase tracking-[0.14em] text-[#326460]">
-              Customer
+              {t('customer')}
             </p>
 
             <p className="text-sm font-semibold text-[#56423D]">
-              Marketplace
+              {t('marketplace')}
             </p>
-
           </div>
-
         </div>
 
         {/* Search */}
         <div className="hidden max-w-xl flex-1 md:block">
-
           <div className="relative">
-
             <Search
               size={18}
               className="absolute left-4 top-1/2 -translate-y-1/2 text-[#8A726C]"
@@ -179,30 +182,60 @@ function CustomerNavbar({ onMenuClick }) {
 
             <input
               type="search"
-              placeholder="Search JamiiMarket..."
+              placeholder={t('searchMarketplace')}
               className="w-full rounded-xl border border-[#DDC0BA] bg-white py-3 pl-11 pr-4 text-sm text-[#1B1C1C] outline-none transition placeholder:text-[#9B918D] focus:border-[#A03F28] focus:ring-2 focus:ring-[#A03F28]/10"
             />
-
           </div>
-
         </div>
 
-        {/* Right */}
+        {/* Right side */}
         <div className="flex shrink-0 items-center gap-2 sm:gap-3">
 
           {/* Mobile search */}
           <button
             type="button"
-            aria-label="Search marketplace"
+            aria-label={t('search')}
             className="rounded-xl p-2.5 text-[#56423D] transition hover:bg-[#F0E7E4] hover:text-[#A03F28] md:hidden"
           >
             <Search size={20} />
           </button>
 
+          {/* Language switcher */}
+          <div className="flex items-center rounded-xl border border-[#DDC0BA] bg-[#F7F2F0] p-1">
+            <button
+              type="button"
+              onClick={() => changeLanguage('sw')}
+              className={`rounded-lg px-2.5 py-1.5 text-xs font-bold transition ${
+                language === 'sw'
+                  ? 'bg-[#326460] text-white shadow-sm'
+                  : 'text-[#56423D] hover:bg-white'
+              }`}
+              aria-label="Kiswahili"
+              aria-pressed={language === 'sw'}
+            >
+              SW
+            </button>
+
+            <button
+              type="button"
+              onClick={() => changeLanguage('en')}
+              className={`rounded-lg px-2.5 py-1.5 text-xs font-bold transition ${
+                language === 'en'
+                  ? 'bg-[#A03F28] text-white shadow-sm'
+                  : 'text-[#56423D] hover:bg-white'
+              }`}
+              aria-label="English"
+              aria-pressed={language === 'en'}
+            >
+              ENG
+            </button>
+          </div>
+
           {/* Notifications */}
           <button
             type="button"
-            aria-label="Notifications"
+            onClick={() => navigate('/customer/notifications')}
+            aria-label={t('notifications')}
             className="relative rounded-xl p-2.5 text-[#56423D] transition hover:bg-[#F0E7E4] hover:text-[#A03F28]"
           >
             <Bell size={20} />
@@ -213,7 +246,6 @@ function CustomerNavbar({ onMenuClick }) {
             ref={menuRef}
             className="relative"
           >
-
             <button
               type="button"
               onClick={() => setProfileOpen((current) => !current)}
@@ -235,14 +267,14 @@ function CustomerNavbar({ onMenuClick }) {
                 </div>
               )}
 
+              {/* Customer name */}
               <div className="hidden text-left sm:block">
-
                 <p className="max-w-[140px] truncate text-sm font-semibold text-[#1B1C1C]">
                   {customerName}
                 </p>
-
               </div>
 
+              {/* Dropdown arrow */}
               <ChevronDown
                 size={16}
                 className={`
@@ -250,7 +282,6 @@ function CustomerNavbar({ onMenuClick }) {
                   ${profileOpen ? 'rotate-180' : ''}
                 `}
               />
-
             </button>
 
             {/* Profile dropdown */}
@@ -262,7 +293,6 @@ function CustomerNavbar({ onMenuClick }) {
 
                 {/* Profile summary */}
                 <div className="border-b border-[#E8E3E1] px-4 py-4">
-
                   <div className="flex items-center gap-3">
 
                     {user?.profileImage ? (
@@ -278,24 +308,22 @@ function CustomerNavbar({ onMenuClick }) {
                     )}
 
                     <div className="min-w-0">
-
                       <p className="truncate text-sm font-bold text-[#1B1C1C]">
                         {customerName}
                       </p>
 
                       <p className="text-xs text-[#7A706C]">
-                        Customer account
+                        {t('customerAccount')}
                       </p>
-
                     </div>
 
                   </div>
-
                 </div>
 
-                {/* Profile */}
+                {/* Dropdown actions */}
                 <div className="p-2">
 
+                  {/* Profile */}
                   <button
                     type="button"
                     onClick={() => {
@@ -305,11 +333,24 @@ function CustomerNavbar({ onMenuClick }) {
                     className="flex w-full items-center gap-3 rounded-xl px-3 py-3 text-sm font-semibold text-[#56423D] transition hover:bg-[#FCF9F8] hover:text-[#A03F28]"
                     role="menuitem"
                   >
-
                     <UserRound size={18} />
 
-                    <span>Profile</span>
+                    <span>{t('profile')}</span>
+                  </button>
 
+                  {/* Settings */}
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setProfileOpen(false)
+                      navigate('/customer/settings')
+                    }}
+                    className="flex w-full items-center gap-3 rounded-xl px-3 py-3 text-sm font-semibold text-[#56423D] transition hover:bg-[#FCF9F8] hover:text-[#A03F28]"
+                    role="menuitem"
+                  >
+                    <span className="text-lg">⚙</span>
+
+                    <span>{t('settings')}</span>
                   </button>
 
                   {/* Logout */}
@@ -319,24 +360,17 @@ function CustomerNavbar({ onMenuClick }) {
                     className="flex w-full items-center gap-3 rounded-xl px-3 py-3 text-sm font-semibold text-[#A03F28] transition hover:bg-[#FFF0EB]"
                     role="menuitem"
                   >
-
                     <LogOut size={18} />
 
-                    <span>Logout</span>
-
+                    <span>{t('logout')}</span>
                   </button>
 
                 </div>
-
               </div>
             )}
-
           </div>
-
         </div>
-
       </div>
-
     </header>
   )
 }

@@ -12,39 +12,40 @@ import {
   useNavigate,
 } from 'react-router-dom'
 import { useEffect, useRef, useState } from 'react'
+import { useLanguage } from '../../i18n/LanguageContext'
 
 const pageTitles = {
   '/business/dashboard': {
-    title: 'Business Dashboard',
-    description: 'Manage your JamiiMarket business',
+    title: 'businessDashboard',
+    description: 'manageBusiness',
   },
   '/business/products': {
-    title: 'Products',
-    description: 'Manage your products and catalogue',
+    title: 'products',
+    description: 'manageProducts',
   },
   '/business/orders': {
-    title: 'Orders',
-    description: 'Manage customer orders',
+    title: 'orders',
+    description: 'manageOrders',
   },
   '/business/delivery': {
-    title: 'Delivery',
-    description: 'Manage pickup and delivery',
+    title: 'delivery',
+    description: 'manageDelivery',
   },
   '/business/payments': {
-    title: 'Payments',
-    description: 'Monitor business payments',
+    title: 'payments',
+    description: 'monitorPayments',
   },
   '/business/profile': {
-    title: 'Business Profile',
-    description: 'Manage your business information',
+    title: 'businessProfile',
+    description: 'manageBusinessInformation',
   },
   '/business/settings': {
-    title: 'Business Settings',
-    description: 'Manage your business account preferences',
+    title: 'businessSettings',
+    description: 'manageAccountPreferences',
   },
   '/business/notifications': {
-    title: 'Notifications',
-    description: 'Stay updated about your business activity',
+    title: 'notifications',
+    description: 'stayUpdated',
   },
 }
 
@@ -55,6 +56,12 @@ function BusinessNavbar({ onMenuClick }) {
   const [profileOpen, setProfileOpen] = useState(false)
 
   const profileRef = useRef(null)
+
+  const {
+    language,
+    changeLanguage,
+    t,
+  } = useLanguage()
 
   const currentPage =
     pageTitles[location.pathname] ||
@@ -124,8 +131,12 @@ function BusinessNavbar({ onMenuClick }) {
           type="button"
           onClick={onMenuClick}
           className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg text-gray-600 transition hover:bg-gray-100 hover:text-[#326460] focus:outline-none focus:ring-2 focus:ring-[#326460]/20 lg:hidden"
-          aria-label="Open business navigation menu"
-          title="Open menu"
+          aria-label={
+            language === 'sw'
+              ? 'Fungua menyu ya biashara'
+              : 'Open business navigation menu'
+          }
+          title={language === 'sw' ? 'Fungua menyu' : 'Open menu'}
         >
           <Menu size={22} />
         </button>
@@ -133,17 +144,50 @@ function BusinessNavbar({ onMenuClick }) {
         {/* Page title */}
         <div className="min-w-0">
           <h2 className="truncate text-base font-semibold text-[#1B1C1C] sm:text-lg">
-            {currentPage.title}
+            {t(currentPage.title)}
           </h2>
 
           <p className="hidden truncate text-xs text-gray-500 sm:block">
-            {currentPage.description}
+            {t(currentPage.description)}
           </p>
         </div>
       </div>
 
       {/* Right side */}
       <div className="flex shrink-0 items-center gap-2 sm:gap-3">
+
+        {/* Language switcher */}
+        <div className="flex items-center rounded-xl border border-gray-200 bg-gray-50 p-1">
+
+          <button
+            type="button"
+            onClick={() => changeLanguage('sw')}
+            className={`rounded-lg px-2.5 py-1.5 text-xs font-bold transition ${
+              language === 'sw'
+                ? 'bg-[#326460] text-white shadow-sm'
+                : 'text-gray-600 hover:bg-white'
+            }`}
+            aria-label="Kiswahili"
+            aria-pressed={language === 'sw'}
+          >
+            SW
+          </button>
+
+          <button
+            type="button"
+            onClick={() => changeLanguage('en')}
+            className={`rounded-lg px-2.5 py-1.5 text-xs font-bold transition ${
+              language === 'en'
+                ? 'bg-[#326460] text-white shadow-sm'
+                : 'text-gray-600 hover:bg-white'
+            }`}
+            aria-label="English"
+            aria-pressed={language === 'en'}
+          >
+            ENG
+          </button>
+
+        </div>
 
         {/* Notifications */}
         <NavLink
@@ -155,8 +199,8 @@ function BusinessNavbar({ onMenuClick }) {
                 : 'text-gray-600 hover:bg-gray-100 hover:text-[#326460]'
             }`
           }
-          aria-label="Open notifications"
-          title="Notifications"
+          aria-label={t('notifications')}
+          title={t('notifications')}
         >
           <Bell size={20} />
 
@@ -175,6 +219,7 @@ function BusinessNavbar({ onMenuClick }) {
           ref={profileRef}
           className="relative"
         >
+
           {/* Profile button */}
           <button
             type="button"
@@ -188,9 +233,10 @@ function BusinessNavbar({ onMenuClick }) {
             }`}
             aria-expanded={profileOpen}
             aria-haspopup="menu"
-            aria-label="Open business account menu"
-            title="Business Account"
+            aria-label={t('businessAccount')}
+            title={t('businessAccount')}
           >
+
             {/* Avatar */}
             <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-[#326460] text-white">
               <User size={18} />
@@ -199,11 +245,11 @@ function BusinessNavbar({ onMenuClick }) {
             {/* Business information */}
             <div className="hidden min-w-0 text-left md:block">
               <p className="max-w-32 truncate text-sm font-semibold text-[#1B1C1C]">
-                My Business
+                {t('myBusiness')}
               </p>
 
               <p className="text-xs text-gray-500">
-                Business Account
+                {t('businessAccount')}
               </p>
             </div>
 
@@ -224,14 +270,15 @@ function BusinessNavbar({ onMenuClick }) {
               className="absolute right-0 top-full mt-2 w-56 overflow-hidden rounded-xl border border-gray-200 bg-white shadow-lg"
               role="menu"
             >
+
               {/* Account header */}
               <div className="border-b border-gray-100 px-4 py-3">
                 <p className="text-sm font-semibold text-[#1B1C1C]">
-                  Business Account
+                  {t('businessAccount')}
                 </p>
 
                 <p className="mt-0.5 text-xs text-gray-500">
-                  Manage your account
+                  {t('manageYourAccount')}
                 </p>
               </div>
 
@@ -244,7 +291,7 @@ function BusinessNavbar({ onMenuClick }) {
               >
                 <User size={18} />
 
-                <span>Profile</span>
+                <span>{t('profile')}</span>
               </button>
 
               {/* Settings */}
@@ -256,7 +303,7 @@ function BusinessNavbar({ onMenuClick }) {
               >
                 <Settings size={18} />
 
-                <span>Settings</span>
+                <span>{t('settings')}</span>
               </button>
 
               {/* Divider */}
@@ -271,8 +318,9 @@ function BusinessNavbar({ onMenuClick }) {
               >
                 <LogOut size={18} />
 
-                <span>Logout</span>
+                <span>{t('logout')}</span>
               </button>
+
             </div>
           )}
         </div>

@@ -7,6 +7,7 @@ import {
   User,
 } from 'lucide-react'
 import { useNavigate } from 'react-router-dom'
+import { useLanguage } from '../../i18n/LanguageContext'
 
 function AdminNavbar({ onMenuClick }) {
   const navigate = useNavigate()
@@ -14,6 +15,12 @@ function AdminNavbar({ onMenuClick }) {
 
   const [user, setUser] = useState(null)
   const [profileOpen, setProfileOpen] = useState(false)
+
+  const {
+    language,
+    changeLanguage,
+    t,
+  } = useLanguage()
 
   // Load the current administrator account
   const loadUser = () => {
@@ -98,6 +105,11 @@ function AdminNavbar({ onMenuClick }) {
     }
   }, [])
 
+  // Close dropdown when language changes
+  useEffect(() => {
+    setProfileOpen(false)
+  }, [language])
+
   // Build the administrator display name
   const adminName =
     user?.firstName || user?.lastName
@@ -140,42 +152,88 @@ function AdminNavbar({ onMenuClick }) {
   return (
     <header className="fixed left-0 right-0 top-0 z-30 h-20 border-b border-slate-200 bg-white lg:left-72">
       <div className="flex h-full items-center justify-between px-4 sm:px-6 lg:px-8">
+
         {/* Left side */}
         <div className="flex min-w-0 items-center gap-3">
+
           {/* Mobile menu */}
           <button
             type="button"
             onClick={onMenuClick}
             className="rounded-xl p-2 text-slate-600 transition hover:bg-slate-100 focus:outline-none focus:ring-2 focus:ring-indigo-500 lg:hidden"
-            aria-label="Open admin sidebar"
+            aria-label={
+              language === 'sw'
+                ? 'Fungua menyu ya msimamizi'
+                : 'Open admin sidebar'
+            }
+            title={
+              language === 'sw'
+                ? 'Fungua menyu'
+                : 'Open menu'
+            }
           >
             <Menu className="h-6 w-6" />
           </button>
 
+          {/* Administration heading */}
           <button
             type="button"
             onClick={() => navigate('/admin/dashboard')}
             className="min-w-0 text-left"
           >
             <p className="truncate text-sm font-semibold text-slate-900">
-              Administration
+              {t('administration')}
             </p>
 
             <p className="hidden truncate text-xs text-slate-500 sm:block">
-              Manage your JamiiMarket platform
+              {t('managePlatform')}
             </p>
           </button>
         </div>
 
         {/* Right side */}
         <div className="flex items-center gap-2 sm:gap-3">
+
+          {/* Language switcher */}
+          <div className="flex items-center rounded-xl border border-slate-200 bg-slate-50 p-1">
+
+            <button
+              type="button"
+              onClick={() => changeLanguage('sw')}
+              className={`rounded-lg px-2.5 py-1.5 text-xs font-bold transition ${
+                language === 'sw'
+                  ? 'bg-indigo-600 text-white shadow-sm'
+                  : 'text-slate-600 hover:bg-white'
+              }`}
+              aria-label="Kiswahili"
+              aria-pressed={language === 'sw'}
+            >
+              SW
+            </button>
+
+            <button
+              type="button"
+              onClick={() => changeLanguage('en')}
+              className={`rounded-lg px-2.5 py-1.5 text-xs font-bold transition ${
+                language === 'en'
+                  ? 'bg-indigo-600 text-white shadow-sm'
+                  : 'text-slate-600 hover:bg-white'
+              }`}
+              aria-label="English"
+              aria-pressed={language === 'en'}
+            >
+              ENG
+            </button>
+
+          </div>
+
           {/* Notifications */}
           <button
             type="button"
             onClick={() => navigate('/admin/activity')}
             className="relative rounded-xl p-2.5 text-slate-600 transition hover:bg-slate-100 focus:outline-none focus:ring-2 focus:ring-indigo-500"
-            aria-label="Open activity logs"
-            title="Activity Logs"
+            aria-label={t('activityLogs')}
+            title={t('activityLogs')}
           >
             <Bell className="h-5 w-5" />
           </button>
@@ -185,16 +243,19 @@ function AdminNavbar({ onMenuClick }) {
             ref={dropdownRef}
             className="relative"
           >
+
+            {/* Profile button */}
             <button
               type="button"
               onClick={() =>
                 setProfileOpen((current) => !current)
               }
               className="flex items-center gap-2 rounded-xl p-1.5 transition hover:bg-slate-100 focus:outline-none focus:ring-2 focus:ring-indigo-500"
-              aria-label="Open administrator profile menu"
+              aria-label={t('administratorProfileMenu')}
               aria-expanded={profileOpen}
               aria-haspopup="menu"
             >
+
               {/* Profile image */}
               {user?.profileImage ? (
                 <img
@@ -215,7 +276,7 @@ function AdminNavbar({ onMenuClick }) {
                 </p>
 
                 <p className="truncate text-xs text-slate-500">
-                  Administrator
+                  {t('administrator')}
                 </p>
               </div>
             </button>
@@ -226,9 +287,11 @@ function AdminNavbar({ onMenuClick }) {
                 className="absolute right-0 mt-2 w-60 overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-xl"
                 role="menu"
               >
+
                 {/* Account header */}
                 <div className="border-b border-slate-100 px-4 py-4">
                   <div className="flex items-center gap-3">
+
                     {user?.profileImage ? (
                       <img
                         src={user.profileImage}
@@ -247,9 +310,10 @@ function AdminNavbar({ onMenuClick }) {
                       </p>
 
                       <p className="mt-1 truncate text-xs text-slate-500">
-                        {user?.email || 'Administrator account'}
+                        {user?.email || t('administratorAccount')}
                       </p>
                     </div>
+
                   </div>
                 </div>
 
@@ -261,7 +325,8 @@ function AdminNavbar({ onMenuClick }) {
                   role="menuitem"
                 >
                   <User className="h-5 w-5 text-slate-500" />
-                  <span>Profile</span>
+
+                  <span>{t('profile')}</span>
                 </button>
 
                 {/* Settings */}
@@ -272,7 +337,8 @@ function AdminNavbar({ onMenuClick }) {
                   role="menuitem"
                 >
                   <Settings className="h-5 w-5 text-slate-500" />
-                  <span>Settings</span>
+
+                  <span>{t('settings')}</span>
                 </button>
 
                 {/* Logout */}
@@ -284,9 +350,11 @@ function AdminNavbar({ onMenuClick }) {
                     role="menuitem"
                   >
                     <LogOut className="h-5 w-5" />
-                    <span>Logout</span>
+
+                    <span>{t('logout')}</span>
                   </button>
                 </div>
+
               </div>
             )}
           </div>

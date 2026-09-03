@@ -1,4 +1,3 @@
-
 import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import {
@@ -9,9 +8,11 @@ import {
   Mail,
   ShoppingBag,
 } from 'lucide-react'
+import { useLanguage } from '../../i18n/LanguageContext'
 
 function LoginPage() {
   const navigate = useNavigate()
+  const { language, changeLanguage } = useLanguage()
 
   const [showPassword, setShowPassword] = useState(false)
   const [email, setEmail] = useState('')
@@ -49,7 +50,7 @@ function LoginPage() {
       },
 
       'admin@smflb.com': {
-        password: 'Admin@123',
+        password: 'Admi@123',
         role: 'admin',
         dashboard: '/admin/dashboard',
       },
@@ -85,13 +86,40 @@ function LoginPage() {
       <div className="mx-auto max-w-6xl">
 
         {/* Logo */}
-        <div className="mb-8">
+        <div className="mb-8 flex items-center justify-between">
           <Link
             to="/"
             className="text-2xl font-bold tracking-tight text-[#A03F28]"
           >
             JamiiMarket
           </Link>
+
+          {/* Language */}
+          <div className="flex items-center rounded-lg bg-stone-100 p-1">
+            <button
+              type="button"
+              onClick={() => changeLanguage('en')}
+              className={`rounded-md px-3 py-1.5 text-xs font-bold transition ${
+                language === 'en'
+                  ? 'bg-white text-[#A03F28] shadow-sm'
+                  : 'text-stone-500 hover:text-stone-700'
+              }`}
+            >
+              EN
+            </button>
+
+            <button
+              type="button"
+              onClick={() => changeLanguage('sw')}
+              className={`rounded-md px-3 py-1.5 text-xs font-bold transition ${
+                language === 'sw'
+                  ? 'bg-white text-[#A03F28] shadow-sm'
+                  : 'text-stone-500 hover:text-stone-700'
+              }`}
+            >
+              SW
+            </button>
+          </div>
         </div>
 
         <div className="grid overflow-hidden rounded-[2rem] border border-[#DDC0BA] bg-white shadow-[0_20px_60px_-20px_rgba(160,63,40,0.18)] lg:grid-cols-[0.85fr_1.15fr]">

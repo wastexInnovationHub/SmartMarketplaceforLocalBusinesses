@@ -5,26 +5,33 @@ import {
   MapPin,
   ArrowRight,
 } from 'lucide-react'
+import { useLanguage } from '../../i18n/LanguageContext'
 
 function BusinessesSection() {
+  const { language } = useLanguage()
+  const isSwahili = language === 'sw'
+
   const businessTypes = [
     {
       icon: Store,
-      title: 'Local Shops',
-      description:
-        'Discover products offered by local shops and businesses through one marketplace.',
+      title: isSwahili ? 'Maduka ya Ndani' : 'Local Shops',
+      description: isSwahili
+        ? 'Gundua bidhaa zinazotolewa na maduka na biashara za ndani kupitia soko moja.'
+        : 'Discover products offered by local shops and businesses through one marketplace.',
     },
     {
       icon: Utensils,
-      title: 'Food Vendors',
-      description:
-        'Find food vendors and explore the food products they make available.',
+      title: isSwahili ? 'Wauzaji wa Chakula' : 'Food Vendors',
+      description: isSwahili
+        ? 'Pata wauzaji wa chakula na chunguza bidhaa za chakula wanazotoa.'
+        : 'Find food vendors and explore the food products they make available.',
     },
     {
       icon: ShoppingBag,
-      title: 'Products',
-      description:
-        'Browse available products and choose items based on what local businesses offer.',
+      title: isSwahili ? 'Bidhaa' : 'Products',
+      description: isSwahili
+        ? 'Vinjari bidhaa zinazopatikana na uchague kulingana na kile kinachotolewa na biashara za ndani.'
+        : 'Browse available products and choose items based on what local businesses offer.',
     },
   ]
 
@@ -35,27 +42,30 @@ function BusinessesSection() {
     >
       <div className="mx-auto max-w-7xl">
         <div className="grid items-center gap-12 lg:grid-cols-[0.9fr_1.1fr]">
+
           {/* Introduction */}
           <div>
             <span className="text-sm font-semibold uppercase tracking-[0.15em] text-[#326460]">
-              Local marketplace
+              {isSwahili ? 'Soko la Ndani' : 'Local marketplace'}
             </span>
 
             <h2 className="mt-3 text-3xl font-bold tracking-tight text-[#1B1C1C] sm:text-4xl lg:text-5xl">
-              Discover businesses around you.
+              {isSwahili
+                ? 'Gundua biashara zinazokuzunguka.'
+                : 'Discover businesses around you.'}
             </h2>
 
             <p className="mt-5 max-w-xl text-base leading-7 text-[#56423D] sm:text-lg sm:leading-8">
-              JamiiMarket brings local businesses, products, food vendors,
-              customers, and delivery services together in one connected
-              marketplace.
+              {isSwahili
+                ? 'JamiiMarket inaunganisha biashara za ndani, bidhaa, wauzaji wa chakula, wateja, na huduma za usafirishaji katika soko moja lililounganishwa.'
+                : 'JamiiMarket brings local businesses, products, food vendors, customers, and delivery services together in one connected marketplace.'}
             </p>
 
             <a
               href="/login"
               className="mt-7 inline-flex items-center gap-2 rounded-full bg-[#A03F28] px-6 py-3 text-sm font-semibold text-white transition hover:bg-[#812914]"
             >
-              Explore Marketplace
+              {isSwahili ? 'Gundua Soko' : 'Explore Marketplace'}
               <ArrowRight size={18} />
             </a>
           </div>
@@ -99,9 +109,9 @@ function BusinessesSection() {
           />
 
           <p className="text-sm leading-6 text-[#56423D]">
-            Business availability, products, locations, prices, and other
-            marketplace information will be displayed from the connected
-            backend and database when available.
+            {isSwahili
+              ? 'Upatikanaji wa biashara, bidhaa, maeneo, bei, na taarifa nyingine za soko vitaonyeshwa kutoka kwenye backend na hifadhidata iliyounganishwa zitakapopatikana.'
+              : 'Business availability, products, locations, prices, and other marketplace information will be displayed from the connected backend and database when available.'}
           </p>
         </div>
       </div>
@@ -110,3 +120,4 @@ function BusinessesSection() {
 }
 
 export default BusinessesSection
+

@@ -1,18 +1,41 @@
 import { useState } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import { Bell, Menu, X } from 'lucide-react'
+import { useLanguage } from '../../i18n/LanguageContext'
 
 function LandingHeader() {
 const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
 const location = useLocation()
+const { language, changeLanguage } = useLanguage()
 
 const navigation = [
-{ label: 'Home', href: '/#home' },
-{ label: 'About', href: '/#about' },
-{ label: 'How It Works', href: '/#how-it-works' },
-{ label: 'Businesses', href: '/#businesses' },
-{ label: 'Services', href: '/#services' },
-{ label: 'Help', href: '/#help' },
+{
+label: language === 'sw' ? 'Nyumbani' : 'Home',
+href: '/#home',
+},
+{
+label: language === 'sw' ? 'Kuhusu' : 'About',
+href: '/#about',
+},
+{
+label:
+language === 'sw'
+? 'Jinsi Inavyofanya Kazi'
+: 'How It Works',
+href: '/#how-it-works',
+},
+{
+label: language === 'sw' ? 'Biashara' : 'Businesses',
+href: '/#businesses',
+},
+{
+label: language === 'sw' ? 'Huduma' : 'Services',
+href: '/#services',
+},
+{
+label: language === 'sw' ? 'Msaada' : 'Help',
+href: '/#help',
+},
 ]
 
 const isHomePage = location.pathname === '/'
@@ -22,7 +45,9 @@ if (isHomePage) {
 return href.replace('/', '')
 }
 
+```
 return href
+```
 
 }
 
@@ -32,10 +57,19 @@ setMobileMenuOpen(false)
 
 return ( <header className="fixed inset-x-0 top-0 z-50 border-b border-stone-200 bg-[#FCF9F8]/95 backdrop-blur-md"> <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-10">
 
+
     {/* Mobile menu button */}
     <button
       type="button"
-      aria-label={mobileMenuOpen ? 'Close menu' : 'Open menu'}
+      aria-label={
+        mobileMenuOpen
+          ? language === 'sw'
+            ? 'Funga menyu'
+            : 'Close menu'
+          : language === 'sw'
+            ? 'Fungua menyu'
+            : 'Open menu'
+      }
       aria-expanded={mobileMenuOpen}
       onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
       className="rounded-full p-2 text-stone-600 transition hover:bg-stone-100 lg:hidden"
@@ -60,7 +94,7 @@ return ( <header className="fixed inset-x-0 top-0 z-50 border-b border-stone-200
     <nav className="hidden items-center gap-7 lg:flex">
       {navigation.map((item) => (
         <a
-          key={item.label}
+          key={item.href}
           href={getNavigationHref(item.href)}
           className="text-sm font-medium text-stone-600 transition hover:text-[#A03F28]"
         >
@@ -72,18 +106,43 @@ return ( <header className="fixed inset-x-0 top-0 z-50 border-b border-stone-200
     {/* Desktop actions */}
     <div className="hidden items-center gap-2 sm:flex">
 
-      {/* Language */}
-      <button
-        type="button"
-        className="rounded-lg px-3 py-2 text-sm font-semibold text-stone-600 transition hover:bg-stone-100"
-      >
-        EN / SW
-      </button>
+      {/* Language switch */}
+      <div className="flex items-center overflow-hidden rounded-lg border border-stone-200 bg-white p-1 shadow-sm">
+        <button
+          type="button"
+          onClick={() => changeLanguage('en')}
+          aria-pressed={language === 'en'}
+          className={`rounded-md px-3 py-1.5 text-xs font-bold transition ${
+            language === 'en'
+              ? 'bg-[#A03F28] text-white shadow-sm'
+              : 'text-stone-500 hover:bg-stone-100'
+          }`}
+        >
+          EN
+        </button>
+
+        <button
+          type="button"
+          onClick={() => changeLanguage('sw')}
+          aria-pressed={language === 'sw'}
+          className={`rounded-md px-3 py-1.5 text-xs font-bold transition ${
+            language === 'sw'
+              ? 'bg-[#326460] text-white shadow-sm'
+              : 'text-stone-500 hover:bg-stone-100'
+          }`}
+        >
+          SW
+        </button>
+      </div>
 
       {/* Notifications */}
       <button
         type="button"
-        aria-label="Notifications"
+        aria-label={
+          language === 'sw'
+            ? 'Arifa'
+            : 'Notifications'
+        }
         className="rounded-full p-2 text-[#A03F28] transition hover:bg-stone-100"
       >
         <Bell size={20} />
@@ -94,7 +153,7 @@ return ( <header className="fixed inset-x-0 top-0 z-50 border-b border-stone-200
         to="/login"
         className="rounded-full px-4 py-2 text-sm font-semibold text-[#A03F28] transition hover:bg-[#F5E5DF]"
       >
-        Login
+        {language === 'sw' ? 'Ingia' : 'Login'}
       </Link>
 
       {/* Register */}
@@ -102,14 +161,18 @@ return ( <header className="fixed inset-x-0 top-0 z-50 border-b border-stone-200
         to="/register"
         className="rounded-full bg-[#A03F28] px-5 py-2 text-sm font-semibold text-white transition hover:bg-[#812914]"
       >
-        Register
+        {language === 'sw' ? 'Jisajili' : 'Register'}
       </Link>
     </div>
 
     {/* Mobile notification */}
     <button
       type="button"
-      aria-label="Notifications"
+      aria-label={
+        language === 'sw'
+          ? 'Arifa'
+          : 'Notifications'
+      }
       className="rounded-full p-2 text-[#A03F28] sm:hidden"
     >
       <Bell size={20} />
@@ -123,7 +186,7 @@ return ( <header className="fixed inset-x-0 top-0 z-50 border-b border-stone-200
 
         {navigation.map((item) => (
           <a
-            key={item.label}
+            key={item.href}
             href={getNavigationHref(item.href)}
             onClick={closeMobileMenu}
             className="rounded-xl px-4 py-3 text-sm font-medium text-stone-700 transition hover:bg-[#F5E5DF] hover:text-[#A03F28]"
@@ -131,6 +194,33 @@ return ( <header className="fixed inset-x-0 top-0 z-50 border-b border-stone-200
             {item.label}
           </a>
         ))}
+
+        {/* Mobile language switch */}
+        <div className="mt-2 flex items-center rounded-xl border border-stone-200 bg-white p-1">
+          <button
+            type="button"
+            onClick={() => changeLanguage('en')}
+            className={`flex-1 rounded-lg px-4 py-2.5 text-sm font-bold transition ${
+              language === 'en'
+                ? 'bg-[#A03F28] text-white'
+                : 'text-stone-500 hover:bg-stone-100'
+            }`}
+          >
+            English
+          </button>
+
+          <button
+            type="button"
+            onClick={() => changeLanguage('sw')}
+            className={`flex-1 rounded-lg px-4 py-2.5 text-sm font-bold transition ${
+              language === 'sw'
+                ? 'bg-[#326460] text-white'
+                : 'text-stone-500 hover:bg-stone-100'
+            }`}
+          >
+            Kiswahili
+          </button>
+        </div>
 
         {/* Mobile authentication */}
         <div className="mt-3 grid grid-cols-2 gap-2 border-t border-stone-200 pt-3">
@@ -140,7 +230,7 @@ return ( <header className="fixed inset-x-0 top-0 z-50 border-b border-stone-200
             onClick={closeMobileMenu}
             className="rounded-xl border border-[#A03F28] px-4 py-3 text-center text-sm font-semibold text-[#A03F28]"
           >
-            Login
+            {language === 'sw' ? 'Ingia' : 'Login'}
           </Link>
 
           <Link
@@ -148,7 +238,7 @@ return ( <header className="fixed inset-x-0 top-0 z-50 border-b border-stone-200
             onClick={closeMobileMenu}
             className="rounded-xl bg-[#A03F28] px-4 py-3 text-center text-sm font-semibold text-white"
           >
-            Register
+            {language === 'sw' ? 'Jisajili' : 'Register'}
           </Link>
 
         </div>

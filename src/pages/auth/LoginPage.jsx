@@ -14,6 +14,8 @@ function LoginPage() {
   const navigate = useNavigate()
   const { language, changeLanguage } = useLanguage()
 
+  const isSwahili = language === 'sw'
+
   const [showPassword, setShowPassword] = useState(false)
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
@@ -59,7 +61,11 @@ function LoginPage() {
     const account = accounts[normalizedEmail]
 
     if (!account || account.password !== password) {
-      setError('Invalid email or password.')
+      setError(
+        isSwahili
+          ? 'Barua pepe au nenosiri si sahihi.'
+          : 'Invalid email or password.',
+      )
       setIsLoading(false)
       return
     }
@@ -99,6 +105,7 @@ function LoginPage() {
             <button
               type="button"
               onClick={() => changeLanguage('en')}
+              aria-pressed={language === 'en'}
               className={`rounded-md px-3 py-1.5 text-xs font-bold transition ${
                 language === 'en'
                   ? 'bg-white text-[#A03F28] shadow-sm'
@@ -111,6 +118,7 @@ function LoginPage() {
             <button
               type="button"
               onClick={() => changeLanguage('sw')}
+              aria-pressed={language === 'sw'}
               className={`rounded-md px-3 py-1.5 text-xs font-bold transition ${
                 language === 'sw'
                   ? 'bg-white text-[#A03F28] shadow-sm'
@@ -132,45 +140,55 @@ function LoginPage() {
               </div>
 
               <p className="mt-8 text-sm font-semibold uppercase tracking-[0.15em] text-[#F2E0C3]">
-                Welcome back
+                {isSwahili ? 'Karibu tena' : 'Welcome back'}
               </p>
 
               <h1 className="mt-4 text-4xl font-bold leading-tight">
-                Your local marketplace is waiting.
+                {isSwahili
+                  ? 'Soko lako la ndani linakusubiri.'
+                  : 'Your local marketplace is waiting.'}
               </h1>
 
               <p className="mt-6 max-w-md text-base leading-7 text-white/80">
-                Sign in to discover local products, connect with businesses,
-                manage your marketplace activities, or continue delivering
-                orders.
+                {isSwahili
+                  ? 'Ingia ili kugundua bidhaa za ndani, kuwasiliana na biashara, kusimamia akaunti yako, au kuendelea na kazi za usafirishaji.'
+                  : 'Sign in to discover local products, connect with businesses, manage your marketplace activities, or continue delivering orders.'}
               </p>
 
               <div className="mt-10 space-y-4">
                 <div className="flex items-center gap-3">
                   <div className="h-2 w-2 rounded-full bg-[#F2E0C3]" />
                   <p className="text-sm text-white/80">
-                    Discover local products and services
+                    {isSwahili
+                      ? 'Gundua bidhaa na huduma za ndani'
+                      : 'Discover local products and services'}
                   </p>
                 </div>
 
                 <div className="flex items-center gap-3">
                   <div className="h-2 w-2 rounded-full bg-[#F2E0C3]" />
                   <p className="text-sm text-white/80">
-                    Connect with local businesses
+                    {isSwahili
+                      ? 'Wasiliana na biashara za ndani'
+                      : 'Connect with local businesses'}
                   </p>
                 </div>
 
                 <div className="flex items-center gap-3">
                   <div className="h-2 w-2 rounded-full bg-[#F2E0C3]" />
                   <p className="text-sm text-white/80">
-                    Manage your JamiiMarket account
+                    {isSwahili
+                      ? 'Simamia akaunti yako ya JamiiMarket'
+                      : 'Manage your JamiiMarket account'}
                   </p>
                 </div>
               </div>
             </div>
 
             <p className="text-sm text-white/60">
-              Local commerce. Connected communities.
+              {isSwahili
+                ? 'Biashara za ndani. Jamii zilizounganishwa.'
+                : 'Local commerce. Connected communities.'}
             </p>
           </div>
 
@@ -181,15 +199,17 @@ function LoginPage() {
               {/* Heading */}
               <div>
                 <p className="text-sm font-semibold uppercase tracking-[0.15em] text-[#326460]">
-                  Sign in
+                  {isSwahili ? 'Ingia' : 'Sign in'}
                 </p>
 
                 <h2 className="mt-2 text-3xl font-bold tracking-tight text-[#1B1C1C]">
-                  Welcome back
+                  {isSwahili ? 'Karibu tena' : 'Welcome back'}
                 </h2>
 
                 <p className="mt-3 text-sm leading-6 text-[#56423D]">
-                  Sign in to continue to JamiiMarket.
+                  {isSwahili
+                    ? 'Ingia ili kuendelea kwenye JamiiMarket.'
+                    : 'Sign in to continue to JamiiMarket.'}
                 </p>
               </div>
 
@@ -215,7 +235,7 @@ function LoginPage() {
                     htmlFor="email"
                     className="mb-2 block text-sm font-semibold text-[#1B1C1C]"
                   >
-                    Email address
+                    {isSwahili ? 'Barua pepe' : 'Email address'}
                   </label>
 
                   <div className="relative">
@@ -229,7 +249,11 @@ function LoginPage() {
                       type="email"
                       value={email}
                       onChange={(event) => setEmail(event.target.value)}
-                      placeholder="you@example.com"
+                      placeholder={
+                        isSwahili
+                          ? 'wewe@example.com'
+                          : 'you@example.com'
+                      }
                       autoComplete="email"
                       required
                       className="w-full rounded-xl border border-[#D9D3D0] bg-[#FCF9F8] py-3.5 pl-11 pr-4 text-sm outline-none transition placeholder:text-[#9B918D] focus:border-[#A03F28] focus:ring-2 focus:ring-[#A03F28]/10"
@@ -244,14 +268,16 @@ function LoginPage() {
                       htmlFor="password"
                       className="block text-sm font-semibold text-[#1B1C1C]"
                     >
-                      Password
+                      {isSwahili ? 'Nenosiri' : 'Password'}
                     </label>
 
                     <button
                       type="button"
                       className="text-xs font-semibold text-[#A03F28] hover:underline"
                     >
-                      Forgot password?
+                      {isSwahili
+                        ? 'Umesahau nenosiri?'
+                        : 'Forgot password?'}
                     </button>
                   </div>
 
@@ -266,7 +292,11 @@ function LoginPage() {
                       type={showPassword ? 'text' : 'password'}
                       value={password}
                       onChange={(event) => setPassword(event.target.value)}
-                      placeholder="Enter your password"
+                      placeholder={
+                        isSwahili
+                          ? 'Ingiza nenosiri lako'
+                          : 'Enter your password'
+                      }
                       autoComplete="current-password"
                       required
                       className="w-full rounded-xl border border-[#D9D3D0] bg-[#FCF9F8] py-3.5 pl-11 pr-12 text-sm outline-none transition placeholder:text-[#9B918D] focus:border-[#A03F28] focus:ring-2 focus:ring-[#A03F28]/10"
@@ -277,8 +307,12 @@ function LoginPage() {
                       onClick={() => setShowPassword(!showPassword)}
                       aria-label={
                         showPassword
-                          ? 'Hide password'
-                          : 'Show password'
+                          ? isSwahili
+                            ? 'Ficha nenosiri'
+                            : 'Hide password'
+                          : isSwahili
+                            ? 'Onyesha nenosiri'
+                            : 'Show password'
                       }
                       className="absolute right-3 top-1/2 -translate-y-1/2 rounded-lg p-2 text-[#7A706C] transition hover:bg-[#F2EDEA]"
                     >
@@ -298,7 +332,9 @@ function LoginPage() {
                     className="h-4 w-4 rounded border-[#CFC7C3] accent-[#A03F28]"
                   />
 
-                  <span>Remember me</span>
+                  <span>
+                    {isSwahili ? 'Nikumbuke' : 'Remember me'}
+                  </span>
                 </label>
 
                 {/* Submit */}
@@ -307,7 +343,13 @@ function LoginPage() {
                   disabled={isLoading}
                   className="flex w-full items-center justify-center gap-2 rounded-xl bg-[#A03F28] px-5 py-3.5 text-sm font-semibold text-white shadow-sm transition hover:bg-[#812914] active:scale-[0.99] disabled:cursor-not-allowed disabled:opacity-60"
                 >
-                  {isLoading ? 'Signing in...' : 'Sign In'}
+                  {isLoading
+                    ? isSwahili
+                      ? 'Inaingia...'
+                      : 'Signing in...'
+                    : isSwahili
+                      ? 'Ingia'
+                      : 'Sign In'}
 
                   {!isLoading && <ArrowRight size={18} />}
                 </button>
@@ -316,13 +358,17 @@ function LoginPage() {
               {/* Register */}
               <div className="mt-8 border-t border-[#E8E3E1] pt-6 text-center">
                 <p className="text-sm text-[#6B625F]">
-                  Don't have an account?
+                  {isSwahili
+                    ? 'Huna akaunti?'
+                    : "Don't have an account?"}
 
                   <Link
                     to="/register"
                     className="ml-1 font-bold text-[#A03F28] hover:underline"
                   >
-                    Create an account
+                    {isSwahili
+                      ? 'Fungua akaunti'
+                      : 'Create an account'}
                   </Link>
                 </p>
               </div>
@@ -333,7 +379,10 @@ function LoginPage() {
                   to="/"
                   className="text-sm font-semibold text-[#326460] hover:underline"
                 >
-                  ← Back to marketplace
+                  ←{' '}
+                  {isSwahili
+                    ? 'Rudi kwenye soko'
+                    : 'Back to marketplace'}
                 </Link>
               </div>
 

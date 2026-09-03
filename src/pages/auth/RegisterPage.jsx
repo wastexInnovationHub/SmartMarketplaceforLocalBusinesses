@@ -21,6 +21,8 @@ function RegisterPage() {
   const navigate = useNavigate()
   const { language, changeLanguage } = useLanguage()
 
+  const isSwahili = language === 'sw'
+
   const [role, setRole] = useState('customer')
   const [showPassword, setShowPassword] = useState(false)
   const [showConfirmPassword, setShowConfirmPassword] = useState(false)
@@ -47,20 +49,26 @@ function RegisterPage() {
   const roles = [
     {
       id: 'customer',
-      label: 'Customer',
-      description: 'Shop local products',
+      label: isSwahili ? 'Mteja' : 'Customer',
+      description: isSwahili
+        ? 'Nunua bidhaa za ndani'
+        : 'Shop local products',
       icon: ShoppingBag,
     },
     {
       id: 'vendor',
-      label: 'Business',
-      description: 'Sell your products',
+      label: isSwahili ? 'Biashara' : 'Business',
+      description: isSwahili
+        ? 'Uza bidhaa zako'
+        : 'Sell your products',
       icon: Store,
     },
     {
       id: 'rider',
-      label: 'Delivery Rider',
-      description: 'Deliver local orders',
+      label: isSwahili ? 'Msafirishaji' : 'Delivery Rider',
+      description: isSwahili
+        ? 'Wasilisha oda za ndani'
+        : 'Deliver local orders',
       icon: Bike,
     },
   ]
@@ -109,17 +117,29 @@ function RegisterPage() {
     setError('')
 
     if (formData.password !== formData.confirmPassword) {
-      setError('Passwords do not match.')
+      setError(
+        isSwahili
+          ? 'Nenosiri hazifanani.'
+          : 'Passwords do not match.',
+      )
       return
     }
 
     if (!formData.acceptedTerms) {
-      setError('Please accept the Terms of Service and Privacy Policy.')
+      setError(
+        isSwahili
+          ? 'Tafadhali kubali Masharti ya Huduma na Sera ya Faragha.'
+          : 'Please accept the Terms of Service and Privacy Policy.',
+      )
       return
     }
 
     if (!location) {
-      setError('Please allow location access or enter your location manually.')
+      setError(
+        isSwahili
+          ? 'Tafadhali ruhusu kutumia eneo lako au ingiza eneo lako mwenyewe.'
+          : 'Please allow location access or enter your location manually.',
+      )
       return
     }
 
@@ -145,7 +165,14 @@ function RegisterPage() {
 
   if (registrationComplete) {
     const isBusiness = submittedRole === 'vendor'
-    const accountName = isBusiness ? 'Business' : 'Delivery Rider'
+
+    const accountName = isBusiness
+      ? isSwahili
+        ? 'Biashara'
+        : 'Business'
+      : isSwahili
+        ? 'Msafirishaji'
+        : 'Delivery Rider'
 
     return (
       <main className="min-h-screen bg-[#FCF9F8] px-4 py-10 sm:px-6 lg:px-10">
@@ -165,6 +192,7 @@ function RegisterPage() {
               <button
                 type="button"
                 onClick={() => changeLanguage('en')}
+                aria-pressed={language === 'en'}
                 className={`rounded-md px-3 py-1.5 text-xs font-bold transition ${
                   language === 'en'
                     ? 'bg-white text-[#A03F28] shadow-sm'
@@ -177,6 +205,7 @@ function RegisterPage() {
               <button
                 type="button"
                 onClick={() => changeLanguage('sw')}
+                aria-pressed={language === 'sw'}
                 className={`rounded-md px-3 py-1.5 text-xs font-bold transition ${
                   language === 'sw'
                     ? 'bg-white text-[#A03F28] shadow-sm'
@@ -195,30 +224,48 @@ function RegisterPage() {
             </div>
 
             <p className="mt-6 text-sm font-semibold uppercase tracking-[0.15em] text-[#326460]">
-              Registration Complete!
+              {isSwahili
+                ? 'Usajili Umekamilika!'
+                : 'Registration Complete!'}
             </p>
 
             <h1 className="mt-3 text-3xl font-bold tracking-tight text-[#1B1C1C] sm:text-4xl">
-              Your {accountName} account has been successfully submitted.
+              {isSwahili
+                ? `Akaunti yako ya ${accountName} imetumwa kwa mafanikio.`
+                : `Your ${accountName} account has been successfully submitted.`}
             </h1>
 
             {isBusiness ? (
               <p className="mx-auto mt-5 max-w-xl text-base leading-7 text-[#56423D]">
-                Your account is currently{' '}
+                {isSwahili
+                  ? 'Akaunti yako kwa sasa '
+                  : 'Your account is currently '}
+
                 <strong className="font-semibold text-[#A03F28]">
-                  waiting for administrator approval
+                  {isSwahili
+                    ? 'inasubiri idhini ya msimamizi'
+                    : 'waiting for administrator approval'}
                 </strong>
-                . You will be able to access your business features after
-                approval.
+
+                {isSwahili
+                  ? '. Utaweza kutumia huduma za biashara baada ya kuidhinishwa.'
+                  : '. You will be able to access your business features after approval.'}
               </p>
             ) : (
               <p className="mx-auto mt-5 max-w-xl text-base leading-7 text-[#56423D]">
-                Your account is currently{' '}
+                {isSwahili
+                  ? 'Akaunti yako kwa sasa '
+                  : 'Your account is currently '}
+
                 <strong className="font-semibold text-[#A03F28]">
-                  waiting for administrator approval
+                  {isSwahili
+                    ? 'inasubiri idhini ya msimamizi'
+                    : 'waiting for administrator approval'}
                 </strong>
-                . You will be able to access your delivery rider features
-                after approval.
+
+                {isSwahili
+                  ? '. Utaweza kutumia huduma za usafirishaji baada ya kuidhinishwa.'
+                  : '. You will be able to access your delivery rider features after approval.'}
               </p>
             )}
 
@@ -228,7 +275,7 @@ function RegisterPage() {
                 onClick={() => navigate('/login')}
                 className="inline-flex min-h-12 items-center justify-center gap-2 rounded-xl bg-[#A03F28] px-6 py-3 text-sm font-semibold text-white transition hover:bg-[#812914]"
               >
-                Go to Login
+                {isSwahili ? 'Nenda Kuingia' : 'Go to Login'}
                 <ArrowRight size={18} />
               </button>
 
@@ -237,7 +284,7 @@ function RegisterPage() {
                 onClick={() => navigate('/')}
                 className="inline-flex min-h-12 items-center justify-center rounded-xl border border-[#D9D3D0] bg-white px-6 py-3 text-sm font-semibold text-[#56423D] transition hover:bg-[#F6F3F2]"
               >
-                Back to Home
+                {isSwahili ? 'Rudi Nyumbani' : 'Back to Home'}
               </button>
             </div>
           </div>
@@ -264,6 +311,7 @@ function RegisterPage() {
             <button
               type="button"
               onClick={() => changeLanguage('en')}
+              aria-pressed={language === 'en'}
               className={`rounded-md px-3 py-1.5 text-xs font-bold transition ${
                 language === 'en'
                   ? 'bg-white text-[#A03F28] shadow-sm'
@@ -276,6 +324,7 @@ function RegisterPage() {
             <button
               type="button"
               onClick={() => changeLanguage('sw')}
+              aria-pressed={language === 'sw'}
               className={`rounded-md px-3 py-1.5 text-xs font-bold transition ${
                 language === 'sw'
                   ? 'bg-white text-[#A03F28] shadow-sm'
@@ -293,16 +342,19 @@ function RegisterPage() {
           <div className="hidden bg-[#A03F28] p-10 text-white lg:flex lg:flex-col lg:justify-between">
             <div>
               <p className="text-sm font-semibold uppercase tracking-[0.15em] text-[#F2E0C3]">
-                Join JamiiMarket
+                {isSwahili ? 'Jiunge na JamiiMarket' : 'Join JamiiMarket'}
               </p>
 
               <h1 className="mt-5 text-4xl font-bold leading-tight">
-                Be part of your local marketplace.
+                {isSwahili
+                  ? 'Kuwa sehemu ya soko lako la ndani.'
+                  : 'Be part of your local marketplace.'}
               </h1>
 
               <p className="mt-6 text-base leading-7 text-white/80">
-                Whether you want to shop, grow your business, or deliver
-                orders, JamiiMarket connects you with your community.
+                {isSwahili
+                  ? 'Ukitaka kununua, kukuza biashara yako, au kusafirisha oda, JamiiMarket inakuunganisha na jamii yako.'
+                  : 'Whether you want to shop, grow your business, or deliver orders, JamiiMarket connects you with your community.'}
               </p>
 
               <div className="mt-10 space-y-5">
@@ -313,9 +365,14 @@ function RegisterPage() {
                   </div>
 
                   <div>
-                    <p className="font-semibold">Customers</p>
+                    <p className="font-semibold">
+                      {isSwahili ? 'Wateja' : 'Customers'}
+                    </p>
+
                     <p className="mt-1 text-sm text-white/65">
-                      Discover products and services near you.
+                      {isSwahili
+                        ? 'Gundua bidhaa na huduma zilizo karibu nawe.'
+                        : 'Discover products and services near you.'}
                     </p>
                   </div>
                 </div>
@@ -326,9 +383,14 @@ function RegisterPage() {
                   </div>
 
                   <div>
-                    <p className="font-semibold">Businesses</p>
+                    <p className="font-semibold">
+                      {isSwahili ? 'Biashara' : 'Businesses'}
+                    </p>
+
                     <p className="mt-1 text-sm text-white/65">
-                      Reach more customers in your community.
+                      {isSwahili
+                        ? 'Fikia wateja wengi zaidi katika jamii yako.'
+                        : 'Reach more customers in your community.'}
                     </p>
                   </div>
                 </div>
@@ -339,9 +401,16 @@ function RegisterPage() {
                   </div>
 
                   <div>
-                    <p className="font-semibold">Delivery Riders</p>
+                    <p className="font-semibold">
+                      {isSwahili
+                        ? 'Wasafirishaji'
+                        : 'Delivery Riders'}
+                    </p>
+
                     <p className="mt-1 text-sm text-white/65">
-                      Help local businesses deliver orders.
+                      {isSwahili
+                        ? 'Saidia biashara za ndani kupeleka oda.'
+                        : 'Help local businesses deliver orders.'}
                     </p>
                   </div>
                 </div>
@@ -350,7 +419,9 @@ function RegisterPage() {
             </div>
 
             <p className="text-sm text-white/60">
-              Local commerce. Connected communities.
+              {isSwahili
+                ? 'Biashara za ndani. Jamii zilizounganishwa.'
+                : 'Local commerce. Connected communities.'}
             </p>
           </div>
 
@@ -360,22 +431,28 @@ function RegisterPage() {
 
               <div>
                 <p className="text-sm font-semibold uppercase tracking-[0.15em] text-[#326460]">
-                  Create account
+                  {isSwahili ? 'Fungua akaunti' : 'Create account'}
                 </p>
 
                 <h2 className="mt-2 text-3xl font-bold tracking-tight text-[#1B1C1C]">
-                  Join JamiiMarket
+                  {isSwahili
+                    ? 'Jiunge na JamiiMarket'
+                    : 'Join JamiiMarket'}
                 </h2>
 
                 <p className="mt-3 text-sm leading-6 text-[#56423D]">
-                  Select how you want to use JamiiMarket.
+                  {isSwahili
+                    ? 'Chagua jinsi unavyotaka kutumia JamiiMarket.'
+                    : 'Select how you want to use JamiiMarket.'}
                 </p>
               </div>
 
               {/* Role selection */}
               <div className="mt-8">
                 <p className="mb-3 text-sm font-semibold text-[#1B1C1C]">
-                  I want to join as
+                  {isSwahili
+                    ? 'Nataka kujiunga kama'
+                    : 'I want to join as'}
                 </p>
 
                 <div className="grid gap-3 sm:grid-cols-3">
@@ -428,7 +505,7 @@ function RegisterPage() {
                     htmlFor="fullName"
                     className="mb-2 block text-sm font-semibold text-[#1B1C1C]"
                   >
-                    Full name
+                    {isSwahili ? 'Jina kamili' : 'Full name'}
                   </label>
 
                   <div className="relative">
@@ -443,7 +520,11 @@ function RegisterPage() {
                       type="text"
                       value={formData.fullName}
                       onChange={handleChange}
-                      placeholder="Enter your full name"
+                      placeholder={
+                        isSwahili
+                          ? 'Ingiza jina lako kamili'
+                          : 'Enter your full name'
+                      }
                       required
                       autoComplete="name"
                       className="w-full rounded-xl border border-[#D9D3D0] bg-[#FCF9F8] py-3.5 pl-11 pr-4 text-sm outline-none transition placeholder:text-[#9B918D] focus:border-[#A03F28] focus:ring-2 focus:ring-[#A03F28]/10"
@@ -458,7 +539,9 @@ function RegisterPage() {
                       htmlFor="businessName"
                       className="mb-2 block text-sm font-semibold text-[#1B1C1C]"
                     >
-                      Business name
+                      {isSwahili
+                        ? 'Jina la biashara'
+                        : 'Business name'}
                     </label>
 
                     <div className="relative">
@@ -473,7 +556,11 @@ function RegisterPage() {
                         type="text"
                         value={formData.businessName}
                         onChange={handleChange}
-                        placeholder="Enter your business name"
+                        placeholder={
+                          isSwahili
+                            ? 'Ingiza jina la biashara yako'
+                            : 'Enter your business name'
+                        }
                         required
                         autoComplete="organization"
                         className="w-full rounded-xl border border-[#D9D3D0] bg-[#FCF9F8] py-3.5 pl-11 pr-4 text-sm outline-none transition placeholder:text-[#9B918D] focus:border-[#A03F28] focus:ring-2 focus:ring-[#A03F28]/10"
@@ -488,7 +575,9 @@ function RegisterPage() {
                     htmlFor="phone"
                     className="mb-2 block text-sm font-semibold text-[#1B1C1C]"
                   >
-                    Phone number
+                    {isSwahili
+                      ? 'Namba ya simu'
+                      : 'Phone number'}
                   </label>
 
                   <div className="relative">
@@ -518,7 +607,9 @@ function RegisterPage() {
                       htmlFor="businessCategory"
                       className="mb-2 block text-sm font-semibold text-[#1B1C1C]"
                     >
-                      Business category
+                      {isSwahili
+                        ? 'Aina ya biashara'
+                        : 'Business category'}
                     </label>
 
                     <select
@@ -529,14 +620,49 @@ function RegisterPage() {
                       required
                       className="w-full rounded-xl border border-[#D9D3D0] bg-[#FCF9F8] px-4 py-3.5 text-sm text-[#56423D] outline-none focus:border-[#A03F28] focus:ring-2 focus:ring-[#A03F28]/10"
                     >
-                      <option value="">Select category</option>
-                      <option value="food">Food & Restaurants</option>
-                      <option value="fashion">Fashion & Clothing</option>
-                      <option value="electronics">Electronics</option>
-                      <option value="groceries">Groceries</option>
-                      <option value="beauty">Beauty & Personal Care</option>
-                      <option value="services">Services</option>
-                      <option value="other">Other</option>
+                      <option value="">
+                        {isSwahili
+                          ? 'Chagua aina'
+                          : 'Select category'}
+                      </option>
+
+                      <option value="food">
+                        {isSwahili
+                          ? 'Chakula na Migahawa'
+                          : 'Food & Restaurants'}
+                      </option>
+
+                      <option value="fashion">
+                        {isSwahili
+                          ? 'Mavazi'
+                          : 'Fashion & Clothing'}
+                      </option>
+
+                      <option value="electronics">
+                        {isSwahili
+                          ? 'Elektroniki'
+                          : 'Electronics'}
+                      </option>
+
+                      <option value="groceries">
+                        {isSwahili
+                          ? 'Vyakula na Mahitaji ya Nyumbani'
+                          : 'Groceries'}
+                      </option>
+
+                      <option value="beauty">
+                        {isSwahili
+                          ? 'Urembo na Huduma Binafsi'
+                          : 'Beauty & Personal Care'}
+                      </option>
+
+                      <option value="services">
+                        {isSwahili ? 'Huduma' : 'Services'}
+                      </option>
+
+                      <option value="other">
+                        {isSwahili ? 'Nyingine' : 'Other'}
+                      </option>
                     </select>
                   </div>
                 )}
@@ -547,7 +673,7 @@ function RegisterPage() {
                     htmlFor="location"
                     className="mb-2 block text-sm font-semibold text-[#1B1C1C]"
                   >
-                    Location
+                    {isSwahili ? 'Eneo' : 'Location'}
                   </label>
 
                   <div className="relative">
@@ -565,7 +691,11 @@ function RegisterPage() {
                         setLocationStatus('manual')
                         setError('')
                       }}
-                      placeholder="Enter your area or location"
+                      placeholder={
+                        isSwahili
+                          ? 'Ingiza eneo lako'
+                          : 'Enter your area or location'
+                      }
                       required
                       className="w-full rounded-xl border border-[#D9D3D0] bg-[#FCF9F8] py-3.5 pl-11 pr-32 text-sm outline-none transition placeholder:text-[#9B918D] focus:border-[#A03F28] focus:ring-2 focus:ring-[#A03F28]/10"
                     />
@@ -578,38 +708,51 @@ function RegisterPage() {
                     >
                       {locationStatus === 'loading' ? (
                         <span className="flex items-center gap-1">
-                          <Loader2 size={14} className="animate-spin" />
-                          Detecting
+                          <Loader2
+                            size={14}
+                            className="animate-spin"
+                          />
+
+                          {isSwahili
+                            ? 'Inatafuta'
+                            : 'Detecting'}
                         </span>
                       ) : (
-                        'Use my location'
+                        isSwahili
+                          ? 'Tumia eneo langu'
+                          : 'Use my location'
                       )}
                     </button>
                   </div>
 
                   {locationStatus === 'success' && (
                     <p className="mt-2 text-xs font-medium text-[#326460]">
-                      Location detected successfully.
+                      {isSwahili
+                        ? 'Eneo limepatikana.'
+                        : 'Location detected successfully.'}
                     </p>
                   )}
 
                   {locationStatus === 'error' && (
                     <p className="mt-2 text-xs text-[#A03F28]">
-                      Location access was not available. You can enter your
-                      location manually.
+                      {isSwahili
+                        ? 'Eneo halikupatikana. Unaweza kuingiza eneo lako mwenyewe.'
+                        : 'Location access was not available. You can enter your location manually.'}
                     </p>
                   )}
 
                   {locationStatus === 'unsupported' && (
                     <p className="mt-2 text-xs text-[#A03F28]">
-                      Automatic location is not supported by this browser.
-                      Please enter your location manually.
+                      {isSwahili
+                        ? 'Kivinjari hiki hakiwezi kupata eneo moja kwa moja. Ingiza eneo lako mwenyewe.'
+                        : 'Automatic location is not supported by this browser. Please enter your location manually.'}
                     </p>
                   )}
 
                   <p className="mt-2 text-xs leading-5 text-[#7A706C]">
-                    Your location helps customers, businesses, and delivery
-                    services connect more easily.
+                    {isSwahili
+                      ? 'Eneo lako husaidia wateja, biashara na huduma za usafirishaji kuunganishwa kwa urahisi.'
+                      : 'Your location helps customers, businesses, and delivery services connect more easily.'}
                   </p>
                 </div>
 
@@ -619,7 +762,9 @@ function RegisterPage() {
                     htmlFor="email"
                     className="mb-2 block text-sm font-semibold text-[#1B1C1C]"
                   >
-                    Email address
+                    {isSwahili
+                      ? 'Barua pepe'
+                      : 'Email address'}
                   </label>
 
                   <div className="relative">
@@ -648,7 +793,7 @@ function RegisterPage() {
                     htmlFor="password"
                     className="mb-2 block text-sm font-semibold text-[#1B1C1C]"
                   >
-                    Password
+                    {isSwahili ? 'Nenosiri' : 'Password'}
                   </label>
 
                   <div className="relative">
@@ -663,7 +808,11 @@ function RegisterPage() {
                       type={showPassword ? 'text' : 'password'}
                       value={formData.password}
                       onChange={handleChange}
-                      placeholder="Create a password"
+                      placeholder={
+                        isSwahili
+                          ? 'Tengeneza nenosiri'
+                          : 'Create a password'
+                      }
                       required
                       minLength={8}
                       autoComplete="new-password"
@@ -672,10 +821,18 @@ function RegisterPage() {
 
                     <button
                       type="button"
-                      onClick={() => setShowPassword(!showPassword)}
+                      onClick={() =>
+                        setShowPassword(!showPassword)
+                      }
                       className="absolute right-3 top-1/2 -translate-y-1/2 rounded-lg p-2 text-[#7A706C] hover:bg-[#F2EDEA]"
                       aria-label={
-                        showPassword ? 'Hide password' : 'Show password'
+                        showPassword
+                          ? isSwahili
+                            ? 'Ficha nenosiri'
+                            : 'Hide password'
+                          : isSwahili
+                            ? 'Onyesha nenosiri'
+                            : 'Show password'
                       }
                     >
                       {showPassword ? (
@@ -687,7 +844,9 @@ function RegisterPage() {
                   </div>
 
                   <p className="mt-2 text-xs text-[#7A706C]">
-                    Use at least 8 characters.
+                    {isSwahili
+                      ? 'Tumia angalau herufi 8.'
+                      : 'Use at least 8 characters.'}
                   </p>
                 </div>
 
@@ -697,7 +856,9 @@ function RegisterPage() {
                     htmlFor="confirmPassword"
                     className="mb-2 block text-sm font-semibold text-[#1B1C1C]"
                   >
-                    Confirm password
+                    {isSwahili
+                      ? 'Thibitisha nenosiri'
+                      : 'Confirm password'}
                   </label>
 
                   <div className="relative">
@@ -710,11 +871,17 @@ function RegisterPage() {
                       id="confirmPassword"
                       name="confirmPassword"
                       type={
-                        showConfirmPassword ? 'text' : 'password'
+                        showConfirmPassword
+                          ? 'text'
+                          : 'password'
                       }
                       value={formData.confirmPassword}
                       onChange={handleChange}
-                      placeholder="Confirm your password"
+                      placeholder={
+                        isSwahili
+                          ? 'Rudia nenosiri lako'
+                          : 'Confirm your password'
+                      }
                       required
                       minLength={8}
                       autoComplete="new-password"
@@ -724,13 +891,19 @@ function RegisterPage() {
                     <button
                       type="button"
                       onClick={() =>
-                        setShowConfirmPassword(!showConfirmPassword)
+                        setShowConfirmPassword(
+                          !showConfirmPassword,
+                        )
                       }
                       className="absolute right-3 top-1/2 -translate-y-1/2 rounded-lg p-2 text-[#7A706C] hover:bg-[#F2EDEA]"
                       aria-label={
                         showConfirmPassword
-                          ? 'Hide confirm password'
-                          : 'Show confirm password'
+                          ? isSwahili
+                            ? 'Ficha nenosiri'
+                            : 'Hide confirm password'
+                          : isSwahili
+                            ? 'Onyesha nenosiri'
+                            : 'Show confirm password'
                       }
                     >
                       {showConfirmPassword ? (
@@ -761,20 +934,30 @@ function RegisterPage() {
                   />
 
                   <span>
-                    I agree to the{' '}
+                    {isSwahili
+                      ? 'Nakubali '
+                      : 'I agree to the '}
+
                     <Link
                       to="/terms"
                       className="font-semibold text-[#A03F28] hover:underline"
                     >
-                      Terms of Service
-                    </Link>{' '}
-                    and{' '}
+                      {isSwahili
+                        ? 'Masharti ya Huduma'
+                        : 'Terms of Service'}
+                    </Link>
+
+                    {isSwahili ? ' na ' : ' and '}
+
                     <Link
                       to="/privacy"
                       className="font-semibold text-[#A03F28] hover:underline"
                     >
-                      Privacy Policy
+                      {isSwahili
+                        ? 'Sera ya Faragha'
+                        : 'Privacy Policy'}
                     </Link>
+
                     .
                   </span>
                 </label>
@@ -784,13 +967,20 @@ function RegisterPage() {
                   type="submit"
                   className="flex w-full items-center justify-center gap-2 rounded-xl bg-[#A03F28] px-5 py-3.5 text-sm font-semibold text-white shadow-sm transition hover:bg-[#812914] active:scale-[0.99]"
                 >
-                  Create{' '}
-                  {role === 'vendor'
-                    ? 'Business'
-                    : role === 'rider'
-                      ? 'Rider'
-                      : 'Customer'}{' '}
-                  Account
+                  {isSwahili
+                    ? role === 'vendor'
+                      ? 'Fungua Akaunti ya Biashara'
+                      : role === 'rider'
+                        ? 'Fungua Akaunti ya Msafirishaji'
+                        : 'Fungua Akaunti ya Mteja'
+                    : `Create ${
+                        role === 'vendor'
+                          ? 'Business'
+                          : role === 'rider'
+                            ? 'Rider'
+                            : 'Customer'
+                      } Account`}
+
                   <ArrowRight size={18} />
                 </button>
               </form>
@@ -798,12 +988,15 @@ function RegisterPage() {
               {/* Login */}
               <div className="mt-8 border-t border-[#E8E3E1] pt-6 text-center">
                 <p className="text-sm text-[#6B625F]">
-                  Already have an account?
+                  {isSwahili
+                    ? 'Tayari una akaunti?'
+                    : 'Already have an account?'}
+
                   <Link
                     to="/login"
                     className="ml-1 font-bold text-[#A03F28] hover:underline"
                   >
-                    Sign in
+                    {isSwahili ? 'Ingia' : 'Sign in'}
                   </Link>
                 </p>
               </div>

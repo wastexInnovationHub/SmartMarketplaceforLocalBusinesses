@@ -5,36 +5,44 @@ import {
   Truck,
   CheckCircle2,
 } from 'lucide-react'
+import { useLanguage } from '../../i18n/LanguageContext'
 
 function HowItWorksSection() {
+  const { language } = useLanguage()
+  const isSwahili = language === 'sw'
+
   const steps = [
     {
       number: '01',
       icon: Search,
-      title: 'Discover',
-      description:
-        'Browse local businesses, products, food, and services available through JamiiMarket.',
+      title: isSwahili ? 'Gundua' : 'Discover',
+      description: isSwahili
+        ? 'Vinjari biashara za ndani, bidhaa, chakula, na huduma zinazopatikana kupitia JamiiMarket.'
+        : 'Browse local businesses, products, food, and services available through JamiiMarket.',
     },
     {
       number: '02',
       icon: ShoppingBag,
-      title: 'Choose',
-      description:
-        'Explore available products or services and select what you want to purchase.',
+      title: isSwahili ? 'Chagua' : 'Choose',
+      description: isSwahili
+        ? 'Chunguza bidhaa au huduma zinazopatikana na uchague unachotaka kununua.'
+        : 'Explore available products or services and select what you want to purchase.',
     },
     {
       number: '03',
       icon: CreditCard,
-      title: 'Order',
-      description:
-        'Place your order using the options provided by the marketplace.',
+      title: isSwahili ? 'Agiza' : 'Order',
+      description: isSwahili
+        ? 'Weka oda yako kwa kutumia chaguo zinazotolewa na soko.'
+        : 'Place your order using the options provided by the marketplace.',
     },
     {
       number: '04',
       icon: Truck,
-      title: 'Receive',
-      description:
-        'Track the order and receive it through the available delivery or collection option.',
+      title: isSwahili ? 'Pokea' : 'Receive',
+      description: isSwahili
+        ? 'Fuatilia oda yako na uipokee kupitia chaguo la usafirishaji au kuchukua bidhaa linalopatikana.'
+        : 'Track the order and receive it through the available delivery or collection option.',
     },
   ]
 
@@ -48,16 +56,19 @@ function HowItWorksSection() {
         <div className="mx-auto max-w-2xl text-center">
           <span className="inline-flex items-center gap-2 text-sm font-semibold uppercase tracking-[0.15em] text-[#326460]">
             <CheckCircle2 size={17} />
-            Simple process
+            {isSwahili ? 'Mchakato Rahisi' : 'Simple process'}
           </span>
 
           <h2 className="mt-3 text-3xl font-bold tracking-tight text-[#1B1C1C] sm:text-4xl lg:text-5xl">
-            How JamiiMarket Works
+            {isSwahili
+              ? 'Jinsi JamiiMarket Inavyofanya Kazi'
+              : 'How JamiiMarket Works'}
           </h2>
 
           <p className="mt-4 text-base leading-7 text-[#56423D] sm:text-lg sm:leading-8">
-            A simple way to discover local businesses, choose what you need,
-            place an order, and receive it through the available options.
+            {isSwahili
+              ? 'Njia rahisi ya kugundua biashara za ndani, kuchagua unachohitaji, kuweka oda, na kuipokea kupitia chaguo zinazopatikana.'
+              : 'A simple way to discover local businesses, choose what you need, place an order, and receive it through the available options.'}
           </p>
         </div>
 
@@ -98,3 +109,4 @@ function HowItWorksSection() {
 }
 
 export default HowItWorksSection
+

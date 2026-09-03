@@ -10,12 +10,129 @@ import {
 } from 'lucide-react'
 import { Link } from 'react-router-dom'
 
+import { useLanguage } from '../../i18n/LanguageContext'
+
 function DeliveryHistoryPage() {
+  const { language } = useLanguage()
+  const isSwahili = language === 'sw'
+
   const [searchTerm, setSearchTerm] = useState('')
   const [statusFilter, setStatusFilter] = useState('all')
 
   // Completed and cancelled deliveries will come from the backend later.
   const deliveries = []
+
+  const text = {
+    deliveryManagement: isSwahili
+      ? 'Usimamizi wa Usafirishaji'
+      : 'Delivery Management',
+
+    deliveryHistory: isSwahili
+      ? 'Historia ya Usafirishaji'
+      : 'Delivery History',
+
+    description: isSwahili
+      ? 'Kagua usafirishaji uliokamilisha au kughairi.'
+      : 'Review deliveries you have completed or cancelled.',
+
+    myDeliveries: isSwahili
+      ? 'Usafirishaji Wangu'
+      : 'My Deliveries',
+
+    completedDeliveries: isSwahili
+      ? 'Usafirishaji Uliokamilika'
+      : 'Completed Deliveries',
+
+    successfullyDelivered: isSwahili
+      ? 'Oda zilizowasilishwa kwa mafanikio'
+      : 'Successfully delivered orders',
+
+    cancelledDeliveries: isSwahili
+      ? 'Usafirishaji Ulioghairiwa'
+      : 'Cancelled Deliveries',
+
+    cancelledRecords: isSwahili
+      ? 'Usafirishaji ulioghairiwa'
+      : 'Deliveries that were cancelled',
+
+    totalRecords: isSwahili
+      ? 'Jumla ya Rekodi'
+      : 'Total Records',
+
+    completedAndCancelled: isSwahili
+      ? 'Rekodi zilizokamilika na kughairiwa'
+      : 'Completed and cancelled records',
+
+    deliveryRecords: isSwahili
+      ? 'Rekodi za Usafirishaji'
+      : 'Delivery Records',
+
+    previousActivity: isSwahili
+      ? 'Shughuli zako za awali za usafirishaji.'
+      : 'Your previous delivery activity.',
+
+    searchHistory: isSwahili
+      ? 'Tafuta historia...'
+      : 'Search history...',
+
+    all: isSwahili ? 'Zote' : 'All',
+
+    delivered: isSwahili
+      ? 'Imefikishwa'
+      : 'Delivered',
+
+    cancelled: isSwahili
+      ? 'Imeghairiwa'
+      : 'Cancelled',
+
+    noHistoryYet: isSwahili
+      ? 'Bado Hakuna Historia ya Usafirishaji'
+      : 'No delivery history yet',
+
+    noHistoryDescription: isSwahili
+      ? 'Usafirishaji uliokamilika au kughairiwa utaonekana hapa baada ya kuanza kukubali maombi ya usafirishaji.'
+      : 'Completed or cancelled deliveries will appear here after you start accepting delivery requests.',
+
+    browseAvailable: isSwahili
+      ? 'Angalia Usafirishaji Uliopo'
+      : 'Browse Available Deliveries',
+
+    viewDetails: isSwahili
+      ? 'Angalia Maelezo'
+      : 'View Details',
+
+    completed: isSwahili
+      ? 'Imekamilika'
+      : 'Completed',
+
+    distance: isSwahili
+      ? 'Umbali'
+      : 'Distance',
+
+    completedDeliveriesInfo: isSwahili
+      ? 'Usafirishaji Uliokamilika'
+      : 'Completed Deliveries',
+
+    completedInfoDescription: isSwahili
+      ? 'Usafirishaji uliokamilika kwa mafanikio utahifadhiwa hapa kwa ajili ya marejeo ya baadaye.'
+      : 'Successfully completed deliveries will be stored here for future reference.',
+
+    cancelledDeliveriesInfo: isSwahili
+      ? 'Usafirishaji Ulioghairiwa'
+      : 'Cancelled Deliveries',
+
+    cancelledInfoDescription: isSwahili
+      ? 'Rekodi za usafirishaji ulioghairiwa zitabaki hapa ili shughuli ziweze kukaguliwa baadaye.'
+      : 'Cancelled delivery records will remain available so activity can be reviewed later.',
+
+    deliveryTimeline: isSwahili
+      ? 'Ratiba ya Usafirishaji'
+      : 'Delivery Timeline',
+
+    timelineDescription: isSwahili
+      ? 'Muda wa usafirishaji na mabadiliko ya hali yatatolewa na mfumo wa usafirishaji wa backend.'
+      : 'Delivery timestamps and status changes will be provided by the backend delivery system.',
+  }
 
   const filteredDeliveries = useMemo(() => {
     return deliveries.filter((delivery) => {
@@ -36,28 +153,27 @@ function DeliveryHistoryPage() {
   }, [deliveries, searchTerm, statusFilter])
 
   const statusOptions = [
-    { value: 'all', label: 'All' },
-    { value: 'delivered', label: 'Delivered' },
-    { value: 'cancelled', label: 'Cancelled' },
+    { value: 'all', label: text.all },
+    { value: 'delivered', label: text.delivered },
+    { value: 'cancelled', label: text.cancelled },
   ]
 
   return (
     <div className="space-y-6">
-
       {/* Page header */}
       <div>
         <p className="text-sm font-medium text-emerald-600">
-          Delivery Management
+          {text.deliveryManagement}
         </p>
 
         <div className="mt-1 flex flex-col justify-between gap-4 sm:flex-row sm:items-end">
           <div>
             <h1 className="text-2xl font-bold tracking-tight text-slate-900 sm:text-3xl">
-              Delivery History
+              {text.deliveryHistory}
             </h1>
 
             <p className="mt-2 max-w-2xl text-sm leading-6 text-slate-500 sm:text-base">
-              Review deliveries you have completed or cancelled.
+              {text.description}
             </p>
           </div>
 
@@ -66,20 +182,19 @@ function DeliveryHistoryPage() {
             className="inline-flex w-fit items-center justify-center gap-2 rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-sm font-semibold text-slate-700 shadow-sm transition hover:bg-slate-50"
           >
             <History size={18} />
-            My Deliveries
+            {text.myDeliveries}
           </Link>
         </div>
       </div>
 
       {/* Summary cards */}
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-
         {/* Completed */}
         <div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
           <div className="flex items-start justify-between">
             <div>
               <p className="text-sm font-medium text-slate-500">
-                Completed Deliveries
+                {text.completedDeliveries}
               </p>
 
               <p className="mt-2 text-2xl font-bold text-slate-900">
@@ -93,7 +208,7 @@ function DeliveryHistoryPage() {
           </div>
 
           <p className="mt-3 text-xs text-slate-400">
-            Successfully delivered orders
+            {text.successfullyDelivered}
           </p>
         </div>
 
@@ -102,7 +217,7 @@ function DeliveryHistoryPage() {
           <div className="flex items-start justify-between">
             <div>
               <p className="text-sm font-medium text-slate-500">
-                Cancelled Deliveries
+                {text.cancelledDeliveries}
               </p>
 
               <p className="mt-2 text-2xl font-bold text-slate-900">
@@ -116,7 +231,7 @@ function DeliveryHistoryPage() {
           </div>
 
           <p className="mt-3 text-xs text-slate-400">
-            Deliveries that were cancelled
+            {text.cancelledRecords}
           </p>
         </div>
 
@@ -125,7 +240,7 @@ function DeliveryHistoryPage() {
           <div className="flex items-start justify-between">
             <div>
               <p className="text-sm font-medium text-slate-500">
-                Total Records
+                {text.totalRecords}
               </p>
 
               <p className="mt-2 text-2xl font-bold text-slate-900">
@@ -139,25 +254,23 @@ function DeliveryHistoryPage() {
           </div>
 
           <p className="mt-3 text-xs text-slate-400">
-            Completed and cancelled records
+            {text.completedAndCancelled}
           </p>
         </div>
       </div>
 
       {/* History section */}
       <section className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
-
         {/* Section header */}
         <div className="border-b border-slate-200 p-5 sm:p-6">
           <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
-
             <div>
               <h2 className="text-lg font-bold text-slate-900">
-                Delivery Records
+                {text.deliveryRecords}
               </h2>
 
               <p className="mt-1 text-sm text-slate-500">
-                Your previous delivery activity.
+                {text.previousActivity}
               </p>
             </div>
 
@@ -172,7 +285,7 @@ function DeliveryHistoryPage() {
                 type="text"
                 value={searchTerm}
                 onChange={(event) => setSearchTerm(event.target.value)}
-                placeholder="Search history..."
+                placeholder={text.searchHistory}
                 className="w-full rounded-xl border border-slate-200 bg-slate-50 py-2.5 pl-10 pr-4 text-sm text-slate-900 outline-none transition focus:border-emerald-500 focus:bg-white focus:ring-2 focus:ring-emerald-100"
               />
             </div>
@@ -203,21 +316,18 @@ function DeliveryHistoryPage() {
 
         {/* Records */}
         <div className="p-5 sm:p-6">
-
           {filteredDeliveries.length === 0 ? (
             <div className="flex flex-col items-center justify-center rounded-2xl border border-dashed border-slate-300 bg-slate-50 px-6 py-14 text-center">
-
               <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-slate-200 text-slate-500">
                 <History size={30} />
               </div>
 
               <h3 className="mt-5 text-lg font-bold text-slate-900">
-                No delivery history yet
+                {text.noHistoryYet}
               </h3>
 
               <p className="mt-2 max-w-md text-sm leading-6 text-slate-500">
-                Completed or cancelled deliveries will appear here after you
-                start accepting delivery requests.
+                {text.noHistoryDescription}
               </p>
 
               <Link
@@ -225,7 +335,7 @@ function DeliveryHistoryPage() {
                 className="mt-6 inline-flex items-center gap-2 rounded-xl bg-emerald-600 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-emerald-700"
               >
                 <Package size={18} />
-                Browse Available Deliveries
+                {text.browseAvailable}
               </Link>
             </div>
           ) : (
@@ -236,7 +346,6 @@ function DeliveryHistoryPage() {
                   className="rounded-2xl border border-slate-200 p-5 transition hover:border-emerald-200 hover:shadow-sm"
                 >
                   <div className="flex flex-col gap-5 lg:flex-row lg:items-center lg:justify-between">
-
                     <div className="min-w-0">
                       <div className="flex flex-wrap items-center gap-2">
                         <span className="text-sm font-bold text-slate-900">
@@ -265,11 +374,11 @@ function DeliveryHistoryPage() {
 
                       <div className="mt-3 flex flex-wrap gap-4 text-xs text-slate-400">
                         <span>
-                          Completed: {delivery.completedAt}
+                          {text.completed}: {delivery.completedAt}
                         </span>
 
                         <span>
-                          Distance: {delivery.distance}
+                          {text.distance}: {delivery.distance}
                         </span>
                       </div>
                     </div>
@@ -278,9 +387,8 @@ function DeliveryHistoryPage() {
                       type="button"
                       className="inline-flex items-center justify-center gap-2 rounded-xl border border-slate-200 px-4 py-2.5 text-sm font-semibold text-slate-700 transition hover:bg-slate-50"
                     >
-                      View Details
+                      {text.viewDetails}
                     </button>
-
                   </div>
                 </div>
               ))}
@@ -291,19 +399,17 @@ function DeliveryHistoryPage() {
 
       {/* Information cards */}
       <section className="grid grid-cols-1 gap-4 md:grid-cols-3">
-
         <div className="rounded-2xl border border-slate-200 bg-white p-5">
           <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-emerald-50 text-emerald-600">
             <CheckCircle2 size={20} />
           </div>
 
           <h3 className="mt-4 font-semibold text-slate-900">
-            Completed Deliveries
+            {text.completedDeliveriesInfo}
           </h3>
 
           <p className="mt-2 text-sm leading-6 text-slate-500">
-            Successfully completed deliveries will be stored here for future
-            reference.
+            {text.completedInfoDescription}
           </p>
         </div>
 
@@ -313,12 +419,11 @@ function DeliveryHistoryPage() {
           </div>
 
           <h3 className="mt-4 font-semibold text-slate-900">
-            Cancelled Deliveries
+            {text.cancelledDeliveriesInfo}
           </h3>
 
           <p className="mt-2 text-sm leading-6 text-slate-500">
-            Cancelled delivery records will remain available so activity can
-            be reviewed later.
+            {text.cancelledInfoDescription}
           </p>
         </div>
 
@@ -328,15 +433,13 @@ function DeliveryHistoryPage() {
           </div>
 
           <h3 className="mt-4 font-semibold text-slate-900">
-            Delivery Timeline
+            {text.deliveryTimeline}
           </h3>
 
           <p className="mt-2 text-sm leading-6 text-slate-500">
-            Delivery timestamps and status changes will be provided by the
-            backend delivery system.
+            {text.timelineDescription}
           </p>
         </div>
-
       </section>
     </div>
   )

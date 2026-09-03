@@ -11,29 +11,243 @@ import {
   Bike,
   UserRound,
 } from 'lucide-react'
+import { useLanguage } from '../../i18n/LanguageContext'
 
 function BusinessDeliveryPage() {
+  const { language } = useLanguage()
+
+  const text = {
+    en: {
+      delivery: 'Delivery',
+      description: 'Manage order pickup and delivery arrangements',
+
+      totalDeliveries: 'Total Deliveries',
+      deliveryRecords: 'Delivery records',
+
+      pending: 'Pending',
+      awaitingAction: 'Awaiting delivery action',
+
+      active: 'Active',
+      currentlyInProgress: 'Currently in progress',
+
+      delivered: 'Delivered',
+      successfullyDelivered: 'Successfully delivered',
+
+      deliveryMethods: 'Delivery Methods',
+      deliveryMethodsDescription:
+        'Delivery options available for your customers',
+
+      customerPickup: 'Customer Pickup',
+      customerPickupDescription:
+        'Customers collect their orders directly from your business.',
+
+      businessDelivery: 'Business Delivery',
+      businessDeliveryDescription:
+        'Your business handles delivery directly to the customer.',
+
+      marketplaceRider: 'Marketplace Rider',
+      marketplaceRiderDescription:
+        'A registered marketplace delivery rider handles the order.',
+
+      availableWhenConfigured: 'Available when configured',
+
+      deliveryManagement: 'Delivery Management',
+      deliveryManagementDescription:
+        'Track pickup and delivery status for your orders.',
+
+      searchPlaceholder: 'Search order or customer...',
+
+      deliveryMethod: 'Delivery method',
+      deliveryStatus: 'Delivery status',
+
+      all: 'All',
+      customerPickupFilter: 'Customer Pickup',
+      businessDeliveryFilter: 'Business Delivery',
+      marketplaceRiderFilter: 'Marketplace Rider',
+
+      pendingStatus: 'Pending',
+      preparing: 'Preparing',
+      ready: 'Ready',
+      assigned: 'Assigned',
+      outForDelivery: 'Out for Delivery',
+      deliveredStatus: 'Delivered',
+      cancelled: 'Cancelled',
+
+      noDeliveriesYet: 'No deliveries yet',
+      noDeliveriesFound: 'No deliveries found',
+
+      noDeliveriesDescription:
+        'Delivery information will appear here when customer orders require pickup or delivery.',
+
+      noDeliveriesFilterDescription:
+        'Try changing your search or delivery filters.',
+
+      clearFilters: 'Clear Filters',
+
+      order: 'Order',
+      customer: 'Customer',
+      method: 'Method',
+      destination: 'Destination',
+      riderHandler: 'Rider / Handler',
+      status: 'Status',
+      action: 'Action',
+
+      viewDelivery: 'View delivery',
+
+      deliveryAlert: 'Delivery',
+      customerLabel: 'Customer',
+      methodLabel: 'Method',
+      statusLabel: 'Status',
+
+      openNotifications: 'View notifications',
+    },
+
+    sw: {
+      delivery: 'Usafirishaji',
+      description:
+        'Simamia uchukuaji wa oda na mipango ya usafirishaji',
+
+      totalDeliveries: 'Jumla ya Usafirishaji',
+      deliveryRecords: 'Rekodi za usafirishaji',
+
+      pending: 'Inasubiri',
+      awaitingAction: 'Inasubiri hatua ya usafirishaji',
+
+      active: 'Unaendelea',
+      currentlyInProgress: 'Unaendelea kwa sasa',
+
+      delivered: 'Imefikishwa',
+      successfullyDelivered: 'Imefikishwa kwa mafanikio',
+
+      deliveryMethods: 'Njia za Usafirishaji',
+      deliveryMethodsDescription:
+        'Chaguo za usafirishaji zinazopatikana kwa wateja wako',
+
+      customerPickup: 'Mteja Anachukua',
+      customerPickupDescription:
+        'Wateja huchukua oda zao moja kwa moja kwenye biashara yako.',
+
+      businessDelivery: 'Usafirishaji wa Biashara',
+      businessDeliveryDescription:
+        'Biashara yako inapeleka oda moja kwa moja kwa mteja.',
+
+      marketplaceRider: 'Msafirishaji wa JamiiMarket',
+      marketplaceRiderDescription:
+        'Msafirishaji aliyesajiliwa wa JamiiMarket anashughulikia oda.',
+
+      availableWhenConfigured: 'Inapatikana baada ya kusanidiwa',
+
+      deliveryManagement: 'Usimamizi wa Usafirishaji',
+      deliveryManagementDescription:
+        'Fuatilia hali ya uchukuaji na usafirishaji wa oda zako.',
+
+      searchPlaceholder: 'Tafuta oda au mteja...',
+
+      deliveryMethod: 'Njia ya usafirishaji',
+      deliveryStatus: 'Hali ya usafirishaji',
+
+      all: 'Zote',
+      customerPickupFilter: 'Mteja Anachukua',
+      businessDeliveryFilter: 'Usafirishaji wa Biashara',
+      marketplaceRiderFilter: 'Msafirishaji wa JamiiMarket',
+
+      pendingStatus: 'Inasubiri',
+      preparing: 'Inaandaliwa',
+      ready: 'Iko Tayari',
+      assigned: 'Imepangiwa Msafirishaji',
+      outForDelivery: 'Iko Njiani',
+      deliveredStatus: 'Imefikishwa',
+      cancelled: 'Imeghairiwa',
+
+      noDeliveriesYet: 'Bado Hakuna Usafirishaji',
+      noDeliveriesFound: 'Hakuna Usafirishaji Uliopatikana',
+
+      noDeliveriesDescription:
+        'Taarifa za usafirishaji zitaonekana hapa oda za wateja zitakapohitaji kuchukuliwa au kupelekwa.',
+
+      noDeliveriesFilterDescription:
+        'Jaribu kubadilisha utafutaji au vichujio vya usafirishaji.',
+
+      clearFilters: 'Futa Vichujio',
+
+      order: 'Oda',
+      customer: 'Mteja',
+      method: 'Njia',
+      destination: 'Eneo la Kuwasilisha',
+      riderHandler: 'Msafirishaji / Mhudumu',
+      status: 'Hali',
+      action: 'Kitendo',
+
+      viewDelivery: 'Angalia usafirishaji',
+
+      deliveryAlert: 'Usafirishaji',
+      customerLabel: 'Mteja',
+      methodLabel: 'Njia',
+      statusLabel: 'Hali',
+
+      openNotifications: 'Angalia arifa',
+    },
+  }
+
+  const currentText = text[language] || text.en
+
   const [deliveries] = useState([])
   const [searchTerm, setSearchTerm] = useState('')
   const [methodFilter, setMethodFilter] = useState('All')
   const [statusFilter, setStatusFilter] = useState('All')
 
   const deliveryMethods = [
-    'All',
-    'Customer Pickup',
-    'Business Delivery',
-    'Marketplace Rider',
+    {
+      value: 'All',
+      label: currentText.all,
+    },
+    {
+      value: 'Customer Pickup',
+      label: currentText.customerPickupFilter,
+    },
+    {
+      value: 'Business Delivery',
+      label: currentText.businessDeliveryFilter,
+    },
+    {
+      value: 'Marketplace Rider',
+      label: currentText.marketplaceRiderFilter,
+    },
   ]
 
   const deliveryStatuses = [
-    'All',
-    'Pending',
-    'Preparing',
-    'Ready',
-    'Assigned',
-    'Out for Delivery',
-    'Delivered',
-    'Cancelled',
+    {
+      value: 'All',
+      label: currentText.all,
+    },
+    {
+      value: 'Pending',
+      label: currentText.pendingStatus,
+    },
+    {
+      value: 'Preparing',
+      label: currentText.preparing,
+    },
+    {
+      value: 'Ready',
+      label: currentText.ready,
+    },
+    {
+      value: 'Assigned',
+      label: currentText.assigned,
+    },
+    {
+      value: 'Out for Delivery',
+      label: currentText.outForDelivery,
+    },
+    {
+      value: 'Delivered',
+      label: currentText.deliveredStatus,
+    },
+    {
+      value: 'Cancelled',
+      label: currentText.cancelled,
+    },
   ]
 
   const filteredDeliveries = useMemo(() => {
@@ -91,7 +305,10 @@ function BusinessDeliveryPage() {
 
   const handleViewDelivery = (delivery) => {
     window.alert(
-      `Delivery ${delivery.orderNumber}\n\nCustomer: ${delivery.customerName}\nMethod: ${delivery.method}\nStatus: ${delivery.status}`
+      `${currentText.deliveryAlert} ${delivery.orderNumber}\n\n` +
+      `${currentText.customerLabel}: ${delivery.customerName}\n` +
+      `${currentText.methodLabel}: ${delivery.method}\n` +
+      `${currentText.statusLabel}: ${delivery.status}`
     )
   }
 
@@ -111,11 +328,11 @@ function BusinessDeliveryPage() {
 
             <div className="min-w-0">
               <h1 className="truncate text-xl font-bold text-[#1B1C1C] sm:text-2xl">
-                Delivery
+                {currentText.delivery}
               </h1>
 
               <p className="mt-0.5 text-sm text-gray-500">
-                Manage order pickup and delivery arrangements
+                {currentText.description}
               </p>
             </div>
 
@@ -133,7 +350,7 @@ function BusinessDeliveryPage() {
 
               <div>
                 <p className="text-sm font-medium text-gray-500">
-                  Total Deliveries
+                  {currentText.totalDeliveries}
                 </p>
 
                 <p className="mt-2 text-2xl font-bold text-[#1B1C1C]">
@@ -148,7 +365,7 @@ function BusinessDeliveryPage() {
             </div>
 
             <p className="mt-2 text-xs text-gray-400">
-              Delivery records
+              {currentText.deliveryRecords}
             </p>
 
           </div>
@@ -160,7 +377,7 @@ function BusinessDeliveryPage() {
 
               <div>
                 <p className="text-sm font-medium text-gray-500">
-                  Pending
+                  {currentText.pending}
                 </p>
 
                 <p className="mt-2 text-2xl font-bold text-[#1B1C1C]">
@@ -175,7 +392,7 @@ function BusinessDeliveryPage() {
             </div>
 
             <p className="mt-2 text-xs text-gray-400">
-              Awaiting delivery action
+              {currentText.awaitingAction}
             </p>
 
           </div>
@@ -187,7 +404,7 @@ function BusinessDeliveryPage() {
 
               <div>
                 <p className="text-sm font-medium text-gray-500">
-                  Active
+                  {currentText.active}
                 </p>
 
                 <p className="mt-2 text-2xl font-bold text-[#1B1C1C]">
@@ -202,7 +419,7 @@ function BusinessDeliveryPage() {
             </div>
 
             <p className="mt-2 text-xs text-gray-400">
-              Currently in progress
+              {currentText.currentlyInProgress}
             </p>
 
           </div>
@@ -214,7 +431,7 @@ function BusinessDeliveryPage() {
 
               <div>
                 <p className="text-sm font-medium text-gray-500">
-                  Delivered
+                  {currentText.delivered}
                 </p>
 
                 <p className="mt-2 text-2xl font-bold text-[#1B1C1C]">
@@ -229,7 +446,7 @@ function BusinessDeliveryPage() {
             </div>
 
             <p className="mt-2 text-xs text-gray-400">
-              Successfully delivered
+              {currentText.successfullyDelivered}
             </p>
 
           </div>
@@ -247,11 +464,11 @@ function BusinessDeliveryPage() {
 
             <div>
               <h2 className="text-base font-semibold text-[#1B1C1C] sm:text-lg">
-                Delivery Methods
+                {currentText.deliveryMethods}
               </h2>
 
               <p className="mt-1 text-sm text-gray-500">
-                Delivery options available for your customers
+                {currentText.deliveryMethodsDescription}
               </p>
             </div>
 
@@ -267,15 +484,15 @@ function BusinessDeliveryPage() {
               </div>
 
               <h3 className="mt-4 text-sm font-semibold text-[#1B1C1C]">
-                Customer Pickup
+                {currentText.customerPickup}
               </h3>
 
               <p className="mt-1 text-xs leading-5 text-gray-500">
-                Customers collect their orders directly from your business.
+                {currentText.customerPickupDescription}
               </p>
 
               <span className="mt-4 inline-flex rounded-full bg-gray-100 px-3 py-1 text-xs font-medium text-gray-500">
-                Available when configured
+                {currentText.availableWhenConfigured}
               </span>
 
             </div>
@@ -288,15 +505,15 @@ function BusinessDeliveryPage() {
               </div>
 
               <h3 className="mt-4 text-sm font-semibold text-[#1B1C1C]">
-                Business Delivery
+                {currentText.businessDelivery}
               </h3>
 
               <p className="mt-1 text-xs leading-5 text-gray-500">
-                Your business handles delivery directly to the customer.
+                {currentText.businessDeliveryDescription}
               </p>
 
               <span className="mt-4 inline-flex rounded-full bg-gray-100 px-3 py-1 text-xs font-medium text-gray-500">
-                Available when configured
+                {currentText.availableWhenConfigured}
               </span>
 
             </div>
@@ -309,15 +526,15 @@ function BusinessDeliveryPage() {
               </div>
 
               <h3 className="mt-4 text-sm font-semibold text-[#1B1C1C]">
-                Marketplace Rider
+                {currentText.marketplaceRider}
               </h3>
 
               <p className="mt-1 text-xs leading-5 text-gray-500">
-                A registered marketplace delivery rider handles the order.
+                {currentText.marketplaceRiderDescription}
               </p>
 
               <span className="mt-4 inline-flex rounded-full bg-gray-100 px-3 py-1 text-xs font-medium text-gray-500">
-                Available when configured
+                {currentText.availableWhenConfigured}
               </span>
 
             </div>
@@ -336,11 +553,11 @@ function BusinessDeliveryPage() {
 
               <div>
                 <h2 className="text-base font-semibold text-[#1B1C1C] sm:text-lg">
-                  Delivery Management
+                  {currentText.deliveryManagement}
                 </h2>
 
                 <p className="mt-1 text-sm text-gray-500">
-                  Track pickup and delivery status for your orders.
+                  {currentText.deliveryManagementDescription}
                 </p>
               </div>
 
@@ -358,7 +575,7 @@ function BusinessDeliveryPage() {
                   onChange={(event) =>
                     setSearchTerm(event.target.value)
                   }
-                  placeholder="Search order or customer..."
+                  placeholder={currentText.searchPlaceholder}
                   className="h-11 w-full rounded-xl border border-gray-200 bg-gray-50 pl-10 pr-4 text-sm text-gray-700 outline-none transition placeholder:text-gray-400 focus:border-[#326460] focus:bg-white focus:ring-2 focus:ring-[#326460]/10"
                 />
 
@@ -371,25 +588,25 @@ function BusinessDeliveryPage() {
 
               <div className="flex items-center gap-2 text-sm font-medium text-gray-600">
                 <SlidersHorizontal size={17} />
-                Delivery method
+                {currentText.deliveryMethod}
               </div>
 
               <div className="flex flex-wrap gap-2">
 
                 {deliveryMethods.map((method) => (
                   <button
-                    key={method}
+                    key={method.value}
                     type="button"
                     onClick={() =>
-                      setMethodFilter(method)
+                      setMethodFilter(method.value)
                     }
                     className={`rounded-lg px-3 py-2 text-xs font-semibold transition ${
-                      methodFilter === method
+                      methodFilter === method.value
                         ? 'bg-[#326460] text-white'
                         : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
                     }`}
                   >
-                    {method}
+                    {method.label}
                   </button>
                 ))}
 
@@ -397,25 +614,25 @@ function BusinessDeliveryPage() {
 
               <div className="flex items-center gap-2 text-sm font-medium text-gray-600">
                 <PackageCheck size={17} />
-                Delivery status
+                {currentText.deliveryStatus}
               </div>
 
               <div className="flex flex-wrap gap-2">
 
                 {deliveryStatuses.map((status) => (
                   <button
-                    key={status}
+                    key={status.value}
                     type="button"
                     onClick={() =>
-                      setStatusFilter(status)
+                      setStatusFilter(status.value)
                     }
                     className={`rounded-lg px-3 py-2 text-xs font-semibold transition ${
-                      statusFilter === status
+                      statusFilter === status.value
                         ? 'bg-[#326460] text-white'
                         : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
                     }`}
                   >
-                    {status}
+                    {status.label}
                   </button>
                 ))}
 
@@ -436,14 +653,14 @@ function BusinessDeliveryPage() {
 
               <h3 className="mt-5 text-lg font-semibold text-[#1B1C1C]">
                 {deliveries.length === 0
-                  ? 'No deliveries yet'
-                  : 'No deliveries found'}
+                  ? currentText.noDeliveriesYet
+                  : currentText.noDeliveriesFound}
               </h3>
 
               <p className="mx-auto mt-2 max-w-lg text-sm leading-6 text-gray-500">
                 {deliveries.length === 0
-                  ? 'Delivery information will appear here when customer orders require pickup or delivery.'
-                  : 'Try changing your search or delivery filters.'}
+                  ? currentText.noDeliveriesDescription
+                  : currentText.noDeliveriesFilterDescription}
               </p>
 
               {deliveries.length > 0 && (
@@ -453,7 +670,7 @@ function BusinessDeliveryPage() {
                   className="mt-6 inline-flex min-h-11 items-center justify-center gap-2 rounded-xl border border-gray-200 bg-white px-5 py-3 text-sm font-semibold text-gray-600 transition hover:bg-gray-50"
                 >
                   <RefreshCw size={17} />
-                  Clear Filters
+                  {currentText.clearFilters}
                 </button>
               )}
 
@@ -469,31 +686,31 @@ function BusinessDeliveryPage() {
                   <tr className="border-b border-gray-200 bg-gray-50 text-left">
 
                     <th className="px-6 py-4 text-xs font-semibold uppercase tracking-wide text-gray-500">
-                      Order
+                      {currentText.order}
                     </th>
 
                     <th className="px-6 py-4 text-xs font-semibold uppercase tracking-wide text-gray-500">
-                      Customer
+                      {currentText.customer}
                     </th>
 
                     <th className="px-6 py-4 text-xs font-semibold uppercase tracking-wide text-gray-500">
-                      Method
+                      {currentText.method}
                     </th>
 
                     <th className="px-6 py-4 text-xs font-semibold uppercase tracking-wide text-gray-500">
-                      Destination
+                      {currentText.destination}
                     </th>
 
                     <th className="px-6 py-4 text-xs font-semibold uppercase tracking-wide text-gray-500">
-                      Rider / Handler
+                      {currentText.riderHandler}
                     </th>
 
                     <th className="px-6 py-4 text-xs font-semibold uppercase tracking-wide text-gray-500">
-                      Status
+                      {currentText.status}
                     </th>
 
                     <th className="px-6 py-4 text-right text-xs font-semibold uppercase tracking-wide text-gray-500">
-                      Action
+                      {currentText.action}
                     </th>
 
                   </tr>
@@ -535,6 +752,7 @@ function BusinessDeliveryPage() {
                       <td className="px-6 py-4">
 
                         <span className="inline-flex items-center gap-2 rounded-full bg-gray-100 px-3 py-1 text-xs font-medium text-gray-600">
+
                           {delivery.method === 'Customer Pickup' && (
                             <Store size={13} />
                           )}
@@ -555,6 +773,7 @@ function BusinessDeliveryPage() {
                       <td className="px-6 py-4">
 
                         <div className="flex items-center gap-2 text-sm text-gray-600">
+
                           <MapPin
                             size={16}
                             className="shrink-0 text-gray-400"
@@ -563,6 +782,7 @@ function BusinessDeliveryPage() {
                           <span>
                             {delivery.destination}
                           </span>
+
                         </div>
 
                       </td>
@@ -612,7 +832,7 @@ function BusinessDeliveryPage() {
                               handleViewDelivery(delivery)
                             }
                             className="flex h-9 w-9 items-center justify-center rounded-lg text-gray-500 transition hover:bg-gray-100 hover:text-[#326460]"
-                            aria-label={`View delivery for ${delivery.orderNumber}`}
+                            aria-label={`${currentText.viewDelivery} ${delivery.orderNumber}`}
                           >
                             <Eye size={17} />
                           </button>

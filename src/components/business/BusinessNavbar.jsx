@@ -14,41 +14,6 @@ import {
 import { useEffect, useRef, useState } from 'react'
 import { useLanguage } from '../../i18n/LanguageContext'
 
-const pageTitles = {
-  '/business/dashboard': {
-    title: 'businessDashboard',
-    description: 'manageBusiness',
-  },
-  '/business/products': {
-    title: 'products',
-    description: 'manageProducts',
-  },
-  '/business/orders': {
-    title: 'orders',
-    description: 'manageOrders',
-  },
-  '/business/delivery': {
-    title: 'delivery',
-    description: 'manageDelivery',
-  },
-  '/business/payments': {
-    title: 'payments',
-    description: 'monitorPayments',
-  },
-  '/business/profile': {
-    title: 'businessProfile',
-    description: 'manageBusinessInformation',
-  },
-  '/business/settings': {
-    title: 'businessSettings',
-    description: 'manageAccountPreferences',
-  },
-  '/business/notifications': {
-    title: 'notifications',
-    description: 'stayUpdated',
-  },
-}
-
 function BusinessNavbar({ onMenuClick }) {
   const location = useLocation()
   const navigate = useNavigate()
@@ -60,12 +25,111 @@ function BusinessNavbar({ onMenuClick }) {
   const {
     language,
     changeLanguage,
-    t,
   } = useLanguage()
 
-  const currentPage =
-    pageTitles[location.pathname] ||
-    pageTitles['/business/dashboard']
+  // Get current page information
+  const getPageInformation = () => {
+    switch (location.pathname) {
+      case '/business/products':
+        return {
+          title:
+            language === 'sw'
+              ? 'Bidhaa'
+              : 'Products',
+          description:
+            language === 'sw'
+              ? 'Simamia bidhaa zako'
+              : 'Manage your products',
+        }
+
+      case '/business/orders':
+        return {
+          title:
+            language === 'sw'
+              ? 'Oda'
+              : 'Orders',
+          description:
+            language === 'sw'
+              ? 'Simamia oda za wateja'
+              : 'Manage customer orders',
+        }
+
+      case '/business/delivery':
+        return {
+          title:
+            language === 'sw'
+              ? 'Usafirishaji'
+              : 'Delivery',
+          description:
+            language === 'sw'
+              ? 'Simamia usafirishaji'
+              : 'Manage deliveries',
+        }
+
+      case '/business/payments':
+        return {
+          title:
+            language === 'sw'
+              ? 'Malipo'
+              : 'Payments',
+          description:
+            language === 'sw'
+              ? 'Fuatilia malipo yako'
+              : 'Monitor your payments',
+        }
+
+      case '/business/profile':
+        return {
+          title:
+            language === 'sw'
+              ? 'Wasifu wa Biashara'
+              : 'Business Profile',
+          description:
+            language === 'sw'
+              ? 'Simamia taarifa za biashara yako'
+              : 'Manage your business information',
+        }
+
+      case '/business/settings':
+        return {
+          title:
+            language === 'sw'
+              ? 'Mipangilio ya Biashara'
+              : 'Business Settings',
+          description:
+            language === 'sw'
+              ? 'Simamia mapendeleo ya akaunti yako'
+              : 'Manage your account preferences',
+        }
+
+      case '/business/notifications':
+        return {
+          title:
+            language === 'sw'
+              ? 'Arifa'
+              : 'Notifications',
+          description:
+            language === 'sw'
+              ? 'Pata taarifa za hivi karibuni'
+              : 'Stay updated',
+        }
+
+      case '/business/dashboard':
+      default:
+        return {
+          title:
+            language === 'sw'
+              ? 'Dashibodi ya Biashara'
+              : 'Business Dashboard',
+          description:
+            language === 'sw'
+              ? 'Simamia biashara yako'
+              : 'Manage your business',
+        }
+    }
+  }
+
+  const currentPage = getPageInformation()
 
   // Close profile dropdown when clicking outside
   useEffect(() => {
@@ -78,16 +142,10 @@ function BusinessNavbar({ onMenuClick }) {
       }
     }
 
-    document.addEventListener(
-      'mousedown',
-      handleClickOutside
-    )
+    document.addEventListener('mousedown', handleClickOutside)
 
     return () => {
-      document.removeEventListener(
-        'mousedown',
-        handleClickOutside
-      )
+      document.removeEventListener('mousedown', handleClickOutside)
     }
   }, [])
 
@@ -117,7 +175,7 @@ function BusinessNavbar({ onMenuClick }) {
     localStorage.removeItem('role')
     localStorage.removeItem('jamiiMarketUser')
 
-    navigate('/login')
+    navigate('/login', { replace: true })
   }
 
   return (
@@ -136,7 +194,11 @@ function BusinessNavbar({ onMenuClick }) {
               ? 'Fungua menyu ya biashara'
               : 'Open business navigation menu'
           }
-          title={language === 'sw' ? 'Fungua menyu' : 'Open menu'}
+          title={
+            language === 'sw'
+              ? 'Fungua menyu'
+              : 'Open menu'
+          }
         >
           <Menu size={22} />
         </button>
@@ -144,11 +206,11 @@ function BusinessNavbar({ onMenuClick }) {
         {/* Page title */}
         <div className="min-w-0">
           <h2 className="truncate text-base font-semibold text-[#1B1C1C] sm:text-lg">
-            {t(currentPage.title)}
+            {currentPage.title}
           </h2>
 
           <p className="hidden truncate text-xs text-gray-500 sm:block">
-            {t(currentPage.description)}
+            {currentPage.description}
           </p>
         </div>
       </div>
@@ -184,7 +246,7 @@ function BusinessNavbar({ onMenuClick }) {
             aria-label="English"
             aria-pressed={language === 'en'}
           >
-            ENG
+            EN
           </button>
 
         </div>
@@ -199,16 +261,18 @@ function BusinessNavbar({ onMenuClick }) {
                 : 'text-gray-600 hover:bg-gray-100 hover:text-[#326460]'
             }`
           }
-          aria-label={t('notifications')}
-          title={t('notifications')}
+          aria-label={
+            language === 'sw'
+              ? 'Arifa'
+              : 'Notifications'
+          }
+          title={
+            language === 'sw'
+              ? 'Arifa'
+              : 'Notifications'
+          }
         >
           <Bell size={20} />
-
-          {/* Unread indicator will be connected to real data later */}
-          <span
-            className="absolute right-2 top-2 hidden h-2 w-2 rounded-full bg-[#326460]"
-            aria-hidden="true"
-          />
         </NavLink>
 
         {/* Divider */}
@@ -233,8 +297,11 @@ function BusinessNavbar({ onMenuClick }) {
             }`}
             aria-expanded={profileOpen}
             aria-haspopup="menu"
-            aria-label={t('businessAccount')}
-            title={t('businessAccount')}
+            aria-label={
+              language === 'sw'
+                ? 'Akaunti ya biashara'
+                : 'Business account'
+            }
           >
 
             {/* Avatar */}
@@ -245,11 +312,15 @@ function BusinessNavbar({ onMenuClick }) {
             {/* Business information */}
             <div className="hidden min-w-0 text-left md:block">
               <p className="max-w-32 truncate text-sm font-semibold text-[#1B1C1C]">
-                {t('myBusiness')}
+                {language === 'sw'
+                  ? 'Biashara Yangu'
+                  : 'My Business'}
               </p>
 
               <p className="text-xs text-gray-500">
-                {t('businessAccount')}
+                {language === 'sw'
+                  ? 'Akaunti ya Biashara'
+                  : 'Business Account'}
               </p>
             </div>
 
@@ -274,11 +345,15 @@ function BusinessNavbar({ onMenuClick }) {
               {/* Account header */}
               <div className="border-b border-gray-100 px-4 py-3">
                 <p className="text-sm font-semibold text-[#1B1C1C]">
-                  {t('businessAccount')}
+                  {language === 'sw'
+                    ? 'Akaunti ya Biashara'
+                    : 'Business Account'}
                 </p>
 
                 <p className="mt-0.5 text-xs text-gray-500">
-                  {t('manageYourAccount')}
+                  {language === 'sw'
+                    ? 'Simamia akaunti yako'
+                    : 'Manage your account'}
                 </p>
               </div>
 
@@ -291,7 +366,11 @@ function BusinessNavbar({ onMenuClick }) {
               >
                 <User size={18} />
 
-                <span>{t('profile')}</span>
+                <span>
+                  {language === 'sw'
+                    ? 'Wasifu'
+                    : 'Profile'}
+                </span>
               </button>
 
               {/* Settings */}
@@ -303,7 +382,11 @@ function BusinessNavbar({ onMenuClick }) {
               >
                 <Settings size={18} />
 
-                <span>{t('settings')}</span>
+                <span>
+                  {language === 'sw'
+                    ? 'Mipangilio'
+                    : 'Settings'}
+                </span>
               </button>
 
               {/* Divider */}
@@ -318,7 +401,11 @@ function BusinessNavbar({ onMenuClick }) {
               >
                 <LogOut size={18} />
 
-                <span>{t('logout')}</span>
+                <span>
+                  {language === 'sw'
+                    ? 'Toka'
+                    : 'Logout'}
+                </span>
               </button>
 
             </div>

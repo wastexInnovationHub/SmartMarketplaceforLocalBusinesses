@@ -14,12 +14,20 @@ import {
   XCircle,
 } from 'lucide-react'
 
+import { useLanguage } from '../../i18n/LanguageContext'
+
 const initialAdmins = []
 
 const adminStatuses = ['active', 'inactive']
 
-const formatStatus = (status) => {
-  if (!status) return 'Unknown'
+const formatStatus = (status, language) => {
+  if (!status) {
+    return language === 'sw' ? 'Haijulikani' : 'Unknown'
+  }
+
+  if (language === 'sw') {
+    return status === 'active' ? 'Hai' : 'Haifanyi Kazi'
+  }
 
   return status.charAt(0).toUpperCase() + status.slice(1)
 }
@@ -38,6 +46,151 @@ const getStatusClasses = (status) => {
 }
 
 function AdminManagementPage() {
+  const { language } = useLanguage()
+
+  const text =
+    language === 'sw'
+      ? {
+          systemAdministration: 'Usimamizi wa Mfumo',
+          adminManagement: 'Usimamizi wa Admin',
+          pageDescription:
+            'Simamia akaunti za wasimamizi na udhibiti wanaoweza kufikia sehemu ya usimamizi ya JamiiMarket.',
+          addAdministrator: 'Ongeza Msimamizi',
+
+          totalAdministrators: 'Jumla ya Wasimamizi',
+          registeredAdminAccounts: 'Akaunti za wasimamizi zilizosajiliwa',
+          activeAdministrators: 'Wasimamizi Wanaofanya Kazi',
+          currentlyEnabled: 'Waliowezeshwa kwa sasa',
+          inactiveAdministrators: 'Wasimamizi Wasiotumika',
+          currentlyDisabled: 'Waliozuiwa kwa sasa',
+
+          administratorAccounts: 'Akaunti za Wasimamizi',
+          manageAccess: 'Angalia na simamia ruhusa za wasimamizi.',
+          searchAdministrators: 'Tafuta wasimamizi...',
+          allStatuses: 'Hali Zote',
+          active: 'Hai',
+          inactive: 'Haifanyi Kazi',
+
+          administrator: 'Msimamizi',
+          administratorAccount: 'Akaunti ya msimamizi',
+          contact: 'Mawasiliano',
+          role: 'Jukumu',
+          status: 'Hali',
+          actions: 'Vitendo',
+
+          emailUnavailable: 'Barua pepe haipatikani',
+          phoneUnavailable: 'Namba ya simu haipatikani',
+
+          viewAdministrator: 'Angalia msimamizi',
+          editAdministrator: 'Hariri msimamizi',
+          deleteAdministrator: 'Futa msimamizi',
+          disable: 'Zima',
+          activate: 'Washa',
+
+          noAdministratorAccounts: 'Hakuna akaunti za wasimamizi',
+          noAdministratorRecords:
+            'Kwa sasa hakuna taarifa za wasimamizi. Akaunti halisi za wasimamizi zita loaded kutoka backend baada ya mfumo wa uthibitishaji na usimamizi wa majukumu kuunganishwa.',
+
+          administratorSecurity: 'Usalama wa Msimamizi',
+          securityDescription:
+            'Uundaji wa wasimamizi, uthibitishaji usiohitaji nenosiri, JWT, ruhusa, kuzima akaunti, na udhibiti wa ufikiaji lazima vitekelezwe na backend. Udhibiti wa frontend pekee haupaswi kuchukuliwa kama usalama.',
+
+          editAdministratorTitle: 'Hariri Msimamizi',
+          administratorDetails: 'Maelezo ya Msimamizi',
+          firstName: 'Jina la Kwanza',
+          lastName: 'Jina la Mwisho',
+          email: 'Barua Pepe',
+          phone: 'Namba ya Simu',
+          created: 'Imeundwa',
+          updated: 'Imesasishwa',
+
+          close: 'Funga',
+          deleteAdministratorTitle: 'Futa Msimamizi',
+          deleteConfirmation:
+            'Una uhakika unataka kumuondoa msimamizi huyu kwenye orodha ya sasa ya frontend? Backend ya mfumo wa uzalishaji lazima idhibiti ruhusa za kufuta akaunti.',
+          cancel: 'Ghairi',
+          delete: 'Futa',
+
+          authenticationNotice:
+            'Taarifa za uthibitishaji na ruhusa za wasimamizi zitasimamiwa na backend. Fomu hii kwa sasa inasimamia hali ya frontend pekee.',
+          saveChanges: 'Hifadhi Mabadiliko',
+          notAvailable: 'Haipatikani',
+          closeModal: 'Funga dirisha',
+
+          addAdministratorTitle: 'Ongeza Msimamizi',
+          administratorStatus: 'Hali',
+        }
+      : {
+          systemAdministration: 'System Administration',
+          adminManagement: 'Admin Management',
+          pageDescription:
+            'Manage administrator accounts and control who can access the JamiiMarket administration portal.',
+          addAdministrator: 'Add Administrator',
+
+          totalAdministrators: 'Total Administrators',
+          registeredAdminAccounts: 'Registered admin accounts',
+          activeAdministrators: 'Active Administrators',
+          currentlyEnabled: 'Currently enabled',
+          inactiveAdministrators: 'Inactive Administrators',
+          currentlyDisabled: 'Currently disabled',
+
+          administratorAccounts: 'Administrator Accounts',
+          manageAccess: 'View and manage administrator access.',
+          searchAdministrators: 'Search administrators...',
+          allStatuses: 'All Statuses',
+          active: 'Active',
+          inactive: 'Inactive',
+
+          administrator: 'Administrator',
+          administratorAccount: 'Administrator account',
+          contact: 'Contact',
+          role: 'Role',
+          status: 'Status',
+          actions: 'Actions',
+
+          emailUnavailable: 'Email unavailable',
+          phoneUnavailable: 'Phone unavailable',
+
+          viewAdministrator: 'View administrator',
+          editAdministrator: 'Edit administrator',
+          deleteAdministrator: 'Delete administrator',
+          disable: 'Disable',
+          activate: 'Activate',
+
+          noAdministratorAccounts: 'No administrator accounts',
+          noAdministratorRecords:
+            'No administrator records are currently available. Real administrator accounts will be loaded from the backend when authentication and role management are connected.',
+
+          administratorSecurity: 'Administrator security',
+          securityDescription:
+            'Administrator creation, passwordless authentication, JWT validation, permissions, account disabling, and access control must be enforced by the backend. Frontend controls alone must never be treated as security.',
+
+          editAdministratorTitle: 'Edit Administrator',
+          administratorDetails: 'Administrator Details',
+          firstName: 'First Name',
+          lastName: 'Last Name',
+          email: 'Email',
+          phone: 'Phone',
+          created: 'Created',
+          updated: 'Updated',
+
+          close: 'Close',
+          deleteAdministratorTitle: 'Delete Administrator',
+          deleteConfirmation:
+            'Are you sure you want to remove this administrator from the current frontend list? The production backend must enforce deletion permissions.',
+          cancel: 'Cancel',
+          delete: 'Delete',
+
+          authenticationNotice:
+            'Authentication credentials and administrator permissions will be handled by the backend. This form currently manages frontend state only.',
+          saveChanges: 'Save Changes',
+          notAvailable: 'Not available',
+          closeModal: 'Close modal',
+
+          addAdministratorTitle: 'Add Administrator',
+          administratorStatus: 'Status',
+        }
+
   const [admins, setAdmins] = useState(initialAdmins)
   const [search, setSearch] = useState('')
   const [statusFilter, setStatusFilter] = useState('all')
@@ -81,11 +234,11 @@ function AdminManagementPage() {
   const totalAdmins = admins.length
 
   const activeAdmins = admins.filter(
-    (admin) => admin.status === 'active'
+    (admin) => admin.status === 'active',
   ).length
 
   const inactiveAdmins = admins.filter(
-    (admin) => admin.status === 'inactive'
+    (admin) => admin.status === 'inactive',
   ).length
 
   const resetForm = () => {
@@ -160,8 +313,8 @@ function AdminManagementPage() {
               role: 'admin',
               updatedAt: new Date().toISOString(),
             }
-          : admin
-      )
+          : admin,
+      ),
     )
 
     setEditingAdmin(null)
@@ -180,8 +333,8 @@ function AdminManagementPage() {
                   ? 'inactive'
                   : 'active',
             }
-          : admin
-      )
+          : admin,
+      ),
     )
   }
 
@@ -191,8 +344,8 @@ function AdminManagementPage() {
 
     setAdmins((currentAdmins) =>
       currentAdmins.filter(
-        (admin) => admin.id !== deletingAdmin.id
-      )
+        (admin) => admin.id !== deletingAdmin.id,
+      ),
     )
 
     setDeletingAdmin(null)
@@ -204,16 +357,15 @@ function AdminManagementPage() {
       <div className="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
         <div>
           <p className="text-sm font-semibold uppercase tracking-[0.18em] text-indigo-600">
-            System Administration
+            {text.systemAdministration}
           </p>
 
           <h1 className="mt-2 text-2xl font-bold tracking-tight text-slate-900 sm:text-3xl">
-            Admin Management
+            {text.adminManagement}
           </h1>
 
           <p className="mt-2 max-w-3xl text-sm leading-6 text-slate-600 sm:text-base">
-            Manage administrator accounts and control who
-            can access the JamiiMarket administration portal.
+            {text.pageDescription}
           </p>
         </div>
 
@@ -223,7 +375,7 @@ function AdminManagementPage() {
           className="inline-flex items-center justify-center gap-2 rounded-xl bg-indigo-600 px-4 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-indigo-700"
         >
           <Plus size={18} />
-          Add Administrator
+          {text.addAdministrator}
         </button>
       </div>
 
@@ -231,23 +383,23 @@ function AdminManagementPage() {
       <div className="grid gap-4 sm:grid-cols-3">
         <StatCard
           icon={ShieldCheck}
-          label="Total Administrators"
+          label={text.totalAdministrators}
           value={totalAdmins}
-          description="Registered admin accounts"
+          description={text.registeredAdminAccounts}
         />
 
         <StatCard
           icon={CheckCircle}
-          label="Active Administrators"
+          label={text.activeAdministrators}
           value={activeAdmins}
-          description="Currently enabled"
+          description={text.currentlyEnabled}
         />
 
         <StatCard
           icon={UserCog}
-          label="Inactive Administrators"
+          label={text.inactiveAdministrators}
           value={inactiveAdmins}
-          description="Currently disabled"
+          description={text.currentlyDisabled}
         />
       </div>
 
@@ -258,11 +410,11 @@ function AdminManagementPage() {
           <div className="flex flex-col gap-4 xl:flex-row xl:items-center xl:justify-between">
             <div>
               <h2 className="text-lg font-bold text-slate-900">
-                Administrator Accounts
+                {text.administratorAccounts}
               </h2>
 
               <p className="mt-1 text-sm text-slate-500">
-                View and manage administrator access.
+                {text.manageAccess}
               </p>
             </div>
 
@@ -279,7 +431,7 @@ function AdminManagementPage() {
                   onChange={(event) =>
                     setSearch(event.target.value)
                   }
-                  placeholder="Search administrators..."
+                  placeholder={text.searchAdministrators}
                   className="w-full rounded-xl border border-slate-200 bg-slate-50 py-2.5 pl-10 pr-3 text-sm outline-none transition focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-100 sm:w-64"
                 />
               </div>
@@ -291,11 +443,11 @@ function AdminManagementPage() {
                 }
                 className="rounded-xl border border-slate-200 bg-slate-50 px-3 py-2.5 text-sm outline-none transition focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-100"
               >
-                <option value="all">All Statuses</option>
+                <option value="all">{text.allStatuses}</option>
 
                 {adminStatuses.map((status) => (
                   <option key={status} value={status}>
-                    {formatStatus(status)}
+                    {formatStatus(status, language)}
                   </option>
                 ))}
               </select>
@@ -310,23 +462,23 @@ function AdminManagementPage() {
               <thead className="bg-slate-50">
                 <tr className="border-b border-slate-200">
                   <th className="px-5 py-4 text-left text-xs font-semibold uppercase tracking-wide text-slate-500">
-                    Administrator
+                    {text.administrator}
                   </th>
 
                   <th className="px-5 py-4 text-left text-xs font-semibold uppercase tracking-wide text-slate-500">
-                    Contact
+                    {text.contact}
                   </th>
 
                   <th className="px-5 py-4 text-left text-xs font-semibold uppercase tracking-wide text-slate-500">
-                    Role
+                    {text.role}
                   </th>
 
                   <th className="px-5 py-4 text-left text-xs font-semibold uppercase tracking-wide text-slate-500">
-                    Status
+                    {text.status}
                   </th>
 
                   <th className="px-5 py-4 text-right text-xs font-semibold uppercase tracking-wide text-slate-500">
-                    Actions
+                    {text.actions}
                   </th>
                 </tr>
               </thead>
@@ -336,7 +488,7 @@ function AdminManagementPage() {
                   const fullName =
                     `${admin.firstName || ''} ${
                       admin.lastName || ''
-                    }`.trim() || 'Administrator'
+                    }`.trim() || text.administrator
 
                   return (
                     <tr
@@ -357,7 +509,7 @@ function AdminManagementPage() {
                             </p>
 
                             <p className="mt-1 text-xs text-slate-500">
-                              Administrator account
+                              {text.administratorAccount}
                             </p>
                           </div>
                         </div>
@@ -366,28 +518,31 @@ function AdminManagementPage() {
                       <td className="px-5 py-4">
                         <p className="text-sm text-slate-700">
                           {admin.email ||
-                            'Email unavailable'}
+                            text.emailUnavailable}
                         </p>
 
                         <p className="mt-1 text-xs text-slate-500">
                           {admin.phone ||
-                            'Phone unavailable'}
+                            text.phoneUnavailable}
                         </p>
                       </td>
 
                       <td className="px-5 py-4">
                         <span className="inline-flex rounded-full border border-indigo-200 bg-indigo-50 px-2.5 py-1 text-xs font-semibold text-indigo-700">
-                          Administrator
+                          {text.administrator}
                         </span>
                       </td>
 
                       <td className="px-5 py-4">
                         <span
                           className={`inline-flex rounded-full border px-2.5 py-1 text-xs font-semibold ${getStatusClasses(
-                            admin.status
+                            admin.status,
                           )}`}
                         >
-                          {formatStatus(admin.status)}
+                          {formatStatus(
+                            admin.status,
+                            language,
+                          )}
                         </span>
                       </td>
 
@@ -399,7 +554,7 @@ function AdminManagementPage() {
                               setSelectedAdmin(admin)
                             }
                             className="rounded-lg border border-slate-200 p-2 text-slate-600 transition hover:border-indigo-200 hover:bg-indigo-50 hover:text-indigo-700"
-                            title="View administrator"
+                            title={text.viewAdministrator}
                           >
                             <Eye size={16} />
                           </button>
@@ -410,7 +565,7 @@ function AdminManagementPage() {
                               openEditModal(admin)
                             }
                             className="rounded-lg border border-slate-200 p-2 text-slate-600 transition hover:border-indigo-200 hover:bg-indigo-50 hover:text-indigo-700"
-                            title="Edit administrator"
+                            title={text.editAdministrator}
                           >
                             <Pencil size={16} />
                           </button>
@@ -423,8 +578,8 @@ function AdminManagementPage() {
                             className="rounded-lg border border-slate-200 px-3 py-2 text-xs font-semibold text-slate-700 transition hover:bg-slate-50"
                           >
                             {admin.status === 'active'
-                              ? 'Disable'
-                              : 'Activate'}
+                              ? text.disable
+                              : text.activate}
                           </button>
 
                           <button
@@ -433,7 +588,7 @@ function AdminManagementPage() {
                               setDeletingAdmin(admin)
                             }
                             className="rounded-lg border border-red-200 p-2 text-red-600 transition hover:bg-red-50"
-                            title="Delete administrator"
+                            title={text.deleteAdministrator}
                           >
                             <Trash2 size={16} />
                           </button>
@@ -452,14 +607,11 @@ function AdminManagementPage() {
             </div>
 
             <h3 className="mt-5 text-lg font-bold text-slate-900">
-              No administrator accounts
+              {text.noAdministratorAccounts}
             </h3>
 
             <p className="mx-auto mt-2 max-w-md text-sm leading-6 text-slate-500">
-              No administrator records are currently
-              available. Real administrator accounts will be
-              loaded from the backend when authentication and
-              role management are connected.
+              {text.noAdministratorRecords}
             </p>
 
             <button
@@ -468,7 +620,7 @@ function AdminManagementPage() {
               className="mt-5 inline-flex items-center gap-2 rounded-xl bg-indigo-600 px-4 py-2.5 text-sm font-semibold text-white hover:bg-indigo-700"
             >
               <Plus size={17} />
-              Add Administrator
+              {text.addAdministrator}
             </button>
           </div>
         )}
@@ -484,15 +636,11 @@ function AdminManagementPage() {
 
           <div>
             <h3 className="font-semibold text-red-900">
-              Administrator security
+              {text.administratorSecurity}
             </h3>
 
             <p className="mt-1 text-sm leading-6 text-red-800">
-              Administrator creation, passwordless
-              authentication, JWT validation, permissions,
-              account disabling, and access control must be
-              enforced by the backend. Frontend controls alone
-              must never be treated as security.
+              {text.securityDescription}
             </p>
           </div>
         </div>
@@ -501,7 +649,7 @@ function AdminManagementPage() {
       {/* Add administrator modal */}
       {isAddModalOpen && (
         <AdminFormModal
-          title="Add Administrator"
+          title={text.addAdministratorTitle}
           form={form}
           onChange={handleFormChange}
           onSubmit={handleAddAdmin}
@@ -509,14 +657,16 @@ function AdminManagementPage() {
             setIsAddModalOpen(false)
             resetForm()
           }}
-          submitLabel="Add Administrator"
+          submitLabel={text.addAdministrator}
+          text={text}
+          language={language}
         />
       )}
 
       {/* Edit administrator modal */}
       {editingAdmin && (
         <AdminFormModal
-          title="Edit Administrator"
+          title={text.editAdministratorTitle}
           form={form}
           onChange={handleFormChange}
           onSubmit={handleEditAdmin}
@@ -524,57 +674,69 @@ function AdminManagementPage() {
             setEditingAdmin(null)
             resetForm()
           }}
-          submitLabel="Save Changes"
+          submitLabel={text.saveChanges}
+          text={text}
+          language={language}
         />
       )}
 
       {/* View administrator modal */}
       {selectedAdmin && (
         <Modal
-          title="Administrator Details"
+          title={text.administratorDetails}
           onClose={() => setSelectedAdmin(null)}
+          closeLabel={text.closeModal}
         >
           <div className="grid gap-4 sm:grid-cols-2">
             <DetailItem
-              label="First Name"
+              label={text.firstName}
               value={selectedAdmin.firstName}
+              fallback={text.notAvailable}
             />
 
             <DetailItem
-              label="Last Name"
+              label={text.lastName}
               value={selectedAdmin.lastName}
+              fallback={text.notAvailable}
             />
 
             <DetailItem
-              label="Email"
+              label={text.email}
               value={selectedAdmin.email}
+              fallback={text.notAvailable}
             />
 
             <DetailItem
-              label="Phone"
+              label={text.phone}
               value={selectedAdmin.phone}
+              fallback={text.notAvailable}
             />
 
             <DetailItem
-              label="Role"
-              value="Administrator"
+              label={text.role}
+              value={text.administrator}
+              fallback={text.notAvailable}
             />
 
             <DetailItem
-              label="Status"
+              label={text.status}
               value={formatStatus(
-                selectedAdmin.status
+                selectedAdmin.status,
+                language,
               )}
+              fallback={text.notAvailable}
             />
 
             <DetailItem
-              label="Created"
+              label={text.created}
               value={selectedAdmin.createdAt}
+              fallback={text.notAvailable}
             />
 
             <DetailItem
-              label="Updated"
+              label={text.updated}
               value={selectedAdmin.updatedAt}
+              fallback={text.notAvailable}
             />
           </div>
 
@@ -584,7 +746,7 @@ function AdminManagementPage() {
               onClick={() => setSelectedAdmin(null)}
               className="rounded-xl bg-slate-900 px-4 py-2.5 text-sm font-semibold text-white hover:bg-slate-800"
             >
-              Close
+              {text.close}
             </button>
           </div>
         </Modal>
@@ -593,15 +755,13 @@ function AdminManagementPage() {
       {/* Delete confirmation modal */}
       {deletingAdmin && (
         <Modal
-          title="Delete Administrator"
+          title={text.deleteAdministratorTitle}
           onClose={() => setDeletingAdmin(null)}
+          closeLabel={text.closeModal}
         >
           <div className="rounded-xl border border-red-100 bg-red-50 p-4">
             <p className="text-sm leading-6 text-red-800">
-              Are you sure you want to remove this
-              administrator from the current frontend list?
-              The production backend must enforce deletion
-              permissions.
+              {text.deleteConfirmation}
             </p>
           </div>
 
@@ -611,7 +771,7 @@ function AdminManagementPage() {
               onClick={() => setDeletingAdmin(null)}
               className="rounded-xl border border-slate-200 px-4 py-2.5 text-sm font-semibold text-slate-700 hover:bg-slate-50"
             >
-              Cancel
+              {text.cancel}
             </button>
 
             <button
@@ -620,7 +780,7 @@ function AdminManagementPage() {
               className="inline-flex items-center gap-2 rounded-xl bg-red-600 px-4 py-2.5 text-sm font-semibold text-white hover:bg-red-700"
             >
               <Trash2 size={16} />
-              Delete
+              {text.delete}
             </button>
           </div>
         </Modal>
@@ -669,13 +829,19 @@ function AdminFormModal({
   onSubmit,
   onClose,
   submitLabel,
+  text,
+  language,
 }) {
   return (
-    <Modal title={title} onClose={onClose}>
+    <Modal
+      title={title}
+      onClose={onClose}
+      closeLabel={text.closeModal}
+    >
       <form onSubmit={onSubmit} className="space-y-5">
         <div className="grid gap-4 sm:grid-cols-2">
           <FormField
-            label="First Name"
+            label={text.firstName}
             name="firstName"
             value={form.firstName}
             onChange={onChange}
@@ -683,7 +849,7 @@ function AdminFormModal({
           />
 
           <FormField
-            label="Last Name"
+            label={text.lastName}
             name="lastName"
             value={form.lastName}
             onChange={onChange}
@@ -691,7 +857,7 @@ function AdminFormModal({
           />
 
           <FormField
-            label="Email"
+            label={text.email}
             name="email"
             type="email"
             value={form.email}
@@ -700,7 +866,7 @@ function AdminFormModal({
           />
 
           <FormField
-            label="Phone"
+            label={text.phone}
             name="phone"
             value={form.phone}
             onChange={onChange}
@@ -708,7 +874,7 @@ function AdminFormModal({
 
           <div className="sm:col-span-2">
             <label className="block text-sm font-semibold text-slate-700">
-              Status
+              {text.administratorStatus}
             </label>
 
             <select
@@ -718,11 +884,8 @@ function AdminFormModal({
               className="mt-2 w-full rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-sm outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100"
             >
               {adminStatuses.map((status) => (
-                <option
-                  key={status}
-                  value={status}
-                >
-                  {formatStatus(status)}
+                <option key={status} value={status}>
+                  {formatStatus(status, language)}
                 </option>
               ))}
             </select>
@@ -737,9 +900,7 @@ function AdminFormModal({
             />
 
             <p className="text-sm leading-6 text-indigo-800">
-              Authentication credentials and administrator
-              permissions will be handled by the backend.
-              This form currently manages frontend state only.
+              {text.authenticationNotice}
             </p>
           </div>
         </div>
@@ -750,7 +911,7 @@ function AdminFormModal({
             onClick={onClose}
             className="rounded-xl border border-slate-200 px-4 py-2.5 text-sm font-semibold text-slate-700 hover:bg-slate-50"
           >
-            Cancel
+            {text.cancel}
           </button>
 
           <button
@@ -794,7 +955,7 @@ function FormField({
 }
 
 // Detail item
-function DetailItem({ label, value }) {
+function DetailItem({ label, value, fallback }) {
   return (
     <div className="rounded-xl border border-slate-200 bg-slate-50 p-4">
       <p className="text-xs font-semibold uppercase tracking-wide text-slate-500">
@@ -802,14 +963,14 @@ function DetailItem({ label, value }) {
       </p>
 
       <p className="mt-1 break-words text-sm font-medium text-slate-900">
-        {value || 'Not available'}
+        {value || fallback}
       </p>
     </div>
   )
 }
 
 // Reusable modal
-function Modal({ title, children, onClose }) {
+function Modal({ title, children, onClose, closeLabel }) {
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/50 p-4">
       <div className="max-h-[90vh] w-full max-w-2xl overflow-y-auto rounded-2xl bg-white shadow-2xl">
@@ -822,15 +983,13 @@ function Modal({ title, children, onClose }) {
             type="button"
             onClick={onClose}
             className="rounded-lg p-2 text-slate-400 transition hover:bg-slate-100 hover:text-slate-700"
-            aria-label="Close modal"
+            aria-label={closeLabel}
           >
             <X size={20} />
           </button>
         </div>
 
-        <div className="p-5">
-          {children}
-        </div>
+        <div className="p-5">{children}</div>
       </div>
     </div>
   )

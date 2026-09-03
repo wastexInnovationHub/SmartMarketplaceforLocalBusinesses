@@ -9,7 +9,119 @@ import {
   ShieldCheck,
 } from 'lucide-react'
 
+import { useLanguage } from '../../i18n/LanguageContext'
+
 function AdminSettingsPage() {
+  const { language } = useLanguage()
+
+  const text = {
+    en: {
+      account: 'Account',
+      adminSettings: 'Admin Settings',
+      description:
+        'Manage administrator preferences and notification settings for the JamiiMarket admin portal.',
+
+      generalSettings: 'General Settings',
+      generalDescription:
+        'Configure basic preferences for the admin portal.',
+
+      language: 'Language',
+      languageDescription:
+        'Choose the language used by the admin interface.',
+      english: 'English',
+      swahili: 'Swahili',
+
+      compactMode: 'Compact Mode',
+      compactModeDescription:
+        'Use a more compact layout for admin management screens.',
+
+      notifications: 'Notifications',
+      notificationsDescription:
+        'Choose which administrative notifications you want to receive.',
+
+      emailNotifications: 'Email Notifications',
+      emailNotificationsDescription:
+        'Receive administrative notifications through email.',
+
+      orderNotifications: 'Order Notifications',
+      orderNotificationsDescription:
+        'Receive notifications about marketplace order events.',
+
+      paymentNotifications: 'Payment Notifications',
+      paymentNotificationsDescription:
+        'Receive notifications about payment events and issues.',
+
+      securityNotifications: 'Security Notifications',
+      securityNotificationsDescription:
+        'Receive alerts for important account and security events.',
+
+      security: 'Security',
+      securityDescription:
+        'Security controls that require backend authentication will be connected later.',
+
+      backendSecurityRequired: 'Backend security required',
+      backendSecurityDescription:
+        'Password changes, authentication, JWT validation, administrator permissions, sessions, account locking and other security controls must be enforced by the backend. Browser settings alone cannot provide real security.',
+
+      settingsSaved: 'Settings saved successfully.',
+      saveSettings: 'Save Settings',
+    },
+
+    sw: {
+      account: 'Akaunti',
+      adminSettings: 'Mipangilio ya Admin',
+      description:
+        'Simamia mapendeleo ya msimamizi na mipangilio ya arifa kwa sehemu ya admin ya JamiiMarket.',
+
+      generalSettings: 'Mipangilio ya Jumla',
+      generalDescription:
+        'Sanidi mapendeleo ya msingi ya sehemu ya admin.',
+
+      language: 'Lugha',
+      languageDescription:
+        'Chagua lugha inayotumika kwenye interface ya admin.',
+      english: 'Kiingereza',
+      swahili: 'Kiswahili',
+
+      compactMode: 'Muonekano Mzito',
+      compactModeDescription:
+        'Tumia mpangilio wenye nafasi ndogo zaidi kwenye sehemu za usimamizi wa admin.',
+
+      notifications: 'Arifa',
+      notificationsDescription:
+        'Chagua arifa za kiutawala unazotaka kupokea.',
+
+      emailNotifications: 'Arifa za Barua Pepe',
+      emailNotificationsDescription:
+        'Pokea arifa za kiutawala kupitia barua pepe.',
+
+      orderNotifications: 'Arifa za Oda',
+      orderNotificationsDescription:
+        'Pokea arifa kuhusu matukio ya oda za soko.',
+
+      paymentNotifications: 'Arifa za Malipo',
+      paymentNotificationsDescription:
+        'Pokea arifa kuhusu matukio na matatizo ya malipo.',
+
+      securityNotifications: 'Arifa za Usalama',
+      securityNotificationsDescription:
+        'Pokea arifa kuhusu matukio muhimu ya akaunti na usalama.',
+
+      security: 'Usalama',
+      securityDescription:
+        'Mipangilio ya usalama inayohitaji uthibitishaji wa backend itaunganishwa baadaye.',
+
+      backendSecurityRequired: 'Usalama wa Backend Unahitajika',
+      backendSecurityDescription:
+        'Mabadiliko ya nenosiri, uthibitishaji, uhakiki wa JWT, ruhusa za wasimamizi, sessions, kufunga akaunti na mipangilio mingine ya usalama lazima idhibitiwe na backend. Mipangilio ya kivinjari pekee haiwezi kutoa usalama halisi.',
+
+      settingsSaved: 'Mipangilio imehifadhiwa kwa mafanikio.',
+      saveSettings: 'Hifadhi Mipangilio',
+    },
+  }
+
+  const currentText = text[language === 'sw' ? 'sw' : 'en']
+
   const [settings, setSettings] = useState({
     language: 'English',
     emailNotifications: true,
@@ -70,16 +182,15 @@ function AdminSettingsPage() {
       {/* Page heading */}
       <div>
         <p className="text-sm font-semibold uppercase tracking-wider text-indigo-600">
-          Account
+          {currentText.account}
         </p>
 
         <h1 className="mt-1 text-2xl font-bold text-slate-900 sm:text-3xl">
-          Admin Settings
+          {currentText.adminSettings}
         </h1>
 
         <p className="mt-2 max-w-2xl text-sm text-slate-500">
-          Manage administrator preferences and notification
-          settings for the JamiiMarket admin portal.
+          {currentText.description}
         </p>
       </div>
 
@@ -93,11 +204,11 @@ function AdminSettingsPage() {
 
             <div>
               <h2 className="text-lg font-bold text-slate-900">
-                General Settings
+                {currentText.generalSettings}
               </h2>
 
               <p className="mt-1 text-sm text-slate-500">
-                Configure basic preferences for the admin portal.
+                {currentText.generalDescription}
               </p>
             </div>
           </div>
@@ -113,11 +224,11 @@ function AdminSettingsPage() {
 
                 <div>
                   <p className="font-semibold text-slate-800">
-                    Language
+                    {currentText.language}
                   </p>
 
                   <p className="mt-1 text-sm text-slate-500">
-                    Choose the language used by the admin interface.
+                    {currentText.languageDescription}
                   </p>
                 </div>
               </div>
@@ -129,16 +240,21 @@ function AdminSettingsPage() {
                 }
                 className="rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100"
               >
-                <option value="English">English</option>
-                <option value="Swahili">Swahili</option>
+                <option value="English">
+                  {currentText.english}
+                </option>
+
+                <option value="Swahili">
+                  {currentText.swahili}
+                </option>
               </select>
             </div>
 
             {/* Compact mode */}
             <SettingToggle
               icon={<Monitor size={20} />}
-              title="Compact Mode"
-              description="Use a more compact layout for admin management screens."
+              title={currentText.compactMode}
+              description={currentText.compactModeDescription}
               checked={settings.compactMode}
               onChange={(value) =>
                 handleChange('compactMode', value)
@@ -156,20 +272,19 @@ function AdminSettingsPage() {
 
             <div>
               <h2 className="text-lg font-bold text-slate-900">
-                Notifications
+                {currentText.notifications}
               </h2>
 
               <p className="mt-1 text-sm text-slate-500">
-                Choose which administrative notifications you want
-                to receive.
+                {currentText.notificationsDescription}
               </p>
             </div>
           </div>
 
           <div className="space-y-1 p-5 sm:p-6">
             <SettingToggle
-              title="Email Notifications"
-              description="Receive administrative notifications through email."
+              title={currentText.emailNotifications}
+              description={currentText.emailNotificationsDescription}
               checked={settings.emailNotifications}
               onChange={(value) =>
                 handleChange('emailNotifications', value)
@@ -177,8 +292,8 @@ function AdminSettingsPage() {
             />
 
             <SettingToggle
-              title="Order Notifications"
-              description="Receive notifications about marketplace order events."
+              title={currentText.orderNotifications}
+              description={currentText.orderNotificationsDescription}
               checked={settings.orderNotifications}
               onChange={(value) =>
                 handleChange('orderNotifications', value)
@@ -186,8 +301,10 @@ function AdminSettingsPage() {
             />
 
             <SettingToggle
-              title="Payment Notifications"
-              description="Receive notifications about payment events and issues."
+              title={currentText.paymentNotifications}
+              description={
+                currentText.paymentNotificationsDescription
+              }
               checked={settings.paymentNotifications}
               onChange={(value) =>
                 handleChange('paymentNotifications', value)
@@ -195,8 +312,10 @@ function AdminSettingsPage() {
             />
 
             <SettingToggle
-              title="Security Notifications"
-              description="Receive alerts for important account and security events."
+              title={currentText.securityNotifications}
+              description={
+                currentText.securityNotificationsDescription
+              }
               checked={settings.securityNotifications}
               onChange={(value) =>
                 handleChange('securityNotifications', value)
@@ -214,12 +333,11 @@ function AdminSettingsPage() {
 
             <div>
               <h2 className="text-lg font-bold text-slate-900">
-                Security
+                {currentText.security}
               </h2>
 
               <p className="mt-1 text-sm text-slate-500">
-                Security controls that require backend authentication
-                will be connected later.
+                {currentText.securityDescription}
               </p>
             </div>
           </div>
@@ -234,15 +352,11 @@ function AdminSettingsPage() {
 
                 <div>
                   <h3 className="font-semibold text-amber-900">
-                    Backend security required
+                    {currentText.backendSecurityRequired}
                   </h3>
 
                   <p className="mt-1 text-sm leading-6 text-amber-800">
-                    Password changes, authentication, JWT
-                    validation, administrator permissions, sessions,
-                    account locking and other security controls must
-                    be enforced by the backend. Browser settings alone
-                    cannot provide real security.
+                    {currentText.backendSecurityDescription}
                   </p>
                 </div>
               </div>
@@ -256,7 +370,7 @@ function AdminSettingsPage() {
             {saved && (
               <p className="flex items-center gap-2 text-sm font-medium text-emerald-600">
                 <Save size={17} />
-                Settings saved successfully.
+                {currentText.settingsSaved}
               </p>
             )}
           </div>
@@ -266,7 +380,7 @@ function AdminSettingsPage() {
             className="inline-flex items-center justify-center gap-2 rounded-xl bg-indigo-600 px-5 py-3 text-sm font-semibold text-white transition hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
           >
             <Save size={17} />
-            Save Settings
+            {currentText.saveSettings}
           </button>
         </div>
       </form>

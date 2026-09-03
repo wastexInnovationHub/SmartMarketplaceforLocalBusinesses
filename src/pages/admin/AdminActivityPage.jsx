@@ -11,6 +11,7 @@ import {
   X,
   XCircle,
 } from 'lucide-react'
+import { useLanguage } from '../../i18n/LanguageContext'
 
 const initialActivities = []
 
@@ -32,66 +33,237 @@ const activityStatuses = [
   'failed',
 ]
 
-const formatValue = (value) => {
-  if (!value) return 'Unknown'
-
-  return value
-    .split('_')
-    .map(
-      (word) =>
-        word.charAt(0).toUpperCase() + word.slice(1)
-    )
-    .join(' ')
-}
-
-const getStatusClasses = (status) => {
-  switch (status) {
-    case 'success':
-      return 'border-emerald-200 bg-emerald-50 text-emerald-700'
-
-    case 'warning':
-      return 'border-amber-200 bg-amber-50 text-amber-700'
-
-    case 'failed':
-      return 'border-red-200 bg-red-50 text-red-700'
-
-    default:
-      return 'border-slate-200 bg-slate-50 text-slate-700'
-  }
-}
-
-const getActivityIcon = (type) => {
-  switch (type) {
-    case 'login':
-      return ShieldCheck
-
-    case 'user':
-      return UserCog
-
-    case 'business':
-      return FileText
-
-    case 'product':
-      return FileText
-
-    case 'order':
-      return Activity
-
-    case 'delivery':
-      return Activity
-
-    case 'payment':
-      return Activity
-
-    case 'admin':
-      return ShieldCheck
-
-    default:
-      return Activity
-  }
-}
-
 function AdminActivityPage() {
+  const { language } = useLanguage()
+
+  const text =
+    language === 'sw'
+      ? {
+          pageSection: 'Usalama na Ufuatiliaji',
+          pageTitle: 'Kumbukumbu za Shughuli',
+          pageDescription:
+            'Fuatilia matukio muhimu ya wasimamizi na soko kwa ajili ya usalama, uwajibikaji na ukaguzi wa mfumo.',
+
+          totalActivities: 'Jumla ya Shughuli',
+          recordedEvents: 'Matukio ya mfumo yaliyorekodiwa',
+
+          successful: 'Zilizofanikiwa',
+          completedSuccessfully: 'Zilizokamilika kwa mafanikio',
+
+          warnings: 'Tahadhari',
+          requiringAttention: 'Matukio yanayohitaji umakini',
+
+          failed: 'Zilizoshindikana',
+          unsuccessfulEvents: 'Matukio ambayo hayakufanikiwa',
+
+          systemActivity: 'Shughuli za Mfumo',
+          reviewActions:
+            'Kagua hatua zilizorekodiwa na matukio ya mfumo.',
+
+          searchActivity: 'Tafuta shughuli...',
+          allActivityTypes: 'Aina Zote za Shughuli',
+          allStatuses: 'Hali Zote',
+
+          event: 'Tukio',
+          actor: 'Aliyefanya',
+          type: 'Aina',
+          status: 'Hali',
+          time: 'Muda',
+          action: 'Kitendo',
+
+          unknownAction: 'Kitendo hakijulikani',
+          noDescription: 'Hakuna maelezo yaliyopo',
+          system: 'Mfumo',
+          emailUnavailable: 'Barua pepe haipo',
+          timeUnavailable: 'Muda haupo',
+          view: 'Angalia',
+
+          noActivityRecorded: 'Hakuna Shughuli Zilizorekodiwa',
+          noActivityDescription:
+            'Kwa sasa hakuna kumbukumbu za shughuli. Matukio halisi ya ukaguzi yataonekana hapa baada ya mfumo wa backend wa kuhifadhi kumbukumbu kuunganishwa.',
+
+          backendAuditLogging: 'Kumbukumbu za Ukaguzi za Backend',
+          backendAuditDescription:
+            'Matukio ya kuingia, hatua za wasimamizi, mabadiliko ya watumiaji na biashara, masasisho ya oda, matukio ya usafirishaji, malipo na usalama yanapaswa kurekodiwa na backend pamoja na muda sahihi na taarifa za aliyefanya kitendo. Shughuli za frontend hazipaswi kuchukuliwa kama kumbukumbu salama ya ukaguzi.',
+
+          activityDetails: 'Maelezo ya Shughuli',
+          actionLabel: 'Kitendo',
+          typeLabel: 'Aina',
+          actorLabel: 'Aliyefanya',
+          actorEmail: 'Barua Pepe ya Aliyefanya',
+          statusLabel: 'Hali',
+          target: 'Lengo',
+          ipAddress: 'Anwani ya IP',
+          timestamp: 'Muda wa Tukio',
+          notAvailable: 'Haipo',
+          description: 'Maelezo',
+          close: 'Funga',
+          closeModal: 'Funga dirisha',
+
+          login: 'Kuingia',
+          user: 'Mtumiaji',
+          business: 'Biashara',
+          product: 'Bidhaa',
+          order: 'Oda',
+          delivery: 'Usafirishaji',
+          payment: 'Malipo',
+          admin: 'Admin',
+          systemType: 'Mfumo',
+
+          success: 'Imefanikiwa',
+          warning: 'Tahadhari',
+          failedStatus: 'Imeshindikana',
+        }
+      : {
+          pageSection: 'Security & Monitoring',
+          pageTitle: 'Activity Logs',
+          pageDescription:
+            'Monitor important administrator and marketplace events for security, accountability, and system auditing.',
+
+          totalActivities: 'Total Activities',
+          recordedEvents: 'Recorded system events',
+
+          successful: 'Successful',
+          completedSuccessfully: 'Completed successfully',
+
+          warnings: 'Warnings',
+          requiringAttention: 'Events requiring attention',
+
+          failed: 'Failed',
+          unsuccessfulEvents: 'Unsuccessful events',
+
+          systemActivity: 'System Activity',
+          reviewActions:
+            'Review recorded actions and system events.',
+
+          searchActivity: 'Search activity...',
+          allActivityTypes: 'All Activity Types',
+          allStatuses: 'All Statuses',
+
+          event: 'Event',
+          actor: 'Actor',
+          type: 'Type',
+          status: 'Status',
+          time: 'Time',
+          action: 'Action',
+
+          unknownAction: 'Unknown action',
+          noDescription: 'No description available',
+          system: 'System',
+          emailUnavailable: 'Email unavailable',
+          timeUnavailable: 'Time unavailable',
+          view: 'View',
+
+          noActivityRecorded: 'No activity recorded',
+          noActivityDescription:
+            'There are currently no activity records available. Real audit events will appear here after the backend logging system is connected.',
+
+          backendAuditLogging: 'Backend audit logging',
+          backendAuditDescription:
+            'Login events, administrator actions, user changes, business changes, order updates, delivery events, payment events, and security events should be recorded by the backend with accurate timestamps and actor information. Frontend activity must not be treated as a trusted audit trail.',
+
+          activityDetails: 'Activity Details',
+          actionLabel: 'Action',
+          typeLabel: 'Type',
+          actorLabel: 'Actor',
+          actorEmail: 'Actor Email',
+          statusLabel: 'Status',
+          target: 'Target',
+          ipAddress: 'IP Address',
+          timestamp: 'Timestamp',
+          notAvailable: 'Not available',
+          description: 'Description',
+          close: 'Close',
+          closeModal: 'Close modal',
+
+          login: 'Login',
+          user: 'User',
+          business: 'Business',
+          product: 'Product',
+          order: 'Order',
+          delivery: 'Delivery',
+          payment: 'Payment',
+          admin: 'Admin',
+          systemType: 'System',
+
+          success: 'Success',
+          warning: 'Warning',
+          failedStatus: 'Failed',
+        }
+
+  const getTypeLabel = (type) => {
+    const labels = {
+      login: text.login,
+      user: text.user,
+      business: text.business,
+      product: text.product,
+      order: text.order,
+      delivery: text.delivery,
+      payment: text.payment,
+      admin: text.admin,
+      system: text.systemType,
+    }
+
+    return labels[type] || text.systemType
+  }
+
+  const getStatusLabel = (status) => {
+    const labels = {
+      success: text.success,
+      warning: text.warning,
+      failed: text.failedStatus,
+    }
+
+    return labels[status] || status
+  }
+
+  const getStatusClasses = (status) => {
+    switch (status) {
+      case 'success':
+        return 'border-emerald-200 bg-emerald-50 text-emerald-700'
+
+      case 'warning':
+        return 'border-amber-200 bg-amber-50 text-amber-700'
+
+      case 'failed':
+        return 'border-red-200 bg-red-50 text-red-700'
+
+      default:
+        return 'border-slate-200 bg-slate-50 text-slate-700'
+    }
+  }
+
+  const getActivityIcon = (type) => {
+    switch (type) {
+      case 'login':
+        return ShieldCheck
+
+      case 'user':
+        return UserCog
+
+      case 'business':
+        return FileText
+
+      case 'product':
+        return FileText
+
+      case 'order':
+        return Activity
+
+      case 'delivery':
+        return Activity
+
+      case 'payment':
+        return Activity
+
+      case 'admin':
+        return ShieldCheck
+
+      default:
+        return Activity
+    }
+  }
+
   const [activities] = useState(initialActivities)
   const [search, setSearch] = useState('')
   const [typeFilter, setTypeFilter] = useState('all')
@@ -160,17 +332,15 @@ function AdminActivityPage() {
       {/* Page header */}
       <div>
         <p className="text-sm font-semibold uppercase tracking-[0.18em] text-indigo-600">
-          Security & Monitoring
+          {text.pageSection}
         </p>
 
         <h1 className="mt-2 text-2xl font-bold tracking-tight text-slate-900 sm:text-3xl">
-          Activity Logs
+          {text.pageTitle}
         </h1>
 
         <p className="mt-2 max-w-3xl text-sm leading-6 text-slate-600 sm:text-base">
-          Monitor important administrator and marketplace
-          events for security, accountability, and system
-          auditing.
+          {text.pageDescription}
         </p>
       </div>
 
@@ -178,30 +348,30 @@ function AdminActivityPage() {
       <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
         <StatCard
           icon={Activity}
-          label="Total Activities"
+          label={text.totalActivities}
           value={totalActivities}
-          description="Recorded system events"
+          description={text.recordedEvents}
         />
 
         <StatCard
           icon={CheckCircle}
-          label="Successful"
+          label={text.successful}
           value={successfulActivities}
-          description="Completed successfully"
+          description={text.completedSuccessfully}
         />
 
         <StatCard
           icon={AlertCircle}
-          label="Warnings"
+          label={text.warnings}
           value={warningActivities}
-          description="Events requiring attention"
+          description={text.requiringAttention}
         />
 
         <StatCard
           icon={XCircle}
-          label="Failed"
+          label={text.failed}
           value={failedActivities}
-          description="Unsuccessful events"
+          description={text.unsuccessfulEvents}
         />
       </div>
 
@@ -212,11 +382,11 @@ function AdminActivityPage() {
           <div className="flex flex-col gap-4 xl:flex-row xl:items-center xl:justify-between">
             <div>
               <h2 className="text-lg font-bold text-slate-900">
-                System Activity
+                {text.systemActivity}
               </h2>
 
               <p className="mt-1 text-sm text-slate-500">
-                Review recorded actions and system events.
+                {text.reviewActions}
               </p>
             </div>
 
@@ -234,7 +404,7 @@ function AdminActivityPage() {
                   onChange={(event) =>
                     setSearch(event.target.value)
                   }
-                  placeholder="Search activity..."
+                  placeholder={text.searchActivity}
                   className="w-full rounded-xl border border-slate-200 bg-slate-50 py-2.5 pl-10 pr-3 text-sm outline-none transition focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-100"
                 />
               </div>
@@ -248,12 +418,12 @@ function AdminActivityPage() {
                 className="rounded-xl border border-slate-200 bg-slate-50 px-3 py-2.5 text-sm outline-none transition focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-100"
               >
                 <option value="all">
-                  All Activity Types
+                  {text.allActivityTypes}
                 </option>
 
                 {activityTypes.map((type) => (
                   <option key={type} value={type}>
-                    {formatValue(type)}
+                    {getTypeLabel(type)}
                   </option>
                 ))}
               </select>
@@ -267,15 +437,12 @@ function AdminActivityPage() {
                 className="rounded-xl border border-slate-200 bg-slate-50 px-3 py-2.5 text-sm outline-none transition focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-100"
               >
                 <option value="all">
-                  All Statuses
+                  {text.allStatuses}
                 </option>
 
                 {activityStatuses.map((status) => (
-                  <option
-                    key={status}
-                    value={status}
-                  >
-                    {formatValue(status)}
+                  <option key={status} value={status}>
+                    {getStatusLabel(status)}
                   </option>
                 ))}
               </select>
@@ -290,27 +457,27 @@ function AdminActivityPage() {
               <thead className="bg-slate-50">
                 <tr className="border-b border-slate-200">
                   <th className="px-5 py-4 text-left text-xs font-semibold uppercase tracking-wide text-slate-500">
-                    Event
+                    {text.event}
                   </th>
 
                   <th className="px-5 py-4 text-left text-xs font-semibold uppercase tracking-wide text-slate-500">
-                    Actor
+                    {text.actor}
                   </th>
 
                   <th className="px-5 py-4 text-left text-xs font-semibold uppercase tracking-wide text-slate-500">
-                    Type
+                    {text.type}
                   </th>
 
                   <th className="px-5 py-4 text-left text-xs font-semibold uppercase tracking-wide text-slate-500">
-                    Status
+                    {text.status}
                   </th>
 
                   <th className="px-5 py-4 text-left text-xs font-semibold uppercase tracking-wide text-slate-500">
-                    Time
+                    {text.time}
                   </th>
 
                   <th className="px-5 py-4 text-right text-xs font-semibold uppercase tracking-wide text-slate-500">
-                    Action
+                    {text.action}
                   </th>
                 </tr>
               </thead>
@@ -334,12 +501,12 @@ function AdminActivityPage() {
                           <div>
                             <p className="font-semibold text-slate-900">
                               {activity.action ||
-                                'Unknown action'}
+                                text.unknownAction}
                             </p>
 
                             <p className="mt-1 max-w-md text-xs text-slate-500">
                               {activity.description ||
-                                'No description available'}
+                                text.noDescription}
                             </p>
                           </div>
                         </div>
@@ -348,20 +515,18 @@ function AdminActivityPage() {
                       <td className="px-5 py-4">
                         <p className="text-sm font-medium text-slate-700">
                           {activity.actorName ||
-                            'System'}
+                            text.system}
                         </p>
 
                         <p className="mt-1 text-xs text-slate-500">
                           {activity.actorEmail ||
-                            'Email unavailable'}
+                            text.emailUnavailable}
                         </p>
                       </td>
 
                       <td className="px-5 py-4">
                         <span className="inline-flex rounded-full border border-indigo-200 bg-indigo-50 px-2.5 py-1 text-xs font-semibold text-indigo-700">
-                          {formatValue(
-                            activity.type
-                          )}
+                          {getTypeLabel(activity.type)}
                         </span>
                       </td>
 
@@ -371,29 +536,25 @@ function AdminActivityPage() {
                             activity.status
                           )}`}
                         >
-                          {formatValue(
-                            activity.status
-                          )}
+                          {getStatusLabel(activity.status)}
                         </span>
                       </td>
 
                       <td className="px-5 py-4 text-sm text-slate-600">
                         {activity.createdAt ||
-                          'Time unavailable'}
+                          text.timeUnavailable}
                       </td>
 
                       <td className="px-5 py-4 text-right">
                         <button
                           type="button"
                           onClick={() =>
-                            setSelectedActivity(
-                              activity
-                            )
+                            setSelectedActivity(activity)
                           }
                           className="inline-flex items-center gap-2 rounded-lg border border-slate-200 px-3 py-2 text-xs font-semibold text-slate-700 transition hover:border-indigo-200 hover:bg-indigo-50 hover:text-indigo-700"
                         >
                           <Eye size={15} />
-                          View
+                          {text.view}
                         </button>
                       </td>
                     </tr>
@@ -409,13 +570,11 @@ function AdminActivityPage() {
             </div>
 
             <h3 className="mt-5 text-lg font-bold text-slate-900">
-              No activity recorded
+              {text.noActivityRecorded}
             </h3>
 
             <p className="mx-auto mt-2 max-w-md text-sm leading-6 text-slate-500">
-              There are currently no activity records
-              available. Real audit events will appear here
-              after the backend logging system is connected.
+              {text.noActivityDescription}
             </p>
           </div>
         )}
@@ -431,17 +590,11 @@ function AdminActivityPage() {
 
           <div>
             <h3 className="font-semibold text-indigo-900">
-              Backend audit logging
+              {text.backendAuditLogging}
             </h3>
 
             <p className="mt-1 text-sm leading-6 text-indigo-800">
-              Login events, administrator actions, user
-              changes, business changes, order updates,
-              delivery events, payment events, and security
-              events should be recorded by the backend with
-              accurate timestamps and actor information.
-              Frontend activity must not be treated as a
-              trusted audit trail.
+              {text.backendAuditDescription}
             </p>
           </div>
         </div>
@@ -450,69 +603,74 @@ function AdminActivityPage() {
       {/* View activity modal */}
       {selectedActivity && (
         <Modal
-          title="Activity Details"
+          title={text.activityDetails}
           onClose={() =>
             setSelectedActivity(null)
           }
+          closeLabel={text.closeModal}
         >
           <div className="grid gap-4 sm:grid-cols-2">
             <DetailItem
-              label="Action"
+              label={text.actionLabel}
               value={selectedActivity.action}
+              fallback={text.notAvailable}
             />
 
             <DetailItem
-              label="Type"
-              value={formatValue(
+              label={text.typeLabel}
+              value={getTypeLabel(
                 selectedActivity.type
               )}
+              fallback={text.notAvailable}
             />
 
             <DetailItem
-              label="Actor"
-              value={
-                selectedActivity.actorName
-              }
+              label={text.actorLabel}
+              value={selectedActivity.actorName}
+              fallback={text.notAvailable}
             />
 
             <DetailItem
-              label="Actor Email"
-              value={
-                selectedActivity.actorEmail
-              }
+              label={text.actorEmail}
+              value={selectedActivity.actorEmail}
+              fallback={text.notAvailable}
             />
 
             <DetailItem
-              label="Status"
-              value={formatValue(
+              label={text.statusLabel}
+              value={getStatusLabel(
                 selectedActivity.status
               )}
+              fallback={text.notAvailable}
             />
 
             <DetailItem
-              label="Target"
+              label={text.target}
               value={selectedActivity.target}
+              fallback={text.notAvailable}
             />
 
             <DetailItem
-              label="IP Address"
+              label={text.ipAddress}
               value={selectedActivity.ipAddress}
+              fallback={text.notAvailable}
             />
 
             <DetailItem
-              label="Timestamp"
+              label={text.timestamp}
               value={selectedActivity.createdAt}
+              fallback={text.notAvailable}
             />
           </div>
 
           <div className="mt-4 rounded-xl border border-slate-200 bg-slate-50 p-4">
             <p className="text-xs font-semibold uppercase tracking-wide text-slate-500">
-              Description
+              {text.description}
             </p>
 
             <p className="mt-2 text-sm leading-6 text-slate-700">
               {selectedActivity.description ||
-                'No description available'}
+                text.noDescription}
             </p>
           </div>
 
@@ -524,7 +682,7 @@ function AdminActivityPage() {
               }
               className="rounded-xl bg-slate-900 px-4 py-2.5 text-sm font-semibold text-white hover:bg-slate-800"
             >
-              Close
+              {text.close}
             </button>
           </div>
         </Modal>
@@ -566,7 +724,11 @@ function StatCard({
 }
 
 // Detail item
-function DetailItem({ label, value }) {
+function DetailItem({
+  label,
+  value,
+  fallback,
+}) {
   return (
     <div className="rounded-xl border border-slate-200 bg-slate-50 p-4">
       <p className="text-xs font-semibold uppercase tracking-wide text-slate-500">
@@ -574,14 +736,19 @@ function DetailItem({ label, value }) {
       </p>
 
       <p className="mt-1 break-words text-sm font-medium text-slate-900">
-        {value || 'Not available'}
+        {value || fallback}
       </p>
     </div>
   )
 }
 
 // Reusable modal
-function Modal({ title, children, onClose }) {
+function Modal({
+  title,
+  children,
+  onClose,
+  closeLabel,
+}) {
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/50 p-4">
       <div className="max-h-[90vh] w-full max-w-2xl overflow-y-auto rounded-2xl bg-white shadow-2xl">
@@ -594,7 +761,7 @@ function Modal({ title, children, onClose }) {
             type="button"
             onClick={onClose}
             className="rounded-lg p-2 text-slate-400 transition hover:bg-slate-100 hover:text-slate-700"
-            aria-label="Close modal"
+            aria-label={closeLabel}
           >
             <X size={20} />
           </button>

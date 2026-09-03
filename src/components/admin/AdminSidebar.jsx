@@ -15,12 +15,13 @@ import {
   X,
 } from 'lucide-react'
 import { NavLink, useNavigate } from 'react-router-dom'
+import { useLanguage } from '../../i18n/LanguageContext'
 
 function AdminSidebar({ isOpen, onClose }) {
   const navigate = useNavigate()
+  const { language } = useLanguage()
   const [user, setUser] = useState(null)
 
-  // Load the current administrator account
   const loadUser = () => {
     try {
       const storedUser = localStorage.getItem('jamiiMarketUser')
@@ -31,7 +32,6 @@ function AdminSidebar({ isOpen, onClose }) {
       }
 
       const parsedUser = JSON.parse(storedUser)
-
       setUser(parsedUser)
     } catch {
       setUser(null)
@@ -41,17 +41,12 @@ function AdminSidebar({ isOpen, onClose }) {
   useEffect(() => {
     loadUser()
 
-    // Update the sidebar after the administrator profile changes
     const handleProfileUpdate = () => {
       loadUser()
     }
 
-    // Update the sidebar when localStorage changes in another tab
     const handleStorage = (event) => {
-      if (
-        !event.key ||
-        event.key === 'jamiiMarketUser'
-      ) {
+      if (!event.key || event.key === 'jamiiMarketUser') {
         loadUser()
       }
     }
@@ -61,10 +56,7 @@ function AdminSidebar({ isOpen, onClose }) {
       handleProfileUpdate
     )
 
-    window.addEventListener(
-      'storage',
-      handleStorage
-    )
+    window.addEventListener('storage', handleStorage)
 
     return () => {
       window.removeEventListener(
@@ -72,96 +64,101 @@ function AdminSidebar({ isOpen, onClose }) {
         handleProfileUpdate
       )
 
-      window.removeEventListener(
-        'storage',
-        handleStorage
-      )
+      window.removeEventListener('storage', handleStorage)
     }
   }, [])
 
-  // Build the administrator display name
   const adminName =
     user?.firstName || user?.lastName
       ? `${user?.firstName || ''} ${user?.lastName || ''}`.trim()
-      : 'Administrator'
+      : language === 'sw'
+        ? 'Msimamizi'
+        : 'Administrator'
 
-  // Build administrator initials
   const initials =
     `${user?.firstName?.charAt(0) || ''}${user?.lastName?.charAt(0) || ''}`
       .toUpperCase() || 'AD'
 
-  // Admin navigation sections
   const menuSections = [
     {
-      title: 'MAIN',
+      title: language === 'sw' ? 'KUU' : 'MAIN',
       items: [
         {
-          label: 'Dashboard',
+          label: language === 'sw' ? 'Dashibodi' : 'Dashboard',
           path: '/admin/dashboard',
           icon: LayoutDashboard,
         },
       ],
     },
     {
-      title: 'MARKETPLACE',
+      title: language === 'sw' ? 'SOKO' : 'MARKETPLACE',
       items: [
         {
-          label: 'Users',
+          label: language === 'sw' ? 'Watumiaji' : 'Users',
           path: '/admin/users',
           icon: Users,
         },
         {
-          label: 'Businesses',
+          label: language === 'sw' ? 'Biashara' : 'Businesses',
           path: '/admin/businesses',
           icon: Building2,
         },
         {
-          label: 'Products & Services',
+          label:
+            language === 'sw'
+              ? 'Bidhaa na Huduma'
+              : 'Products & Services',
           path: '/admin/products',
           icon: Package,
         },
         {
-          label: 'Orders',
+          label: language === 'sw' ? 'Oda' : 'Orders',
           path: '/admin/orders',
           icon: ClipboardList,
         },
         {
-          label: 'Deliveries',
+          label: language === 'sw' ? 'Usafirishaji' : 'Deliveries',
           path: '/admin/deliveries',
           icon: Bike,
         },
         {
-          label: 'Payments',
+          label: language === 'sw' ? 'Malipo' : 'Payments',
           path: '/admin/payments',
           icon: CreditCard,
         },
       ],
     },
     {
-      title: 'SYSTEM',
+      title: language === 'sw' ? 'MFUMO' : 'SYSTEM',
       items: [
         {
-          label: 'Admin Management',
+          label:
+            language === 'sw'
+              ? 'Usimamizi wa Admin'
+              : 'Admin Management',
           path: '/admin/management',
           icon: UserCog,
         },
         {
-          label: 'Activity Logs',
+          label:
+            language === 'sw'
+              ? 'Kumbukumbu za Shughuli'
+              : 'Activity Logs',
           path: '/admin/activity',
           icon: Activity,
         },
       ],
     },
     {
-      title: 'ACCOUNT',
+      title: language === 'sw' ? 'AKAUNTI' : 'ACCOUNT',
       items: [
         {
-          label: 'Profile',
+          label: language === 'sw' ? 'Wasifu' : 'Profile',
           path: '/admin/profile',
           icon: ShieldCheck,
         },
         {
-          label: 'Settings',
+          label: language === 'sw' ? 'Mipangilio' : 'Settings',
           path: '/admin/settings',
           icon: Settings,
         },
@@ -169,7 +166,6 @@ function AdminSidebar({ isOpen, onClose }) {
     },
   ]
 
-  // Logout the administrator
   const handleLogout = () => {
     localStorage.removeItem('token')
     localStorage.removeItem('user')
@@ -189,7 +185,11 @@ function AdminSidebar({ isOpen, onClose }) {
       {isOpen && (
         <button
           type="button"
-          aria-label="Close admin sidebar"
+          aria-label={
+            language === 'sw'
+              ? 'Funga menyu ya admin'
+              : 'Close admin sidebar'
+          }
           className="fixed inset-0 z-40 bg-slate-950/50 lg:hidden"
           onClick={onClose}
         />
@@ -212,14 +212,18 @@ function AdminSidebar({ isOpen, onClose }) {
               onClose()
             }}
             className="text-left"
-            aria-label="Go to admin dashboard"
+            aria-label={
+              language === 'sw'
+                ? 'Fungua dashibodi ya admin'
+                : 'Go to admin dashboard'
+            }
           >
             <h1 className="text-xl font-bold tracking-tight">
               JamiiMarket
             </h1>
 
             <p className="mt-0.5 text-xs text-slate-400">
-              Admin Portal
+              {language === 'sw' ? 'Sehemu ya Admin' : 'Admin Portal'}
             </p>
           </button>
 
@@ -227,7 +231,11 @@ function AdminSidebar({ isOpen, onClose }) {
             type="button"
             onClick={onClose}
             className="rounded-lg p-2 text-slate-400 transition hover:bg-white/10 hover:text-white lg:hidden"
-            aria-label="Close admin sidebar"
+            aria-label={
+              language === 'sw'
+                ? 'Funga menyu ya admin'
+                : 'Close admin sidebar'
+            }
           >
             <X className="h-5 w-5" />
           </button>
@@ -236,7 +244,11 @@ function AdminSidebar({ isOpen, onClose }) {
         {/* Navigation */}
         <nav
           className="flex-1 overflow-y-auto px-4 py-5"
-          aria-label="Admin navigation"
+          aria-label={
+            language === 'sw'
+              ? 'Menyu ya admin'
+              : 'Admin navigation'
+          }
         >
           <div className="space-y-6">
             {menuSections.map((section) => (
@@ -285,7 +297,11 @@ function AdminSidebar({ isOpen, onClose }) {
               onClose()
             }}
             className="mb-3 flex w-full items-center gap-3 rounded-xl bg-white/5 p-3 text-left transition hover:bg-white/10"
-            aria-label="Open administrator profile"
+            aria-label={
+              language === 'sw'
+                ? 'Fungua wasifu wa msimamizi'
+                : 'Open administrator profile'
+            }
           >
             {user?.profileImage ? (
               <img
@@ -305,7 +321,8 @@ function AdminSidebar({ isOpen, onClose }) {
               </p>
 
               <p className="truncate text-xs text-slate-400">
-                {user?.email || 'Administrator'}
+                {user?.email ||
+                  (language === 'sw' ? 'Msimamizi' : 'Administrator')}
               </p>
             </div>
           </button>
@@ -318,7 +335,9 @@ function AdminSidebar({ isOpen, onClose }) {
           >
             <LogOut className="h-5 w-5 shrink-0" />
 
-            <span>Logout</span>
+            <span>
+              {language === 'sw' ? 'Toka' : 'Logout'}
+            </span>
           </button>
         </div>
       </aside>

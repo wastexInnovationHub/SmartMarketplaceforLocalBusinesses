@@ -52,7 +52,7 @@ function LoginPage() {
       },
 
       'admin@smflb.com': {
-        password: 'Admi@123',
+        password: 'Admin@123',
         role: 'admin',
         dashboard: '/admin/dashboard',
       },

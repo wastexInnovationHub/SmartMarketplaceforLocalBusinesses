@@ -560,7 +560,7 @@ return ( <div className="space-y-6">
 {/* Page heading */} <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between"> <div> <div className="mb-2 flex items-center gap-2 text-sm font-medium text-indigo-600"> <Package className="h-4 w-4" />
 {currentText.marketplaceManagement} </div>
 
-```
+
       <h1 className="text-2xl font-bold tracking-tight text-slate-900 sm:text-3xl">
         {currentText.productsServices}
       </h1>
@@ -1305,7 +1305,7 @@ function StatCard({ icon: Icon, label, value }) {
 return ( <div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm"> <div className="flex items-center justify-between"> <div> <p className="text-sm font-medium text-slate-500">
 {label} </p>
 
-```
+
       <p className="mt-2 text-2xl font-bold text-slate-900">
         {value}
       </p>

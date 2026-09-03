@@ -19,7 +19,6 @@ function AdminNavbar({ onMenuClick }) {
   const {
     language,
     changeLanguage,
-    t,
   } = useLanguage()
 
   // Load the current administrator account
@@ -33,7 +32,6 @@ function AdminNavbar({ onMenuClick }) {
       }
 
       const parsedUser = JSON.parse(storedUser)
-
       setUser(parsedUser)
     } catch {
       setUser(null)
@@ -50,10 +48,7 @@ function AdminNavbar({ onMenuClick }) {
 
     // Update the navbar when localStorage changes in another tab
     const handleStorage = (event) => {
-      if (
-        !event.key ||
-        event.key === 'jamiiMarketUser'
-      ) {
+      if (!event.key || event.key === 'jamiiMarketUser') {
         loadUser()
       }
     }
@@ -63,10 +58,7 @@ function AdminNavbar({ onMenuClick }) {
       handleProfileUpdate
     )
 
-    window.addEventListener(
-      'storage',
-      handleStorage
-    )
+    window.addEventListener('storage', handleStorage)
 
     return () => {
       window.removeEventListener(
@@ -74,10 +66,7 @@ function AdminNavbar({ onMenuClick }) {
         handleProfileUpdate
       )
 
-      window.removeEventListener(
-        'storage',
-        handleStorage
-      )
+      window.removeEventListener('storage', handleStorage)
     }
   }, [])
 
@@ -92,10 +81,7 @@ function AdminNavbar({ onMenuClick }) {
       }
     }
 
-    document.addEventListener(
-      'mousedown',
-      handleClickOutside
-    )
+    document.addEventListener('mousedown', handleClickOutside)
 
     return () => {
       document.removeEventListener(
@@ -114,12 +100,42 @@ function AdminNavbar({ onMenuClick }) {
   const adminName =
     user?.firstName || user?.lastName
       ? `${user?.firstName || ''} ${user?.lastName || ''}`.trim()
-      : 'Administrator'
+      : language === 'sw'
+        ? 'Msimamizi'
+        : 'Administrator'
 
   // Build administrator initials
   const initials =
     `${user?.firstName?.charAt(0) || ''}${user?.lastName?.charAt(0) || ''}`
       .toUpperCase() || 'AD'
+
+  // Admin navbar text
+  const pageText =
+    language === 'sw'
+      ? {
+          title: 'Usimamizi wa JamiiMarket',
+          description: 'Simamia mfumo wa JamiiMarket',
+          openMenu: 'Fungua menyu',
+          activity: 'Shughuli za Mfumo',
+          profileMenu: 'Menyu ya wasifu wa msimamizi',
+          administrator: 'Msimamizi',
+          account: 'Akaunti ya Msimamizi',
+          profile: 'Wasifu',
+          settings: 'Mipangilio',
+          logout: 'Toka',
+        }
+      : {
+          title: 'JamiiMarket Administration',
+          description: 'Manage the JamiiMarket platform',
+          openMenu: 'Open menu',
+          activity: 'System Activity',
+          profileMenu: 'Administrator profile menu',
+          administrator: 'Administrator',
+          account: 'Administrator Account',
+          profile: 'Profile',
+          settings: 'Settings',
+          logout: 'Logout',
+        }
 
   // Open administrator profile
   const handleProfile = () => {
@@ -161,16 +177,8 @@ function AdminNavbar({ onMenuClick }) {
             type="button"
             onClick={onMenuClick}
             className="rounded-xl p-2 text-slate-600 transition hover:bg-slate-100 focus:outline-none focus:ring-2 focus:ring-indigo-500 lg:hidden"
-            aria-label={
-              language === 'sw'
-                ? 'Fungua menyu ya msimamizi'
-                : 'Open admin sidebar'
-            }
-            title={
-              language === 'sw'
-                ? 'Fungua menyu'
-                : 'Open menu'
-            }
+            aria-label={pageText.openMenu}
+            title={pageText.openMenu}
           >
             <Menu className="h-6 w-6" />
           </button>
@@ -182,11 +190,11 @@ function AdminNavbar({ onMenuClick }) {
             className="min-w-0 text-left"
           >
             <p className="truncate text-sm font-semibold text-slate-900">
-              {t('administration')}
+              {pageText.title}
             </p>
 
             <p className="hidden truncate text-xs text-slate-500 sm:block">
-              {t('managePlatform')}
+              {pageText.description}
             </p>
           </button>
         </div>
@@ -222,7 +230,7 @@ function AdminNavbar({ onMenuClick }) {
               aria-label="English"
               aria-pressed={language === 'en'}
             >
-              ENG
+              EN
             </button>
 
           </div>
@@ -232,8 +240,8 @@ function AdminNavbar({ onMenuClick }) {
             type="button"
             onClick={() => navigate('/admin/activity')}
             className="relative rounded-xl p-2.5 text-slate-600 transition hover:bg-slate-100 focus:outline-none focus:ring-2 focus:ring-indigo-500"
-            aria-label={t('activityLogs')}
-            title={t('activityLogs')}
+            aria-label={pageText.activity}
+            title={pageText.activity}
           >
             <Bell className="h-5 w-5" />
           </button>
@@ -251,7 +259,7 @@ function AdminNavbar({ onMenuClick }) {
                 setProfileOpen((current) => !current)
               }
               className="flex items-center gap-2 rounded-xl p-1.5 transition hover:bg-slate-100 focus:outline-none focus:ring-2 focus:ring-indigo-500"
-              aria-label={t('administratorProfileMenu')}
+              aria-label={pageText.profileMenu}
               aria-expanded={profileOpen}
               aria-haspopup="menu"
             >
@@ -276,7 +284,7 @@ function AdminNavbar({ onMenuClick }) {
                 </p>
 
                 <p className="truncate text-xs text-slate-500">
-                  {t('administrator')}
+                  {pageText.administrator}
                 </p>
               </div>
             </button>
@@ -310,7 +318,7 @@ function AdminNavbar({ onMenuClick }) {
                       </p>
 
                       <p className="mt-1 truncate text-xs text-slate-500">
-                        {user?.email || t('administratorAccount')}
+                        {user?.email || pageText.account}
                       </p>
                     </div>
 
@@ -326,7 +334,7 @@ function AdminNavbar({ onMenuClick }) {
                 >
                   <User className="h-5 w-5 text-slate-500" />
 
-                  <span>{t('profile')}</span>
+                  <span>{pageText.profile}</span>
                 </button>
 
                 {/* Settings */}
@@ -338,7 +346,7 @@ function AdminNavbar({ onMenuClick }) {
                 >
                   <Settings className="h-5 w-5 text-slate-500" />
 
-                  <span>{t('settings')}</span>
+                  <span>{pageText.settings}</span>
                 </button>
 
                 {/* Logout */}
@@ -351,12 +359,13 @@ function AdminNavbar({ onMenuClick }) {
                   >
                     <LogOut className="h-5 w-5" />
 
-                    <span>{t('logout')}</span>
+                    <span>{pageText.logout}</span>
                   </button>
                 </div>
 
               </div>
             )}
+
           </div>
         </div>
       </div>

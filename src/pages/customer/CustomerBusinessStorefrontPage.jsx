@@ -16,59 +16,173 @@ import {
 } from 'lucide-react'
 import { Link, useParams } from 'react-router-dom'
 
+import { useLanguage } from '../../i18n/LanguageContext'
+
 function CustomerBusinessStorefrontPage() {
   const { businessId } = useParams()
+  const { language } = useLanguage()
+
+  const isSwahili = language === 'sw'
 
   const [search, setSearch] = useState('')
   const [activeType, setActiveType] = useState('all')
+
+  const text = {
+    backToBusinesses: isSwahili
+      ? 'Rudi kwenye Biashara'
+      : 'Back to Businesses',
+
+    businessStorefront: isSwahili
+      ? 'Duka la Biashara'
+      : 'Business Storefront',
+
+    businessInformationUnavailable: isSwahili
+      ? 'Taarifa za biashara bado hazipatikani'
+      : 'Business information is not available yet',
+
+    storefrontDescription: isSwahili
+      ? 'Duka hili liko tayari kupokea taarifa halisi za biashara, lakini hakuna taarifa za biashara zinazopatikana kwa sasa. Taarifa za biashara na bidhaa zitaonekana hapa baada ya soko kuunganishwa na backend.'
+      : 'This storefront is ready for real business data, but no business information is currently available for this page. Business details and products will appear here when the marketplace is connected to the backend.',
+
+    realMarketplaceDataOnly: isSwahili
+      ? 'Taarifa halisi za soko pekee'
+      : 'Real marketplace data only',
+
+    noSampleData: isSwahili
+      ? 'Hakuna biashara, bidhaa, huduma, bei, anwani, namba ya simu, saa za kufungua, au taarifa za usafirishaji za mfano zilizowekwa.'
+      : 'No sample business, products, services, prices, address, phone number, opening hours, or delivery information has been added.',
+
+    browseBusinesses: isSwahili
+      ? 'Angalia Biashara'
+      : 'Browse Businesses',
+
+    backToDashboard: isSwahili
+      ? 'Rudi kwenye Dashibodi'
+      : 'Back to Dashboard',
+
+    saveBusiness: isSwahili
+      ? 'Hifadhi biashara'
+      : 'Save business',
+
+    openNow: isSwahili
+      ? 'Ipo wazi sasa'
+      : 'Open now',
+
+    closed: isSwahili
+      ? 'Imefungwa'
+      : 'Closed',
+
+    address: isSwahili
+      ? 'Anwani'
+      : 'Address',
+
+    phone: isSwahili
+      ? 'Simu'
+      : 'Phone',
+
+    email: isSwahili
+      ? 'Barua pepe'
+      : 'Email',
+
+    openingHours: isSwahili
+      ? 'Saa za Kufungua'
+      : 'Opening Hours',
+
+    businessDeliveryAvailable: isSwahili
+      ? 'Usafirishaji wa Biashara Unapatikana'
+      : 'Business Delivery Available',
+
+    pickupAvailable: isSwahili
+      ? 'Kuchukua Mwenyewe Kunapatikana'
+      : 'Pickup Available',
+
+    store: isSwahili
+      ? 'Duka'
+      : 'Store',
+
+    productsAndServices: isSwahili
+      ? 'Bidhaa na Huduma'
+      : 'Products & Services',
+
+    browseWhatBusinessOffers: isSwahili
+      ? 'Angalia bidhaa na huduma zinazotolewa na biashara hii.'
+      : 'Browse what this business currently offers.',
+
+    searchStore: isSwahili
+      ? 'Tafuta kwenye duka hili...'
+      : 'Search this store...',
+
+    clearStoreSearch: isSwahili
+      ? 'Futa utafutaji wa duka'
+      : 'Clear store search',
+
+    all: isSwahili
+      ? 'Zote'
+      : 'All',
+
+    products: isSwahili
+      ? 'Bidhaa'
+      : 'Products',
+
+    services: isSwahili
+      ? 'Huduma'
+      : 'Services',
+
+    perHour: isSwahili
+      ? 'kwa saa'
+      : 'per hour',
+
+    perService: isSwahili
+      ? 'kwa huduma'
+      : 'per service',
+
+    perItem: isSwahili
+      ? 'kwa'
+      : 'per',
+
+    addToCart: isSwahili
+      ? 'Ongeza kwenye Kikapu'
+      : 'Add to Cart',
+
+    noMatchingItems: isSwahili
+      ? 'Hakuna vitu vinavyolingana'
+      : 'No matching items',
+
+    noProductsServices: isSwahili
+      ? 'Bado hakuna bidhaa au huduma zinazopatikana'
+      : 'No products or services available yet',
+
+    noMatchingDescription: isSwahili
+      ? 'Hakuna bidhaa au huduma halisi inayolingana na utafutaji au kichujio ulichochagua.'
+      : 'No real products or services match your current search or filter.',
+
+    noProductsDescription: isSwahili
+      ? 'Biashara hii bado haina bidhaa au huduma halisi zinazopatikana kwenye soko.'
+      : 'This business does not have real products or services available in the marketplace yet.',
+
+    clearSearch: isSwahili
+      ? 'Futa Utafutaji'
+      : 'Clear Search',
+
+    smartCartComingNext: isSwahili
+      ? 'Kikapu Mahiri Kinakuja'
+      : 'Smart cart coming next',
+
+    smartCartDescription: isSwahili
+      ? 'Bidhaa na huduma zitaongezwa kwenye kikapu mahiri cha JamiiMarket. Kikapu kitaweza kuhifadhi vitu kutoka kwenye biashara nyingi na kuviandaa kwa hatua sahihi ya malipo na oda.'
+      : 'Products and services will be added to the JamiiMarket smart cart. The cart will support items from multiple businesses and prepare them for the appropriate checkout and order flow.',
+  }
 
   /*
    * Real business information will come from the backend.
    *
    * Do not add fake business information here.
-   *
-   * Expected future business structure:
-   *
-   * {
-   *   id,
-   *   name,
-   *   category,
-   *   description,
-   *   bannerImage,
-   *   logoImage,
-   *   address,
-   *   phone,
-   *   email,
-   *   openingHours,
-   *   deliveryAvailable,
-   *   pickupAvailable,
-   *   isOpen
-   * }
    */
   const business = null
 
   /*
    * Real products and services will come from the backend
    * for the selected business.
-   *
-   * Expected future item structure:
-   *
-   * {
-   *   id,
-   *   businessId,
-   *   name,
-   *   description,
-   *   category,
-   *   itemType: 'product' | 'service',
-   *   unit,
-   *   pricingType,
-   *   price,
-   *   stock,
-   *   lowStockThreshold,
-   *   status,
-   *   isActive,
-   *   image
-   * }
    */
   const items = []
 
@@ -108,7 +222,7 @@ function CustomerBusinessStorefrontPage() {
           className="inline-flex items-center gap-2 text-sm font-semibold text-[#326460] transition hover:text-[#A03F28]"
         >
           <ArrowLeft size={17} />
-          Back to Businesses
+          {text.backToBusinesses}
         </Link>
 
         {/* Business unavailable state */}
@@ -125,18 +239,15 @@ function CustomerBusinessStorefrontPage() {
               </div>
 
               <p className="mt-6 text-xs font-bold uppercase tracking-[0.15em] text-[#326460]">
-                Business Storefront
+                {text.businessStorefront}
               </p>
 
               <h1 className="mt-2 text-2xl font-bold text-[#1B1C1C] sm:text-3xl">
-                Business information is not available yet
+                {text.businessInformationUnavailable}
               </h1>
 
               <p className="mx-auto mt-4 max-w-2xl text-sm leading-6 text-[#695D46] sm:text-base">
-                This storefront is ready for real business data, but no
-                business information is currently available for this page.
-                Business details and products will appear here when the
-                marketplace is connected to the backend.
+                {text.storefrontDescription}
               </p>
 
               <div className="mx-auto mt-8 max-w-xl rounded-2xl bg-[#FCF9F8] px-5 py-4 text-left">
@@ -148,15 +259,15 @@ function CustomerBusinessStorefrontPage() {
                   </div>
 
                   <div>
+
                     <p className="text-xs font-bold text-[#1B1C1C]">
-                      Real marketplace data only
+                      {text.realMarketplaceDataOnly}
                     </p>
 
                     <p className="mt-1 text-xs leading-5 text-[#8A726C]">
-                      No sample business, products, services, prices,
-                      address, phone number, opening hours, or delivery
-                      information has been added.
+                      {text.noSampleData}
                     </p>
+
                   </div>
 
                 </div>
@@ -170,14 +281,14 @@ function CustomerBusinessStorefrontPage() {
                   className="inline-flex items-center justify-center gap-2 rounded-xl bg-[#A03F28] px-5 py-3 text-sm font-bold text-white shadow-sm transition hover:bg-[#812914] active:scale-[0.98]"
                 >
                   <Store size={18} />
-                  Browse Businesses
+                  {text.browseBusinesses}
                 </Link>
 
                 <Link
                   to="/customer"
                   className="inline-flex items-center justify-center gap-2 rounded-xl border border-[#DDC0BA] bg-white px-5 py-3 text-sm font-semibold text-[#56423D] transition hover:border-[#326460] hover:text-[#326460]"
                 >
-                  Back to Dashboard
+                  {text.backToDashboard}
                 </Link>
 
               </div>
@@ -201,7 +312,7 @@ function CustomerBusinessStorefrontPage() {
         className="inline-flex items-center gap-2 text-sm font-semibold text-[#326460] transition hover:text-[#A03F28]"
       >
         <ArrowLeft size={17} />
-        Back to Businesses
+        {text.backToBusinesses}
       </Link>
 
       {/* Business header */}
@@ -227,7 +338,7 @@ function CustomerBusinessStorefrontPage() {
 
           <button
             type="button"
-            aria-label="Save business"
+            aria-label={text.saveBusiness}
             className="absolute right-5 top-5 flex h-11 w-11 items-center justify-center rounded-full bg-white/95 text-[#A03F28] shadow-sm backdrop-blur transition hover:bg-white"
           >
             <Heart size={20} />
@@ -243,6 +354,7 @@ function CustomerBusinessStorefrontPage() {
             <div className="flex gap-4">
 
               <div className="-mt-16 flex h-20 w-20 shrink-0 items-center justify-center rounded-2xl border-4 border-white bg-[#FFF0EC] text-[#A03F28] shadow-sm">
+
                 {business.logoImage ? (
                   <img
                     src={business.logoImage}
@@ -252,9 +364,11 @@ function CustomerBusinessStorefrontPage() {
                 ) : (
                   <Store size={30} />
                 )}
+
               </div>
 
               <div>
+
                 <p className="text-xs font-bold uppercase tracking-[0.14em] text-[#326460]">
                   {business.category}
                 </p>
@@ -268,6 +382,7 @@ function CustomerBusinessStorefrontPage() {
                     {business.description}
                   </p>
                 )}
+
               </div>
 
             </div>
@@ -279,7 +394,7 @@ function CustomerBusinessStorefrontPage() {
                   : 'bg-[#FFF0EC] text-[#A03F28]'
               }`}
             >
-              {business.isOpen ? 'Open now' : 'Closed'}
+              {business.isOpen ? text.openNow : text.closed}
             </span>
 
           </div>
@@ -289,69 +404,93 @@ function CustomerBusinessStorefrontPage() {
 
             {business.address && (
               <div className="flex items-start gap-3">
+
                 <MapPin
                   size={18}
                   className="mt-0.5 shrink-0 text-[#A03F28]"
                 />
+
                 <div>
+
                   <p className="text-xs font-bold text-[#1B1C1C]">
-                    Address
+                    {text.address}
                   </p>
+
                   <p className="mt-1 text-xs leading-5 text-[#8A726C]">
                     {business.address}
                   </p>
+
                 </div>
+
               </div>
             )}
 
             {business.phone && (
               <div className="flex items-start gap-3">
+
                 <Phone
                   size={18}
                   className="mt-0.5 shrink-0 text-[#A03F28]"
                 />
+
                 <div>
+
                   <p className="text-xs font-bold text-[#1B1C1C]">
-                    Phone
+                    {text.phone}
                   </p>
+
                   <p className="mt-1 text-xs leading-5 text-[#8A726C]">
                     {business.phone}
                   </p>
+
                 </div>
+
               </div>
             )}
 
             {business.email && (
               <div className="flex items-start gap-3">
+
                 <Mail
                   size={18}
                   className="mt-0.5 shrink-0 text-[#A03F28]"
                 />
+
                 <div>
+
                   <p className="text-xs font-bold text-[#1B1C1C]">
-                    Email
+                    {text.email}
                   </p>
+
                   <p className="mt-1 break-all text-xs leading-5 text-[#8A726C]">
                     {business.email}
                   </p>
+
                 </div>
+
               </div>
             )}
 
             {business.openingHours && (
               <div className="flex items-start gap-3">
+
                 <Clock3
                   size={18}
                   className="mt-0.5 shrink-0 text-[#A03F28]"
                 />
+
                 <div>
+
                   <p className="text-xs font-bold text-[#1B1C1C]">
-                    Opening Hours
+                    {text.openingHours}
                   </p>
+
                   <p className="mt-1 text-xs leading-5 text-[#8A726C]">
                     {business.openingHours}
                   </p>
+
                 </div>
+
               </div>
             )}
 
@@ -362,13 +501,13 @@ function CustomerBusinessStorefrontPage() {
 
             {business.deliveryAvailable && (
               <span className="rounded-full bg-[#E9F3F1] px-3 py-1.5 text-xs font-semibold text-[#326460]">
-                Business Delivery Available
+                {text.businessDeliveryAvailable}
               </span>
             )}
 
             {business.pickupAvailable && (
               <span className="rounded-full bg-[#F2EDEA] px-3 py-1.5 text-xs font-semibold text-[#56423D]">
-                Pickup Available
+                {text.pickupAvailable}
               </span>
             )}
 
@@ -384,17 +523,19 @@ function CustomerBusinessStorefrontPage() {
         <div className="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
 
           <div>
+
             <p className="text-xs font-bold uppercase tracking-[0.14em] text-[#326460]">
-              Store
+              {text.store}
             </p>
 
             <h2 className="mt-1 text-2xl font-bold text-[#1B1C1C]">
-              Products & Services
+              {text.productsAndServices}
             </h2>
 
             <p className="mt-1 text-sm text-[#8A726C]">
-              Browse what this business currently offers.
+              {text.browseWhatBusinessOffers}
             </p>
+
           </div>
 
           <div className="relative w-full lg:max-w-sm">
@@ -408,7 +549,7 @@ function CustomerBusinessStorefrontPage() {
               type="search"
               value={search}
               onChange={(event) => setSearch(event.target.value)}
-              placeholder="Search this store..."
+              placeholder={text.searchStore}
               className="w-full rounded-xl border border-[#D9D3D0] bg-white py-3 pl-11 pr-11 text-sm text-[#1B1C1C] outline-none transition placeholder:text-[#9B918D] focus:border-[#A03F28] focus:ring-2 focus:ring-[#A03F28]/10"
             />
 
@@ -416,7 +557,7 @@ function CustomerBusinessStorefrontPage() {
               <button
                 type="button"
                 onClick={clearSearch}
-                aria-label="Clear store search"
+                aria-label={text.clearStoreSearch}
                 className="absolute right-3 top-1/2 -translate-y-1/2 rounded-lg p-2 text-[#7A706C] transition hover:bg-[#F2EDEA] hover:text-[#A03F28]"
               >
                 <X size={16} />
@@ -440,7 +581,7 @@ function CustomerBusinessStorefrontPage() {
             }`}
           >
             <Store size={16} />
-            All
+            {text.all}
           </button>
 
           <button
@@ -453,7 +594,7 @@ function CustomerBusinessStorefrontPage() {
             }`}
           >
             <Package size={16} />
-            Products
+            {text.products}
           </button>
 
           <button
@@ -466,7 +607,7 @@ function CustomerBusinessStorefrontPage() {
             }`}
           >
             <Wrench size={16} />
-            Services
+            {text.services}
           </button>
 
         </div>
@@ -509,6 +650,7 @@ function CustomerBusinessStorefrontPage() {
                   <div className="flex items-start justify-between gap-3">
 
                     <div>
+
                       <p className="text-xs font-semibold text-[#326460]">
                         {item.category}
                       </p>
@@ -516,6 +658,7 @@ function CustomerBusinessStorefrontPage() {
                       <h3 className="mt-1 font-bold text-[#1B1C1C]">
                         {item.name}
                       </h3>
+
                     </div>
 
                     <span className="shrink-0 rounded-full bg-[#F2EDEA] px-2.5 py-1 text-[11px] font-bold capitalize text-[#56423D]">
@@ -533,17 +676,21 @@ function CustomerBusinessStorefrontPage() {
                   <div className="mt-4 flex items-end justify-between gap-3">
 
                     <div>
+
                       <p className="text-lg font-bold text-[#A03F28]">
                         {item.price}
                       </p>
 
                       <p className="text-xs text-[#8A726C]">
+
                         {item.itemType === 'service'
                           ? item.pricingType === 'per_hour'
-                            ? 'per hour'
-                            : 'per service'
-                          : `per ${item.unit || 'item'}`}
+                            ? text.perHour
+                            : text.perService
+                          : `${text.perItem} ${item.unit || 'item'}`}
+
                       </p>
+
                     </div>
 
                     <button
@@ -551,7 +698,7 @@ function CustomerBusinessStorefrontPage() {
                       className="inline-flex items-center gap-2 rounded-xl bg-[#A03F28] px-4 py-2.5 text-xs font-bold text-white transition hover:bg-[#812914]"
                     >
                       <ShoppingBag size={15} />
-                      Add to Cart
+                      {text.addToCart}
                     </button>
 
                   </div>
@@ -568,23 +715,29 @@ function CustomerBusinessStorefrontPage() {
           <div className="rounded-3xl border border-[#E4D4CF] bg-white px-6 py-14 text-center shadow-sm sm:px-10">
 
             <div className="mx-auto flex h-18 w-18 items-center justify-center rounded-full bg-[#FFF0EC] text-[#A03F28]">
+
               {search || activeType !== 'all' ? (
                 <Search size={32} />
               ) : (
                 <Package size={32} />
               )}
+
             </div>
 
             <h3 className="mt-5 text-xl font-bold text-[#1B1C1C]">
+
               {search || activeType !== 'all'
-                ? 'No matching items'
-                : 'No products or services available yet'}
+                ? text.noMatchingItems
+                : text.noProductsServices}
+
             </h3>
 
             <p className="mx-auto mt-3 max-w-xl text-sm leading-6 text-[#695D46]">
+
               {search || activeType !== 'all'
-                ? 'No real products or services match your current search or filter.'
-                : 'This business does not have real products or services available in the marketplace yet.'}
+                ? text.noMatchingDescription
+                : text.noProductsDescription}
+
             </p>
 
             {search && (
@@ -594,7 +747,7 @@ function CustomerBusinessStorefrontPage() {
                 className="mt-6 inline-flex items-center gap-2 rounded-xl border border-[#DDC0BA] bg-white px-5 py-3 text-sm font-semibold text-[#56423D] transition hover:border-[#A03F28] hover:text-[#A03F28]"
               >
                 <X size={17} />
-                Clear Search
+                {text.clearSearch}
               </button>
             )}
 
@@ -614,15 +767,15 @@ function CustomerBusinessStorefrontPage() {
           </div>
 
           <div>
+
             <p className="text-sm font-bold text-[#1B1C1C]">
-              Smart cart coming next
+              {text.smartCartComingNext}
             </p>
 
             <p className="mt-1 text-xs leading-5 text-[#6C7F7B] sm:text-sm">
-              Products and services will be added to the JamiiMarket smart
-              cart. The cart will support items from multiple businesses and
-              prepare them for the appropriate checkout and order flow.
+              {text.smartCartDescription}
             </p>
+
           </div>
 
         </div>

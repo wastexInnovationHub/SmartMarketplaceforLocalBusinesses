@@ -8,7 +8,81 @@ import {
   User,
 } from 'lucide-react'
 
+import { useLanguage } from '../../i18n/LanguageContext'
+
 function AdminProfilePage() {
+  const { language } = useLanguage()
+
+  const text = {
+    en: {
+      account: 'Account',
+      adminProfile: 'Admin Profile',
+      description:
+        'Manage the administrator information displayed across the JamiiMarket admin portal.',
+      administrator: 'Administrator',
+      noEmail: 'No email available',
+      accountStatus: 'Account status',
+      inactive: 'Inactive',
+      active: 'Active',
+      role: 'Role',
+      personalInformation: 'Personal Information',
+      personalInformationDescription:
+        'Update the information used for your admin account.',
+      firstName: 'First Name',
+      lastName: 'Last Name',
+      emailAddress: 'Email Address',
+      phoneNumber: 'Phone Number',
+      enterFirstName: 'Enter first name',
+      enterLastName: 'Enter last name',
+      enterEmail: 'Enter email address',
+      enterPhone: 'Enter phone number',
+      profileImageUrl: 'Profile Image URL',
+      optionalProfileImageUrl: 'Optional profile image URL',
+      imageUploadNotice:
+        'Image upload will be connected to backend storage later.',
+      profileUpdated: 'Profile updated successfully.',
+      saveChanges: 'Save Changes',
+      backendIntegration: 'Backend integration',
+      backendDescription:
+        'Profile changes are currently stored in browser localStorage so the interface can be tested. In the production system, administrator profile data should be loaded and saved through the authenticated backend.',
+    },
+
+    sw: {
+      account: 'Akaunti',
+      adminProfile: 'Wasifu wa Admin',
+      description:
+        'Simamia taarifa za msimamizi zinazoonyeshwa katika sehemu ya admin ya JamiiMarket.',
+      administrator: 'Msimamizi',
+      noEmail: 'Hakuna barua pepe',
+      accountStatus: 'Hali ya Akaunti',
+      inactive: 'Haifanyi Kazi',
+      active: 'Hai',
+      role: 'Nafasi',
+      personalInformation: 'Taarifa Binafsi',
+      personalInformationDescription:
+        'Sasisha taarifa zinazotumika kwenye akaunti yako ya admin.',
+      firstName: 'Jina la Kwanza',
+      lastName: 'Jina la Mwisho',
+      emailAddress: 'Anwani ya Barua Pepe',
+      phoneNumber: 'Namba ya Simu',
+      enterFirstName: 'Ingiza jina la kwanza',
+      enterLastName: 'Ingiza jina la mwisho',
+      enterEmail: 'Ingiza anwani ya barua pepe',
+      enterPhone: 'Ingiza namba ya simu',
+      profileImageUrl: 'URL ya Picha ya Wasifu',
+      optionalProfileImageUrl: 'URL ya picha ya wasifu, si lazima',
+      imageUploadNotice:
+        'Upakiaji wa picha utaunganishwa na hifadhi ya backend baadaye.',
+      profileUpdated: 'Wasifu umeboreshwa kwa mafanikio.',
+      saveChanges: 'Hifadhi Mabadiliko',
+      backendIntegration: 'Muunganisho wa Backend',
+      backendDescription:
+        'Mabadiliko ya wasifu kwa sasa yanahifadhiwa kwenye localStorage ya kivinjari ili kuruhusu interface kujaribiwa. Katika mfumo wa uzalishaji, taarifa za wasifu wa msimamizi zinapaswa kusomwa na kuhifadhiwa kupitia backend yenye uthibitishaji.',
+    },
+  }
+
+  const currentText = text[language === 'sw' ? 'sw' : 'en']
+
   const [profile, setProfile] = useState({
     firstName: '',
     lastName: '',
@@ -101,23 +175,27 @@ function AdminProfilePage() {
 
   const fullName =
     `${profile.firstName} ${profile.lastName}`.trim() ||
-    'Administrator'
+    currentText.administrator
+
+  const displayRole =
+    profile.role === 'admin'
+      ? currentText.administrator
+      : profile.role
 
   return (
     <section className="space-y-6">
       {/* Page heading */}
       <div>
         <p className="text-sm font-semibold uppercase tracking-wider text-indigo-600">
-          Account
+          {currentText.account}
         </p>
 
         <h1 className="mt-1 text-2xl font-bold text-slate-900 sm:text-3xl">
-          Admin Profile
+          {currentText.adminProfile}
         </h1>
 
         <p className="mt-2 max-w-2xl text-sm text-slate-500">
-          Manage the administrator information displayed across
-          the JamiiMarket admin portal.
+          {currentText.description}
         </p>
       </div>
 
@@ -150,12 +228,12 @@ function AdminProfilePage() {
             </h2>
 
             <p className="mt-1 text-sm text-slate-500">
-              {profile.email || 'No email available'}
+              {profile.email || currentText.noEmail}
             </p>
 
             <span className="mt-4 inline-flex items-center gap-1.5 rounded-full bg-indigo-50 px-3 py-1 text-xs font-semibold text-indigo-700">
               <ShieldCheck size={14} />
-              Administrator
+              {currentText.administrator}
             </span>
           </div>
 
@@ -163,26 +241,24 @@ function AdminProfilePage() {
           <div className="mt-6 border-t border-slate-100 pt-5">
             <div className="flex items-center justify-between">
               <span className="text-sm text-slate-500">
-                Account status
+                {currentText.accountStatus}
               </span>
 
               <span className="inline-flex items-center gap-1.5 text-sm font-semibold text-emerald-600">
                 <span className="h-2 w-2 rounded-full bg-emerald-500" />
                 {profile.status === 'inactive'
-                  ? 'Inactive'
-                  : 'Active'}
+                  ? currentText.inactive
+                  : currentText.active}
               </span>
             </div>
 
             <div className="mt-4 flex items-center justify-between">
               <span className="text-sm text-slate-500">
-                Role
+                {currentText.role}
               </span>
 
               <span className="text-sm font-semibold capitalize text-slate-800">
-                {profile.role === 'admin'
-                  ? 'Administrator'
-                  : profile.role}
+                {displayRole}
               </span>
             </div>
           </div>
@@ -195,11 +271,11 @@ function AdminProfilePage() {
         >
           <div className="border-b border-slate-100 pb-5">
             <h2 className="text-lg font-bold text-slate-900">
-              Personal Information
+              {currentText.personalInformation}
             </h2>
 
             <p className="mt-1 text-sm text-slate-500">
-              Update the information used for your admin account.
+              {currentText.personalInformationDescription}
             </p>
           </div>
 
@@ -210,7 +286,7 @@ function AdminProfilePage() {
                 htmlFor="firstName"
                 className="mb-2 block text-sm font-semibold text-slate-700"
               >
-                First Name
+                {currentText.firstName}
               </label>
 
               <div className="relative">
@@ -225,7 +301,7 @@ function AdminProfilePage() {
                   type="text"
                   value={profile.firstName}
                   onChange={handleChange}
-                  placeholder="Enter first name"
+                  placeholder={currentText.enterFirstName}
                   className="w-full rounded-xl border border-slate-200 bg-white py-3 pl-10 pr-4 text-sm outline-none transition focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100"
                 />
               </div>
@@ -237,7 +313,7 @@ function AdminProfilePage() {
                 htmlFor="lastName"
                 className="mb-2 block text-sm font-semibold text-slate-700"
               >
-                Last Name
+                {currentText.lastName}
               </label>
 
               <input
@@ -246,7 +322,7 @@ function AdminProfilePage() {
                 type="text"
                 value={profile.lastName}
                 onChange={handleChange}
-                placeholder="Enter last name"
+                placeholder={currentText.enterLastName}
                 className="w-full rounded-xl border border-slate-200 bg-white py-3 px-4 text-sm outline-none transition focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100"
               />
             </div>
@@ -257,7 +333,7 @@ function AdminProfilePage() {
                 htmlFor="email"
                 className="mb-2 block text-sm font-semibold text-slate-700"
               >
-                Email Address
+                {currentText.emailAddress}
               </label>
 
               <div className="relative">
@@ -272,7 +348,7 @@ function AdminProfilePage() {
                   type="email"
                   value={profile.email}
                   onChange={handleChange}
-                  placeholder="Enter email address"
+                  placeholder={currentText.enterEmail}
                   className="w-full rounded-xl border border-slate-200 bg-white py-3 pl-10 pr-4 text-sm outline-none transition focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100"
                 />
               </div>
@@ -284,7 +360,7 @@ function AdminProfilePage() {
                 htmlFor="phone"
                 className="mb-2 block text-sm font-semibold text-slate-700"
               >
-                Phone Number
+                {currentText.phoneNumber}
               </label>
 
               <div className="relative">
@@ -299,7 +375,7 @@ function AdminProfilePage() {
                   type="tel"
                   value={profile.phone}
                   onChange={handleChange}
-                  placeholder="Enter phone number"
+                  placeholder={currentText.enterPhone}
                   className="w-full rounded-xl border border-slate-200 bg-white py-3 pl-10 pr-4 text-sm outline-none transition focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100"
                 />
               </div>
@@ -312,7 +388,7 @@ function AdminProfilePage() {
               htmlFor="profileImage"
               className="mb-2 block text-sm font-semibold text-slate-700"
             >
-              Profile Image URL
+              {currentText.profileImageUrl}
             </label>
 
             <input
@@ -321,12 +397,12 @@ function AdminProfilePage() {
               type="url"
               value={profile.profileImage}
               onChange={handleChange}
-              placeholder="Optional profile image URL"
+              placeholder={currentText.optionalProfileImageUrl}
               className="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm outline-none transition focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100"
             />
 
             <p className="mt-2 text-xs text-slate-400">
-              Image upload will be connected to backend storage later.
+              {currentText.imageUploadNotice}
             </p>
           </div>
 
@@ -336,7 +412,7 @@ function AdminProfilePage() {
               {saved && (
                 <p className="flex items-center gap-2 text-sm font-medium text-emerald-600">
                   <CheckCircle2 size={17} />
-                  Profile updated successfully.
+                  {currentText.profileUpdated}
                 </p>
               )}
             </div>
@@ -345,7 +421,7 @@ function AdminProfilePage() {
               type="submit"
               className="rounded-xl bg-indigo-600 px-5 py-3 text-sm font-semibold text-white transition hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
             >
-              Save Changes
+              {currentText.saveChanges}
             </button>
           </div>
         </form>
@@ -361,14 +437,11 @@ function AdminProfilePage() {
 
           <div>
             <h3 className="font-semibold text-indigo-900">
-              Backend integration
+              {currentText.backendIntegration}
             </h3>
 
             <p className="mt-1 text-sm leading-6 text-indigo-800">
-              Profile changes are currently stored in browser
-              localStorage so the interface can be tested. In the
-              production system, administrator profile data should
-              be loaded and saved through the authenticated backend.
+              {currentText.backendDescription}
             </p>
           </div>
         </div>
@@ -378,3 +451,4 @@ function AdminProfilePage() {
 }
 
 export default AdminProfilePage
+

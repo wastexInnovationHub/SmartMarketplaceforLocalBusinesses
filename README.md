@@ -9,9 +9,9 @@ The system provides separate interfaces for customers, businesses, delivery pers
 | No. | Role                  | Name              |
 | --- | --------------------- | ----------------- |
 | 1   | Frontend Developer    | Khadija Ali Saidi |
-| 2   | Backend Developer     | To Be Added       |
+| 2   | Backend Developer     | Zahor             |
 | 3   | AI Integration        | To Be Added       |
-| 4   | Tester and Researcher | To Be Added       |
+| 4   | Tester and Researcher | Abdallah          |
 
 ## Main Objectives
 

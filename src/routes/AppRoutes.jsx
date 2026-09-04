@@ -15,6 +15,10 @@ import HomePage from '../pages/landing/HomePage'
 import LoginPage from '../pages/auth/LoginPage'
 import RegisterPage from '../pages/auth/RegisterPage'
 
+// Legal pages
+import PrivacyPolicyPage from '../pages/legal/PrivacyPolicyPage'
+import TermsOfServicePage from '../pages/legal/TermsOfServicePage'
+
 // Customer layout
 import CustomerDashboardLayout from '../layouts/customer/CustomerDashboardLayout'
 
@@ -90,6 +94,17 @@ function AppRoutes() {
         <Route
           path="/register"
           element={<RegisterPage />}
+        />
+
+        {/* Legal pages */}
+        <Route
+          path="/privacy"
+          element={<PrivacyPolicyPage />}
+        />
+
+        <Route
+          path="/terms"
+          element={<TermsOfServicePage />}
         />
 
         {/* Customer application */}
@@ -188,7 +203,6 @@ function AppRoutes() {
             element={<BusinessNotificationsPage />}
           />
 
-          {/* Business settings */}
           <Route
             path="settings"
             element={<BusinessSettingsPage />}

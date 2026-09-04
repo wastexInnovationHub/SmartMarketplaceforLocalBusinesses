@@ -18,9 +18,10 @@ function LandingHeader() {
       href: '/#about',
     },
     {
-      label: language === 'sw'
-        ? 'Jinsi Inavyofanya Kazi'
-        : 'How It Works',
+      label:
+        language === 'sw'
+          ? 'Jinsi Inavyofanya Kazi'
+          : 'How It Works',
       href: '/#how-it-works',
     },
     {
@@ -82,9 +83,17 @@ function LandingHeader() {
         <Link
           to="/"
           onClick={closeMobileMenu}
-          className="text-xl font-bold tracking-tight text-[#A03F28]"
+          className="flex items-center gap-2"
         >
-          JamiiMarket
+          <img
+            src="/jamii-market-icon.png"
+            alt="JamiiMarket"
+            className="h-9 w-9 object-contain"
+          />
+
+          <span className="text-xl font-bold tracking-tight text-[#A03F28]">
+            JamiiMarket
+          </span>
         </Link>
 
         {/* Desktop navigation */}

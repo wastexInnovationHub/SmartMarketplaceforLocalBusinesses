@@ -1,5 +1,4 @@
 import { ArrowRight, Store } from 'lucide-react'
-import heroMarket from '../../assets/images/hero-market.jpg'
 import { useLanguage } from '../../i18n/LanguageContext'
 
 function HeroSection() {
@@ -70,7 +69,7 @@ function HeroSection() {
           <div className="relative">
             <div className="overflow-hidden rounded-3xl border border-[#DDC0BA] bg-[#F0EDEB] shadow-[0_12px_40px_-12px_rgba(160,63,40,0.16)]">
               <img
-                src={heroMarket}
+                src="/images/hero-marketplace.png"
                 alt={
                   isSwahili
                     ? 'Soko la ndani na wafanyabiashara wa jamii'
@@ -79,7 +78,7 @@ function HeroSection() {
                 className="h-[280px] w-full object-cover sm:h-[380px] lg:h-[500px]"
               />
 
-              <div className="absolute inset-0 rounded-3xl bg-gradient-to-t from-black/20 via-transparent to-transparent pointer-events-none" />
+              <div className="pointer-events-none absolute inset-0 rounded-3xl bg-gradient-to-t from-black/20 via-transparent to-transparent" />
             </div>
 
             {/* Small information card */}
